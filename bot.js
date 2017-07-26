@@ -115,6 +115,9 @@ bot.on('message', message => {
                    message.guild.members.get(message.author.id).setNickname(args[0]);
                 }
             }
+            else if (cmd == "debug"){
+                console.log(message.author.roles);
+            }
         }
         else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
             args = message.content.split(" ");
