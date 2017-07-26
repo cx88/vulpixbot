@@ -75,9 +75,9 @@ bot.on('message', message => {
                 color: 1762633,
                 title: "001: Bulbasaur",
                 url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
-                description: "Grass | Poison",
                 fields: [{
-                    name: ""
+                    name: "Typing",
+                    description: "Grass | Poison"
                 }]
             }});
         }
