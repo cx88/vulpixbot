@@ -4,7 +4,12 @@
     "messages" : {
       "welcome": "Welcome to the server, (user)!"
     }
+  },
+  
+  "339588361712959489": {
+    "prefix": "!",
+    "messages" : {
+      "welcome": "Welcome to the server, (user)!"
+    }
   }
 }
-
-
