@@ -146,8 +146,11 @@ bot.on('message', message => {
                 msg += '``` Add or remove a channel with one of the following commands:```v-config ignored_channels add (channelname)\nv-config ignored_channels remove (channelname)```Channelname is the actual name of the channel, not a hyperlink or id.';
                 message.channel.sendMessage(msg);
             }
+            else if (param == "show"){
+                message.channel.sendMessage('```'+thisconfig+'```');
+            }
             else{
-                message.channel.sendMessage('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels```')
+                message.channel.sendMessage('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config show```')
             }
         }
     }
