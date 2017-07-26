@@ -24,6 +24,11 @@ function hasRole(user, role) {
     return (hasrole);
 }
 
+function dateNow(){
+    var d = Date.now();
+    return d.getFullYear().toString() + '-' + (d.getMonth() + 1).toString() + '-' + d.getDate().toString() + '_' + (d.getHours() + 1).toString() + ':' + (d.getMinutes() + 1).toString();
+}
+
 function saveConfig(cfg){
     var data = JSON.stringify(cfg, null, 2);
     fs.writeFileSync('servers.json', data);
@@ -68,6 +73,7 @@ bot.on('message', message => {
             cmd = message.content.split(thisconfig["prefix"])[1].split(' ')[0];
             args = message.content.split(" ");
             args.splice(0, 1);
+            console.log(dateNow() + ' ' + message.author.username + `: ` + message.content);
             if (cmd == "pc"){
                 message.channel.sendMessage('https://pokecommunity.com/~'+args[0]);
             }
@@ -108,6 +114,7 @@ bot.on('message', message => {
             args.splice(0, 1);
             var param = args[0];
             var setting = args[1];
+            console.log(dateNow() + ' ' + message.author.username + `: ` + message.content);
             if (param == "prefix"){
                 if (setting != undefined){
                     config[message.guild.id.toString()]["prefix"] = setting;
@@ -134,7 +141,6 @@ bot.on('message', message => {
                 message.channel.sendMessage('When a new user joins, you can choose for the bot to give them a role.```Role given: '+thisconfig["autorole"]+'\r\nStatus: '+thisconfig["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
             }
             else if (param == "ignored_channels"){
-                console.log(message.author.username + `: ` + message.content);
                 var msg = 'If a command other than v-config is executed in any of the following channels, it will be ignored:```';
                 if (thisconfig["ignored_channels"].length == 0) { msg += "---"; }
                 else{
@@ -147,7 +153,7 @@ bot.on('message', message => {
                 message.channel.sendMessage(msg);
             }
             else if (param == "show"){
-                message.channel.sendMessage('```'+JSON.stringify(thisconfig, null, 2)+'```');
+                message.channel.sendMessage('```JavaScript\n'+JSON.stringify(thisconfig, null, 2)+'```');
             }
             else{
                 message.channel.sendMessage('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config show```')
