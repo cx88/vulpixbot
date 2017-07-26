@@ -80,9 +80,13 @@ bot.on('message', message => {
         else if (cmd == "choose"){
             _args = message.content.split(' ');
             _args.slice(0, 1);
-            _args.join(' ');
-            console.log(_args);
-            options = _args.split('|');
+            var str = null;
+            for (i = 0; i < _args.length; i++){
+                str += _args[i];
+                if (i != _args.length - 1) { str += " "; }
+            }
+            console.log(str);
+            options = str.split('|');
             //message.channel.sendMessage(options[rand(options.length)]);
         }
         else if (cmd == "dex"){
