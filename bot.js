@@ -77,9 +77,7 @@ bot.on('message', message => {
                 url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
                 fields: [{
                     name: "Properties",
-                    value: "**Types:** Grass | Poison \
-                           **Base Stats:** 45 | 49 | 49 | 65 | 65 | 45 \
-                           **Abilities:** \
+                    value: "**Types:** Grass | Poison\n**Base Stats:** 45 | 49 | 49 | 65 | 65 | 45\n**Abilities:** \
                            Normal: Overgrow \
                            Hidden: Chlorophyll \
                            **Height:** 0.7m \
