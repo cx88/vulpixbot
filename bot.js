@@ -18,15 +18,19 @@ bot.on('ready', () => {
 });
 
 bot.on('guildCreate', guild =>{
-    console.log('Vulpix joined ' + guild.name + ' with ID ' + guild.id.toString());
+    console.log(config);
+    console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at ' + Date.now() + '.');
     guild.defaultChannel.sendMessage('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
     config[guild.id.toString()] = {};
     config[guild.id.toString()]["prefix"] = "!";
     config[guild.id.toString()]["messages"] = {};
     config[guild.id.toString()]["messages"]["welcome"] = "Welcome to the server, (user)!";
     var data = JSON.stringify(config, null, 2);
+    console.log(data);
     fs.writeFile('servers.json', data);
-    
+    servers = fs.readFileSync('servers.json');
+    config = JSON.parse(servers);
+    console.log(config);
 })
 
 bot.on('guildMemberAdd', member =>{
