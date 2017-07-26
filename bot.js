@@ -86,7 +86,7 @@ bot.on('message', message => {
             }
             console.log(str);
             options = str.split('|');
-            console.log(options[rand(options.length)]);
+            message.channel.sendMessage(options[rand(options.length)]);
         }
         else if (cmd == "dex"){
                 message.channel.sendMessage({embed: {
