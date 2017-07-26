@@ -41,8 +41,8 @@ bot.on('guildMemberAdd', member =>{
 });
 
 bot.on('message', message => {
-    if (message.content.startsWith(config[message.member.guild.id.toString()]["prefix"])){
-        var thisconfig = config[message.guild.id.toString()];
+    var thisconfig = config[message.guild.id.toString()];
+    if (message.content.startsWith(thisconfig]["prefix"]) && thisconfig["no_command_channels"][message.channel.name] == undefined){
         cmd = message.content.split('!')[1].split(' ')[0];
         args = message.content.split(" ");
         args.splice(0, 1);
