@@ -116,7 +116,7 @@ bot.on('message', message => {
                 }
             }
             else if (cmd == "debug"){
-                console.log(message.author.roles);
+                console.log(message.author.user.roles);
             }
         }
         else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
