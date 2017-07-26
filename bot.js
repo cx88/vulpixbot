@@ -37,7 +37,7 @@ function rand(int){
 
 bot.on('ready', () => {
     console.log('Vulpix: online');
-    bot.user.setGame("Type v-config for the config!");
+    bot.user.setGame("Type v-config");
 });
 
 bot.on('guildCreate', guild =>{
@@ -46,7 +46,7 @@ bot.on('guildCreate', guild =>{
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {};
     config[g]["prefix"] = "!";
-    config[g]["no_command_channels"] = [];
+    config[g]["ignored_channels"] = [];
     config[g]["disabled_commands"] = [];
     config[g]["messages"] = {};
     config[g]["messages"]["welcome"]["msg"] = "Welcome to the server, (user)!";
@@ -108,7 +108,6 @@ bot.on('message', message => {
             args.splice(0, 1);
             var param = args[0];
             var setting = args[1];
-            console.log(setting);
             if (param == "prefix"){
                 if (setting != undefined){
                     config[message.guild.id.toString()]["prefix"] = setting;
@@ -122,7 +121,7 @@ bot.on('message', message => {
             else if (param == "messages"){
                 var arg = args[1];
                 if (arg == "welcome"){
-                    message.channel.sendMessage('This is what the user welcome message is currently set to: `'+thisconfig["messages"]["welcome"]+'`.');
+                    message.channel.sendMessage('The message that is sent whenever a new user joins.```Message: '+thisconfig["messages"]["welcome"]["msg"]+'\nStatus: '+thisconfig["messages"]["welcome"]["status"]+'```');
                 }
                 else if (arg == "mute"){
                     message.channel.sendMessage('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+thisconfig["messages"]["mute"]["msg"]+'\r\nStatus: '+thisconfig["messages"]["mute"]["status"]+'```');
@@ -132,10 +131,13 @@ bot.on('message', message => {
                 }
             }
             else if (param == "autorole"){
-                message.channel.sendMessage('When a new use joins, you can choose to give them a role.```Role given: '+thisconfig["autorole"]+'\r\nStatus: '+thisconfig["autorole"]+'```')
+                message.channel.sendMessage('When a new user joins, you can choose for the bot to give them a role.```Role given: '+thisconfig["autorole"]+'\r\nStatus: '+thisconfig["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
             }
-            else if (param == "allowcommands"){
+            else if (param == "ignored_channels"){
 
+            }
+            else{
+                message.channel.sendMessage('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels```')
             }
         }
     }
