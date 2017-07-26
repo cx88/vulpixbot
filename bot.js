@@ -63,7 +63,7 @@ bot.on('guildMemberAdd', member =>{
 
 bot.on('message', message => {
     var thisconfig = config[message.guild.id.toString()];
-    if (!thisconfig["no_command_channels"].contains(message.channel.name)){
+    if (!thisconfig["ignored_channels"].contains(message.channel.name)){
         if (message.content.startsWith(thisconfig["prefix"])){
             cmd = message.content.split(thisconfig["prefix"])[1].split(' ')[0];
             args = message.content.split(" ");
