@@ -24,6 +24,13 @@ function hasRole(user, role) {
     return (hasrole);
 }
 
+function saveConfig(cfg){
+    var data = JSON.stringify(cfg, null, 2);
+    fs.writeFileSync('servers.json', data);
+    servers = fs.readFileSync('servers.json');
+    config = JSON.parse(servers);
+}
+
 function rand(int){
     return Math.floor(Math.random() * parseInt(int));
 }
@@ -35,14 +42,18 @@ bot.on('ready', () => {
 bot.on('guildCreate', guild =>{
     console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
     guild.defaultChannel.sendMessage('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
-    config[guild.id.toString()] = {};
-    config[guild.id.toString()]["prefix"] = "!";
-    config[guild.id.toString()]["messages"] = {};
-    config[guild.id.toString()]["messages"]["welcome"] = "Welcome to the server, (user)!";
-    var data = JSON.stringify(config, null, 2);
-    fs.writeFileSync('servers.json', data);
-    servers = fs.readFileSync('servers.json');
-    config = JSON.parse(servers);
+    var g = guild.id.toString();
+    config[g]
+    config[g] = {};
+    config[g]["prefix"] = "!";
+    config[g]["no_command_channels"] = [];
+    config[g]["disabled_commands"] = [];
+    config[g]["messages"] = {};
+    config[g]["messages"]["welcome"]["msg"] = "Welcome to the server, (user)!";
+    config[g]["messages"]["welcome"]["status"] = "on";
+    config[g]["messages"]["mute"]["msg"] = "(user) has been muted!"
+    config[g]["messages"]["mute"]["status"] = "on"
+    saveConfig(config);
 })
 
 bot.on('guildMemberAdd', member =>{
@@ -61,7 +72,14 @@ bot.on('message', message => {
             var setting = args[1];
             console.log(setting);
             if (param == "prefix"){
-                message.channel.sendMessage('The prefix for commands is currently `'+thisconfig["prefix"]+'`.');
+                if (setting != undefined){
+                    config[message.guild.id.toString()]["prefix"] = setting;
+                    saveConfig(config);
+                    message.channel.sendMessage('Successfully set active command prefix to `'+config[message.guild.id.toString()]["prefix"]+'`.');
+                }
+                else{
+                    message.channel.sendMessage('The prefix for commands is currently `'+thisconfig["prefix"]+'`.');
+                }
             }
             else if (param == "messages"){
                 var arg = args[1];
