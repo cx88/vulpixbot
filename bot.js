@@ -72,8 +72,13 @@ bot.on('message', message => {
         }
         else if (cmd == "dex"){
             message.channel.sendMessage({embed: {
-                color: 3447003,
-                description: "A very simple Embed!"
+                color: 1762633,
+                title: "001: Bulbasaur",
+                url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
+                description: "Grass | Poison",
+                fields: [{
+                    name: ""
+                }]
             }});
         }
     }
