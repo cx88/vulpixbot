@@ -76,9 +76,24 @@ bot.on('message', message => {
                 title: "🡒001: Bulbasaur",
                 url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
                 fields: [{
-                    name: "Typing",
-                    value: "Grass | Poison"
-                },
+                    name: "Properties",
+                    value: "**Types:** Grass | Poison \
+                           **Base Stats:** 45 | 49 | 49 | 65 | 65 | 45 \
+                           **Abilities:** \
+                           Normal: Overgrow \
+                           Hidden: Chlorophyll \
+                           **Height:** 0.7m \
+                           **Weight:** 6.9kg \
+                           **Gender Ratio:** \
+                           Male: 87.5% \
+                           Female: 12.5% \
+                           **Growth Rate:** Medium Slow \
+                           **Base EXP:** 64 \
+                           **Catch Rate:** 45 \
+                           **EV Yield:** 0 | 0 | 0 | 1 | 0 | 0 \
+                           **Hatch Time:** 5140 - 5396 steps\
+                           "
+                }/*,
                 {
                     name: "Base Stats",
                     value: "45 | 49 | 49 | 65 | 65 | 45"
@@ -110,7 +125,7 @@ bot.on('message', message => {
                 {
                     name: "Hatch Time",
                     value: "5140 - 5396 steps"
-                }
+                }*/
                 ]
             }});
         }
