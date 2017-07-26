@@ -75,45 +75,7 @@ bot.on('message', message => {
                 color: 1762633,
                 title: "🡒001: Bulbasaur",
                 url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
-                description: "**Types:** Grass | Poison\n**Base Stats:** 45 | 49 | 49 | 65 | 65 | 45\n**Abilities:**\nNormal: Overgrow\nHidden: Chlorophyll\n**Height:** 0.7m\n**Weight:** 6.9kg\n**Gender Ratio:**\nMale: 87.5%\nFemale: 12.5%\n**Growth Rate:** Medium Slow\n**Base EXP:** 64\n**Catch Rate:** 45\n**EV Yield:** 0 | 0 | 0 | 1 | 0 | 0\n**Hatch Time:** 5140 - 5396 steps**\nEvolutions:**\nBulbasaur 🡒 Ivysaur (Level 16)\nIvysaur 🡒 Venusaur (Level 32)"
-//                fields: [{
-//                    name: "Properties",
-//                    value: "**Types:** Grass | Poison\n**Base Stats:** 45 | 49 | 49 | 65 | 65 | 45\n**Abilities:**\nNormal: Overgrow\nHidden: Chlorophyll\n**Height:** 0.7m\n**Weight:** 6.9kg\n**Gender Ratio:**\nMale: 87.5%\nFemale: 12.5%\n**Growth Rate:** Medium Slow\n**Base EXP:** 64\n**Catch Rate:** 45\n**EV Yield:** 0 | 0 | 0 | 1 | 0 | 0\n**Hatch Time:** 5140 - 5396 steps**\nEvolutions:**\nBulbasaur 🡒 Ivysaur (Level 16)\nIvysaur 🡒 Venusaur (Level 32)"
-//                }
-                /*,
-                {
-                    name: "Base Stats",
-                    value: "45 | 49 | 49 | 65 | 65 | 45"
-                },
-                {
-                    name: "Abilities",
-                    value: "Normal: Overgrow\r\nHidden: Chlorophyll"
-                },
-                {
-                    name: "Height | Weight",
-                    value: "0.7m | 6.9kg"
-                },
-                {
-                    name: "Gender Ratio",
-                    value: "Male: 87.5%\r\nFemale: 12.5%"
-                },
-                {
-                    name: "Growth Rate",
-                    value: "Medium Slow"
-                },
-                {
-                    name: "Base EXP | Catch Rate",
-                    value: "64 | 45"
-                },
-                {
-                    name: "EV Yield",
-                    value: "0 | 0 | 0 | 1 | 0 | 0"
-                },
-                {
-                    name: "Hatch Time",
-                    value: "5140 - 5396 steps"
-                }*/
-//                ]
+                description: "**Types:** Grass | Poison\n**Base Stats:** 45 | 49 | 49 | 65 | 65 | 45\n**Abilities:**\nNormal: Overgrow\nHidden: Chlorophyll\n**Height:** 0.7m\n**Weight:** 6.9kg\n**Gender Ratio:**\nMale: 87.5%\nFemale: 12.5%\n**Growth Rate:** Medium Slow\n**Base EXP:** 64\n**Catch Rate:** 45\n**EV Yield:** 1 SpAtk\n**Hatch Time:** 5140 - 5396 steps**\nEvolutions:**\nBulbasaur 🡒 Level 16 🡒 Ivysaur 🡒 Level 32 🡒 Venusaur"
             }});
         }
     }
