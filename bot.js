@@ -3,7 +3,7 @@ const bot = new Discord.Client();
 var fs = require('fs');
 var servers = fs.readFileSync('servers.json');
 var config = JSON.parse(servers);
-var request = require('tinyreq');
+var request = require('tinyreq-master');
 
 function hasRole(user, role) {
     var hasrole = false;
