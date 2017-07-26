@@ -50,7 +50,7 @@ bot.on('message', message => {
             message.channel.sendMessage(message.guild.id);
         }
         if (cmd == "raw"){
-            console.log(config);
+            console.log('```'+thisconfig+'```');
         }
 
         if (cmd == "config"){
@@ -61,20 +61,17 @@ bot.on('message', message => {
             else if (param == "messages"){
                 var arg = args[1];
                 if (arg == "welcome"){
-                    message.channel.sendMessage('This is what the user welcome message is currently set to: `'+thisconfig["messages"]["welcome"]+'`.')
+                    message.channel.sendMessage('This is what the user welcome message is currently set to: `'+thisconfig["messages"]["welcome"]+'`.');
                 }
                 else if (arg == "mute"){
-                    message.channel.sendMessage('This is the message that will be sent you mute someone and you have it enabled: `'+thisconfig["messages"]["mute"]+'`.')
-                }
-                else if (arg == "channel"){
-
+                    message.channel.sendMessage('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+thisconfig["messages"]["mute"]["msg"]+'\r\nStatus: '+thisconfig["messages"]["mute"]["status"]+'```');
                 }
                 else{
-                    message.channel.sendMessage('These are all the messages you can change.\nUser welcome message: `'+thisconfig["messages"]["welcome"]+'`.');
+                    message.channel.sendMessage('');
                 }
             }
             else if (param == "autorole"){
-
+                message.channel.sendMessage('When a new use joins, you can choose to give them a role.```Role given: '+thisconfig["autorole"]+'\r\nStatus: '+thisconfig["autorole"]+'```')
             }
             else if (param == "allowcommands"){
 
