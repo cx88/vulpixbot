@@ -84,7 +84,6 @@ bot.on('message', message => {
                 str += _args[i];
                 if (i != _args.length - 1) { str += " "; }
             }
-            console.log(str);
             options = str.split('|');
             message.channel.sendMessage(options[rand(options.length)]);
         }
@@ -102,6 +101,9 @@ bot.on('message', message => {
                     }
                 }
             });
+        }
+        else if (cmd == "channel"){
+            message.channel.sendMessage(message.channel.name);
         }
     }
 });
