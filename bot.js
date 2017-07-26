@@ -78,8 +78,10 @@ bot.on('message', message => {
             message.channel.sendMessage(rand(args[0]));
         }
         else if (cmd == "choose"){
+            console.log(message.content);
+            console.log(message.content.slice(0, 8));
             options = message.content.slice(0, 8).split('|');
-            message.channel.sendMessage(options[rand(options.length)]);
+            //message.channel.sendMessage(options[rand(options.length)]);
         }
         else if (cmd == "dex"){
                 message.channel.sendMessage({embed: {
