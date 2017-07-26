@@ -135,7 +135,7 @@ bot.on('message', message => {
             }
             else if (param == "ignored_channels"){
                 var msg = 'If a command other than v-config is executed in any of the following channels, it will be ignored:```';
-                if (thisconfig["ignored_channels"].lenght == 0) { msg += "---"; }
+                if (thisconfig["ignored_channels"].length == 0) { msg += "---"; }
                 else{
                     for (i = 0; i < thisconfig["ignored_channels"].length; i++){
                         msg += thisconfig["ignored_channels"];
