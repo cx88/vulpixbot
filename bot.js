@@ -113,7 +113,7 @@ bot.on('message', message => {
                     name: "Hatch Time",
                     value: "5140 - 5396 steps"
                 }*/
-                ]
+//                ]
             }});
         }
     }
