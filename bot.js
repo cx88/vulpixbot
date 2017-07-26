@@ -37,6 +37,7 @@ function rand(int){
 
 bot.on('ready', () => {
     console.log('Vulpix: online');
+    bot.user.setGame("Type v-config for the config!");
 });
 
 bot.on('guildCreate', guild =>{
@@ -62,11 +63,49 @@ bot.on('guildMemberAdd', member =>{
 
 bot.on('message', message => {
     var thisconfig = config[message.guild.id.toString()];
-    if (message.content.startsWith(thisconfig["prefix"]) && !thisconfig["no_command_channels"].contains(message.channel.name)){
-        cmd = message.content.split(thisconfig["prefix"])[1].split(' ')[0];
-        args = message.content.split(" ");
-        args.splice(0, 1);
-        if (cmd == "config"){       // Config
+    if (!thisconfig["no_command_channels"].contains(message.channel.name)){
+        if (message.content.startsWith(thisconfig["prefix"])){
+            cmd = message.content.split(thisconfig["prefix"])[1].split(' ')[0];
+            args = message.content.split(" ");
+            args.splice(0, 1);
+            else if (cmd == "pc"){
+                message.channel.sendMessage('https://pokecommunity.com/~'+args[0]);
+            }
+            else if (cmd == "rand" || cmd == "random"){
+                message.channel.sendMessage(rand(args[0]));
+            }
+            else if (cmd == "choose"){
+                _args = message.content.split(' ');
+                var str = "";
+                for (i = 1; i < _args.length; i++){
+                    str += _args[i];
+                    if (i != _args.length - 1) { str += " "; }
+                }
+                options = str.split('|');
+                message.channel.sendMessage(options[rand(options.length)]);
+            }
+            else if (cmd == "dex"){
+                    message.channel.sendMessage({embed: {
+                        color: 1762633,
+                        title: "🡒001: Bulbasaur",
+                        url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
+                        description: "**Types:** Grass | Poison\n**Base Stats:** 45 | 49 | 49 | 65 | 65 | 45\n**Abilities:**\nNormal: Overgrow\nHidden: Chlorophyll\n**Height:** 0.7m\n**Weight:** 6.9kg\n**Gender Ratio:**\nMale: 87.5%\nFemale: 12.5%\n**Growth Rate:** Medium Slow\n**Base EXP:** 64\n**Catch Rate:** 45\n**EV Yield:** 1 SpAtk\n**Hatch Time:** 5140 - 5396 steps**\nEvolutions:**\nBulbasaur 🡒 Level 16 🡒 Ivysaur 🡒 Level 32 🡒 Venusaur\n\nBulbasaur, The Seed Pokémon.\nBulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+                        image: {
+                            "url": "https://cdn.bulbagarden.net/upload/archive/2/21/20170712171828%21001Bulbasaur.png"
+                        },
+                        thumbnail: {
+                            "url": "https://cdn.bulbagarden.net/upload/9/9c/Shuffle001.png"
+                        }
+                    }
+                });
+            }
+            else if (cmd == "channel"){
+                message.channel.sendMessage(message.channel.name);
+            }
+        }
+        else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
+            args = message.content.split(" ");
+            args.splice(0, 1);
             var param = args[0];
             var setting = args[1];
             console.log(setting);
@@ -98,41 +137,6 @@ bot.on('message', message => {
             else if (param == "allowcommands"){
 
             }
-        }
-
-        else if (cmd == "pc"){
-            message.channel.sendMessage('https://pokecommunity.com/~'+args[0]);
-        }
-        else if (cmd == "rand" || cmd == "random"){
-            message.channel.sendMessage(rand(args[0]));
-        }
-        else if (cmd == "choose"){
-            _args = message.content.split(' ');
-            var str = "";
-            for (i = 1; i < _args.length; i++){
-                str += _args[i];
-                if (i != _args.length - 1) { str += " "; }
-            }
-            options = str.split('|');
-            message.channel.sendMessage(options[rand(options.length)]);
-        }
-        else if (cmd == "dex"){
-                message.channel.sendMessage({embed: {
-                    color: 1762633,
-                    title: "🡒001: Bulbasaur",
-                    url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
-                    description: "**Types:** Grass | Poison\n**Base Stats:** 45 | 49 | 49 | 65 | 65 | 45\n**Abilities:**\nNormal: Overgrow\nHidden: Chlorophyll\n**Height:** 0.7m\n**Weight:** 6.9kg\n**Gender Ratio:**\nMale: 87.5%\nFemale: 12.5%\n**Growth Rate:** Medium Slow\n**Base EXP:** 64\n**Catch Rate:** 45\n**EV Yield:** 1 SpAtk\n**Hatch Time:** 5140 - 5396 steps**\nEvolutions:**\nBulbasaur 🡒 Level 16 🡒 Ivysaur 🡒 Level 32 🡒 Venusaur\n\nBulbasaur, The Seed Pokémon.\nBulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
-                    image: {
-                        "url": "https://cdn.bulbagarden.net/upload/archive/2/21/20170712171828%21001Bulbasaur.png"
-                    },
-                    thumbnail: {
-                        "url": "https://cdn.bulbagarden.net/upload/9/9c/Shuffle001.png"
-                    }
-                }
-            });
-        }
-        else if (cmd == "channel"){
-            message.channel.sendMessage(message.channel.name);
         }
     }
 });
