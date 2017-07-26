@@ -134,11 +134,12 @@ bot.on('message', message => {
                 message.channel.sendMessage('When a new user joins, you can choose for the bot to give them a role.```Role given: '+thisconfig["autorole"]+'\r\nStatus: '+thisconfig["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
             }
             else if (param == "ignored_channels"){
+                console.log(message.author.username + `: ` + message.content);
                 var msg = 'If a command other than v-config is executed in any of the following channels, it will be ignored:```';
                 if (thisconfig["ignored_channels"].length == 0) { msg += "---"; }
                 else{
                     for (i = 0; i < thisconfig["ignored_channels"].length; i++){
-                        msg += thisconfig["ignored_channels"];
+                        msg += thisconfig["ignored_channels"][i];
                         if (i != thisconfig["ignored_channels"].length - 1) { msg += '\n'; }
                     }
                 }
