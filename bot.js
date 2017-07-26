@@ -25,7 +25,7 @@ function hasRole(user, role) {
 }
 
 function dateNow(){
-    var d = Date();
+    var d = new Date();
     return d.getFullYear().toString() + '-' + (d.getMonth() + 1).toString() + '-' + d.getDate().toString() + '_' + (d.getHours() + 1).toString() + ':' + (d.getMinutes() + 1).toString();
 }
 
