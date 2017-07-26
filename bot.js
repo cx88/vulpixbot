@@ -3,6 +3,7 @@ const bot = new Discord.Client();
 var fs = require('fs');
 var servers = fs.readFileSync('servers.json');
 var config = JSON.parse(servers);
+var request = require('request');
 
 function hasRole(user, role) {
     var hasrole = false;
@@ -31,8 +32,8 @@ bot.on('guildCreate', guild =>{
 })
 
 bot.on('guildMemberAdd', member =>{
-    let guild = member.guild
-    guild.defaultChannel.sendMessage(`Hey there, ${member.user.username} :heart:~`);
+    member.guild.defaultChannel.sendMessage(`Hey there, ${member.user.username} :heart:~`);
+    member.guild.roles
 });
 
 bot.on('message', message => {
@@ -68,6 +69,13 @@ bot.on('message', message => {
 
         else if (cmd == "pc"){
             message.channel.sendMessage('https://pokecommunity.com/~'+args[0]);
+        }
+        else if (cmd == "dex"){
+            request({
+                uri: "bulbapedia.bulbagarden.net/wiki/Pikachu_(Pokémon)",
+            }, function(error, response, body){
+                console.log(body);
+            });
         }
     }
 });
