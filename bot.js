@@ -42,8 +42,7 @@ bot.on('ready', () => {
 bot.on('guildCreate', guild =>{
     console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
     guild.defaultChannel.sendMessage('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
-    var g = guild.id.toString();
-    config[g]
+    var g = guild.id.toString(); // Default Config settings.
     config[g] = {};
     config[g]["prefix"] = "!";
     config[g]["no_command_channels"] = [];
@@ -64,7 +63,7 @@ bot.on('guildMemberAdd', member =>{
 bot.on('message', message => {
     var thisconfig = config[message.guild.id.toString()];
     if (message.content.startsWith(thisconfig["prefix"]) && !thisconfig["no_command_channels"].contains(message.channel.name)){
-        cmd = message.content.split('!')[1].split(' ')[0];
+        cmd = message.content.split(thisconfig["prefix"][1].split(' ')[0];
         args = message.content.split(" ");
         args.splice(0, 1);
         if (cmd == "config"){       // Config
