@@ -5,6 +5,16 @@ var servers = fs.readFileSync('servers.json');
 var config = JSON.parse(servers);
 var request = require('tinyreq');
 
+Array.prototype.contains = function(obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function hasRole(user, role) {
     var hasrole = false;
     console.log(user.roles[0]);
@@ -42,7 +52,7 @@ bot.on('guildMemberAdd', member =>{
 
 bot.on('message', message => {
     var thisconfig = config[message.guild.id.toString()];
-    if (message.content.startsWith(thisconfig["prefix"]) && thisconfig["no_command_channels"][message.channel.name] == undefined){
+    if (message.content.startsWith(thisconfig["prefix"]) && !thisconfig["no_command_channels"].contains(message.channel.name)){
         cmd = message.content.split('!')[1].split(' ')[0];
         args = message.content.split(" ");
         args.splice(0, 1);
