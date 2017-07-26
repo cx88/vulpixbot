@@ -80,6 +80,7 @@ bot.on('message', message => {
         else if (cmd == "choose"){
             _args = message.content.split(' ');
             _args.slice(0, 1);
+            _args.join(' ');
             console.log(_args);
             options = _args.split('|');
             //message.channel.sendMessage(options[rand(options.length)]);
