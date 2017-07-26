@@ -73,11 +73,11 @@ bot.on('message', message => {
         else if (cmd == "dex"){
             message.channel.sendMessage({embed: {
                 color: 1762633,
-                title: "001: Bulbasaur",
+                title: "🡒001: Bulbasaur",
                 url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
                 fields: [{
-                    name: "Typing",
-                    value: "Grass | Poison"
+                    name: "Typing                 Base Stats",
+                    value: "Grass | Poison       45 | 49 | 49 | 65 | 65 | 45"
                 }]
             }});
         }
