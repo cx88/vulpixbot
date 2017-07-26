@@ -73,14 +73,9 @@ bot.on('message', message => {
         }
         else if (cmd == "dex"){
             request("bulbapedia.bulbagarden.net/wiki/Pikachu_(Pokémon)", function(error, response, html){
-                if (!error){
-                    var $ = cheerio.load(html);
-                    console.log($);
-                    console.log(html);
-                }
-                else{
-                    message.channel.sendMessage('Error occurred loading Pikachu from Bulbapedia.');
-                }
+                var $ = cheerio.load(html);
+                console.log($);
+                console.log(html);
             })
         }
     }
