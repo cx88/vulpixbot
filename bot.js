@@ -145,6 +145,7 @@ bot.on('message', message => {
                 if (thisconfig["ignored_channels"].length == 0) { msg += "---"; }
                 else{
                     for (i = 0; i < thisconfig["ignored_channels"].length; i++){
+                        console.log(thisconfig["ignored_channels"][i]);
                         msg += thisconfig["ignored_channels"][i];
                         if (i != thisconfig["ignored_channels"].length - 1) { msg += '\n'; }
                     }
