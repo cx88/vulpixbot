@@ -147,7 +147,7 @@ bot.on('message', message => {
                 message.channel.sendMessage(msg);
             }
             else if (param == "show"){
-                message.channel.sendMessage('```'+thisconfig+'```');
+                message.channel.sendMessage('```'+JSON.stringify(thisconfig, null, 2)+'```');
             }
             else{
                 message.channel.sendMessage('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config show```')
