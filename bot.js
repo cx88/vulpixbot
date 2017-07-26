@@ -79,15 +79,14 @@ bot.on('message', message => {
         }
         else if (cmd == "choose"){
             _args = message.content.split(' ');
-            _args.slice(0, 1);
-            var str = null;
-            for (i = 0; i < _args.length; i++){
+            var str = "";
+            for (i = 1; i < _args.length; i++){
                 str += _args[i];
                 if (i != _args.length - 1) { str += " "; }
             }
             console.log(str);
             options = str.split('|');
-            //message.channel.sendMessage(options[rand(options.length)]);
+            console.log(options[rand(options.length)]);
         }
         else if (cmd == "dex"){
                 message.channel.sendMessage({embed: {
