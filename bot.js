@@ -18,19 +18,16 @@ bot.on('ready', () => {
 });
 
 bot.on('guildCreate', guild =>{
-    console.log(JSON.stringify(config, null, 2));
-    console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at ' + Date.now() + '.');
+    console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
     guild.defaultChannel.sendMessage('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
     config[guild.id.toString()] = {};
     config[guild.id.toString()]["prefix"] = "!";
     config[guild.id.toString()]["messages"] = {};
     config[guild.id.toString()]["messages"]["welcome"] = "Welcome to the server, (user)!";
     var data = JSON.stringify(config, null, 2);
-    console.log(data);
     fs.writeFileSync('servers.json', data);
     servers = fs.readFileSync('servers.json');
     config = JSON.parse(servers);
-    console.log(JSON.stringify(config, null, 2));
 })
 
 bot.on('guildMemberAdd', member =>{
@@ -44,19 +41,6 @@ bot.on('message', message => {
         cmd = message.content.split('!')[1].split(' ')[0];
         args = message.content.split(" ");
         args.splice(0, 1);
-        if (cmd == "hello"){
-            message.member.guild.defaultChannel.sendMessage('I have been summoned!');
-        }
-        if (cmd == "test"){
-            message.channel.sendMessage('You are ' + (isAdmin(message.member) ? '' : 'not ') + 'an admin.');
-        }
-        if (cmd == "server"){
-            message.channel.sendMessage(message.guild.id);
-        }
-        if (cmd == "raw"){
-            console.log('```'+thisconfig+'```');
-        }
-
         if (cmd == "config"){
             var param = args[0];
             if (param == "prefix"){
@@ -80,6 +64,10 @@ bot.on('message', message => {
             else if (param == "allowcommands"){
 
             }
+        }
+
+        else if (cmd == "pc"){
+            message.channel.sendMessage('https://pokecommunity.com/~'+args[0]);
         }
     }
 });
