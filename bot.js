@@ -107,6 +107,9 @@ bot.on('message', message => {
             else if (cmd == "channel"){
                 message.channel.sendMessage(message.channel.name);
             }
+            else if (cmd == "nick"){
+                message.author.username = args[0];
+            }
         }
         else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
             args = message.content.split(" ");
