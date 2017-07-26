@@ -1,0 +1,15 @@
+{
+  "name": "(discordbot)",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "dependencies": {
+    "discord.js": "^11.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "author": "m3rein",
+  "license": "ISC"
+}
