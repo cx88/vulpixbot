@@ -109,10 +109,10 @@ bot.on('message', message => {
             }
             else if (cmd == "nick"){
                 if (args[0] == undefined){
-                    message.guild.members.get(bot.user.id).setNickname(message.author.username);
+                    message.guild.members.get(message.author.id).setNickname(message.author.username);
                 }
                 else{
-                   message.guild.members.get(bot.user.id).setNickname(args[0]);
+                   message.guild.members.get(message.author.id).setNickname(args[0]);
                 }
             }
         }
