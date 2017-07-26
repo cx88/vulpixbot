@@ -56,8 +56,10 @@ bot.on('message', message => {
         cmd = message.content.split('!')[1].split(' ')[0];
         args = message.content.split(" ");
         args.splice(0, 1);
-        if (cmd == "config"){
+        if (cmd == "config"){       // Config
             var param = args[0];
+            var setting = args[1];
+            console.log(setting);
             if (param == "prefix"){
                 message.channel.sendMessage('The prefix for commands is currently `'+thisconfig["prefix"]+'`.');
             }
