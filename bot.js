@@ -81,7 +81,7 @@ bot.on('message', message => {
                 else{
                     message.channel.sendMessage('Error occurred loading Pikachu from Bulbapedia.');
                 }
-            }
+            })
         }
     }
 });
