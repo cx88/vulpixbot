@@ -71,9 +71,10 @@ bot.on('message', message => {
             message.channel.sendMessage('https://pokecommunity.com/~'+args[0]);
         }
         else if (cmd == "dex"){
-            request("bulbapedia.bulbagarden.net/wiki/Pikachu_(Pokémon)", function(error, body){
-                console.log(error || body);
-            });
+            message.channel.sendMessage({embed: {
+                color: 3447003,
+                description: "A very simple Embed!"
+            }});
         }
     }
 });
