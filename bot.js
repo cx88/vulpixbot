@@ -108,7 +108,12 @@ bot.on('message', message => {
                 message.channel.sendMessage(message.channel.name);
             }
             else if (cmd == "nick"){
-                message.author.username = args[0];
+                if (args[0] == undefined){
+                    message.guild.members.get(bot.user.id).setNickname(message.author.username);
+                }
+                else{
+                   message.guild.members.get(bot.user.id).setNickname(args[0]);
+                }
             }
         }
         else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
