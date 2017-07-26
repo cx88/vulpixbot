@@ -72,7 +72,7 @@ bot.on('message', message => {
             message.channel.sendMessage('https://pokecommunity.com/~'+args[0]);
         }
         else if (cmd == "dex"){
-            request(url, function(error, response, html){
+            request("bulbapedia.bulbagarden.net/wiki/Pikachu_(Pokémon)", function(error, response, html){
                 if (!error){
                     var $ = cheerio.load(html);
                     console.log($);
