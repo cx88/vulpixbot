@@ -1,7 +1,7 @@
 {
   "320578753543798784": {
     "prefix": "!",
-    "no_command_channels": [
+    "ignored_channels": [
 
     ],
     "disabled_commands": [
@@ -21,7 +21,7 @@
   
   "339588361712959489": {
     "prefix": "!",
-    "no_command_channels": [
+    "ignored_channels": [
       "changelog",
       "general",
       "commands"
@@ -43,7 +43,7 @@
 
   "285465239582146560": {
     "prefix": "!",
-    "no_command_channels": [
+    "ignored_channels": [
 
     ],
     "disabled_commands": [
