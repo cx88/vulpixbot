@@ -25,8 +25,7 @@ function hasRole(user, role) {
 }
 
 function dateNow(){
-    var d = Date.now();
-    return d.getFullYear().toString() + '-' + (d.getMonth() + 1).toString() + '-' + d.getDate().toString() + '_' + (d.getHours() + 1).toString() + ':' + (d.getMinutes() + 1).toString();
+    return Date.getFullYear().toString() + '-' + (Date.getMonth() + 1).toString() + '-' + Date.getDate().toString() + '_' + (Date.getHours() + 1).toString() + ':' + (Date.getMinutes() + 1).toString();
 }
 
 function saveConfig(cfg){
