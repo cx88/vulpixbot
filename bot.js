@@ -27,7 +27,7 @@ bot.on('guildCreate', guild =>{
     config[guild.id.toString()]["messages"]["welcome"] = "Welcome to the server, (user)!";
     var data = JSON.stringify(config, null, 2);
     console.log(data);
-    fs.writeFile('servers.json', data);
+    fs.writeFileSync('servers.json', data);
     servers = fs.readFileSync('servers.json');
     config = JSON.parse(servers);
     console.log(JSON.stringify(config, null, 2));
