@@ -127,14 +127,23 @@ bot.on('message', message => {
                     message.channel.sendMessage('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+thisconfig["messages"]["mute"]["msg"]+'\r\nStatus: '+thisconfig["messages"]["mute"]["status"]+'```');
                 }
                 else{
-                    message.channel.sendMessage('');
+                    message.channel.sendMessage('These are messages the bot will send under specific circumstances. You can turn them on/off and change the message. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute```');
                 }
             }
             else if (param == "autorole"){
                 message.channel.sendMessage('When a new user joins, you can choose for the bot to give them a role.```Role given: '+thisconfig["autorole"]+'\r\nStatus: '+thisconfig["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
             }
             else if (param == "ignored_channels"){
-
+                var msg = 'If a command other than v-config is executed in any of the following channels, it will be ignored:```';
+                if (thisconfig["ignored_channels"].lenght == 0) { msg += "---"; }
+                else{
+                    for (i = 0; i < thisconfig["ignored_channels"].length; i++){
+                        msg += thisconfig["ignored_channels"];
+                        if (i != thisconfig["ignored_channels"].length - 1) { msg += '\n'; }
+                    }
+                }
+                msg += '``` Add or remove a channel with one of the following commands:```v-config ignored_channels add (channelname)\nv-config ignored_channels remove (channelname)```Channelname is the actual name of the channel, not a hyperlink or id.';
+                message.channel.sendMessage(msg);
             }
             else{
                 message.channel.sendMessage('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels```')
