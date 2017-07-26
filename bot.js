@@ -68,7 +68,7 @@ bot.on('message', message => {
             cmd = message.content.split(thisconfig["prefix"])[1].split(' ')[0];
             args = message.content.split(" ");
             args.splice(0, 1);
-            else if (cmd == "pc"){
+            if (cmd == "pc"){
                 message.channel.sendMessage('https://pokecommunity.com/~'+args[0]);
             }
             else if (cmd == "rand" || cmd == "random"){
