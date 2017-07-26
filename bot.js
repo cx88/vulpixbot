@@ -3,8 +3,7 @@ const bot = new Discord.Client();
 var fs = require('fs');
 var servers = fs.readFileSync('servers.json');
 var config = JSON.parse(servers);
-var request = require('request');
-var cheerio = require('cheerio');
+var request = require('tinyreq');
 
 function hasRole(user, role) {
     var hasrole = false;
@@ -72,11 +71,9 @@ bot.on('message', message => {
             message.channel.sendMessage('https://pokecommunity.com/~'+args[0]);
         }
         else if (cmd == "dex"){
-            request("bulbapedia.bulbagarden.net/wiki/Pikachu_(Pokémon)", function(error, response, html){
-                var $ = cheerio.load(html);
-                console.log($);
-                console.log(html);
-            })
+            request("bulbapedia.bulbagarden.net/wiki/Pikachu_(Pokémon)", function(error, body){
+                console.log(error || body);
+            });
         }
     }
 });
