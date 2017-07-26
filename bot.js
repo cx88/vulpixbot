@@ -14,6 +14,10 @@ function hasRole(user, role) {
     return (hasrole);
 }
 
+function rand(int){
+    return Math.floor(Math.random() * parseInt(int));
+}
+
 bot.on('ready', () => {
     console.log('Vulpix: online');
 });
@@ -70,19 +74,27 @@ bot.on('message', message => {
         else if (cmd == "pc"){
             message.channel.sendMessage('https://pokecommunity.com/~'+args[0]);
         }
+        else if (cmd == "rand" || cmd == "random"){
+            message.channel.sendMessage(rand(args[0]));
+        }
+        else if (cmd == "choose"){
+            options = message.content.slice(0, 8).split('|');
+            message.channel.sendMessage(options[rand(options.length)]);
+        }
         else if (cmd == "dex"){
-            message.channel.sendMessage({embed: {
-                color: 1762633,
-                title: "🡒001: Bulbasaur",
-                url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
-                description: "**Types:** Grass | Poison\n**Base Stats:** 45 | 49 | 49 | 65 | 65 | 45\n**Abilities:**\nNormal: Overgrow\nHidden: Chlorophyll\n**Height:** 0.7m\n**Weight:** 6.9kg\n**Gender Ratio:**\nMale: 87.5%\nFemale: 12.5%\n**Growth Rate:** Medium Slow\n**Base EXP:** 64\n**Catch Rate:** 45\n**EV Yield:** 1 SpAtk\n**Hatch Time:** 5140 - 5396 steps**\nEvolutions:**\nBulbasaur 🡒 Level 16 🡒 Ivysaur 🡒 Level 32 🡒 Venusaur\n\nBulbasaur, The Seed Pokémon.\nBulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
-                image: {
-                    "url": "https://cdn.bulbagarden.net/upload/archive/2/21/20170712171828%21001Bulbasaur.png"
-                },
-                thumbnail: {
-                    "url": "https://cdn.bulbagarden.net/upload/9/9c/Shuffle001.png"
+                message.channel.sendMessage({embed: {
+                    color: 1762633,
+                    title: "🡒001: Bulbasaur",
+                    url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
+                    description: "**Types:** Grass | Poison\n**Base Stats:** 45 | 49 | 49 | 65 | 65 | 45\n**Abilities:**\nNormal: Overgrow\nHidden: Chlorophyll\n**Height:** 0.7m\n**Weight:** 6.9kg\n**Gender Ratio:**\nMale: 87.5%\nFemale: 12.5%\n**Growth Rate:** Medium Slow\n**Base EXP:** 64\n**Catch Rate:** 45\n**EV Yield:** 1 SpAtk\n**Hatch Time:** 5140 - 5396 steps**\nEvolutions:**\nBulbasaur 🡒 Level 16 🡒 Ivysaur 🡒 Level 32 🡒 Venusaur\n\nBulbasaur, The Seed Pokémon.\nBulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+                    image: {
+                        "url": "https://cdn.bulbagarden.net/upload/archive/2/21/20170712171828%21001Bulbasaur.png"
+                    },
+                    thumbnail: {
+                        "url": "https://cdn.bulbagarden.net/upload/9/9c/Shuffle001.png"
+                    }
                 }
-            }});
+            });
         }
     }
 });
