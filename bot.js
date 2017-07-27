@@ -2,8 +2,8 @@
 const bot = new Discord.Client();
 var fs = require('fs');
 var servers = fs.readFileSync('servers.json');
-console.log(servers);
 var config = JSON.parse(servers);
+console.log(config);
 
 Array.prototype.contains = function(obj) {
     var i = this.length;
@@ -48,6 +48,7 @@ function saveConfig(cfg){
     fs.writeFileSync('servers.json', data);
     servers = fs.readFileSync('servers.json');
     config = JSON.parse(servers);
+    console.log(config);
 }
 
 function rand(int){
