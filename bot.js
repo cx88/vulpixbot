@@ -139,8 +139,16 @@ bot.on('message', message => {
                             }
                         }
                     }
-                    message.channel.send(results);
+                    if (results == ""){
+                        message.channel.send('No results found.');
+                    }
+                    else{
+                        message.channel.send(results);
+                    }
                 }
+            }
+            else if (cmd == "wiki" || cmd == "wikia"){
+
             }
             else if (cmd == "ebs"){
                 message.channel.send("http://sj-web.byethost18.com/");

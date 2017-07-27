@@ -1,0 +1,118 @@
+{
+    "defining": {
+        "move": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Defining_a_move",
+            "keywords": [
+                "move", "moves", "a move", "a new move", "some new moves", "new move", "new moves"
+            ]
+        },
+        "item": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Defining_an_item",
+            "keywords": [
+                "item", "items", "an item", "a item", "new item", "new items"
+            ]
+        },
+        "ability": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Defining_an_ability",
+            "keywords": [
+                "ability", "an ability", "a new ability", "new ability", "abilities", "new abilities"
+            ]
+        },
+        "type": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Defining_a_type",
+            "keywords": [
+                "type", "a type", "a new type", "new type", "types", "new types"
+            ]
+        },
+        "trainer": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Defining_a_trainer",
+            "keywords": [
+                "trainer", "a trainer", "a new trainer", "new trainer", "trainers", "new trainers",
+                "trainertype", "a trainertype", "a new trainertype", "new trainertype", "trainertypes", "new trainertypes",
+                "trainerclass", "a trainerclass", "a new trainerclass", "new trainerclass", "trainerclasses", "new trainerclasses",
+                "trainer type", "a trainer type", "a new trainer type", "new trainer type", "trainer types", "new trainer types",
+                "trainer class", "a trainer class", "a new trainer class", "new trainer class", "trainer classes", "new trainer classes"
+            ]
+        }
+    },
+    "pokemon": {
+        "main": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Pok%C3%A9mon",
+            "keywords": [
+                "pokemon", "pokémon", "pokemons", "pokémons"
+            ]
+        },
+        "defining": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Defining_a_species",
+            "keywords": [ 
+                "defining species", "defining pokemon", "defining pokémon", "defining pokemons", "defining pokémons", "defining a species", "defining a pokemon", "defining a pokémon",
+                "defining a new species", "defining new species", "defining a new pokemon", "defining a new pokémon",
+                "new pokemon", "new pokémon",
+                "define species", "define pokemon", "define pokémon", "define pokemons", "define pokémons", "define a species", "define a pokemon", "define a pokémon", "define a new species",
+                "define new species", "define a new pokemon", "define a new pokémon", "define new pokemon", "define new pokémon"
+            ]
+        },
+        "shiny": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Shiny_Pok%C3%A9mon",
+            "keywords": [
+                "shiny", "shinies", "shininess", "shiny chance", "shiny chances", "shiny rate", "shiny rates"
+            ]
+        },
+        "forms": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Multiple_forms",
+            "keywords": [
+                "form", "forme", "forms", "formes"
+            ]
+        },
+        "mega": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Mega_Evolution",
+            "keywords": [
+                "mega", "megas", "mega's"
+            ]
+        },
+        "shadow": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Shadow_Pok%C3%A9mon",
+            "keywords": [
+                "shadow", "shadows"
+            ]
+        },
+        "egg": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Eggs",
+            "keywords": [
+                "egg", "eggs", "hatch", "hatching"
+            ]
+        },
+        "breeding": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Breeding",
+            "keywords": [
+                "breed", "breeding"
+            ]
+        },
+        "editing": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Editing_a_Pok%C3%A9mon",
+            "keywords": [
+                "edit", "edits", "change", "changing", "editing", "customize", "customise", "alter"
+            ]
+        },
+        "manipulating": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Manipulating_Pok%C3%A9mon",
+            "keywords": [
+                "manipulate pokemon", "manipulating pokemon", "manipulate pokémon", "manipulating pokémon", "giving pokemon", "give pokemon", "taking pokemon", "take pokemon", "removing pokemon",
+                "remove pokemon", "deleting pokemon", "delete pokemon", "giving pokémon", "give pokémon", "taking pokémon", "take pokémon", "removing pokémon", "remove pokémon",
+                "deleting pokémon", "delete pokémon"
+            ]
+        },
+        "evolution": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Evolution",
+            "keywords": [
+                "evolution", "evolve", "evolving"
+            ]
+        },
+        "trading": {
+            "url": "http://pokemonessentials.wikia.com/wiki/Trading_Pok%C3%A9mon",
+            "keywords": [
+                "trade", "trading"
+            ]
+        }
+    }
+}
