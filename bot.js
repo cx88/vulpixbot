@@ -3,7 +3,6 @@ const bot = new Discord.Client();
 var fs = require('fs');
 var servers = fs.readFileSync('servers.json');
 var config = JSON.parse(servers);
-console.log(config);
 
 Array.prototype.contains = function(obj) {
     var i = this.length;
@@ -13,15 +12,6 @@ Array.prototype.contains = function(obj) {
         }
     }
     return false;
-}
-
-function hasRole(user, role) {
-    var hasrole = false;
-    console.log(user.roles[0]);
-    for (i = 0; i < user.roles.length; i++) {
-        if (user.roles[i].toLowerCase() == role.toLowerCase()) { hasrole = true; }
-    }
-    return (hasrole);
 }
 
 function dateNow(){
@@ -58,14 +48,6 @@ function rand(int){
 bot.on('ready', () => {
     console.log('Vulpix online');
     bot.user.setGame("Type v-config");
-});
-
-bot.on('error', (error) => {
-    console.log('I\'m crashing!');
-});
-
-bot.on('disconnected', (error) => {
-    console.log('I\'m disconnecting!');
 });
 
 bot.on('guildCreate', guild =>{
@@ -141,6 +123,11 @@ bot.on('message', message => {
                 else{
                    message.guild.members.get(message.author.id).setNickname(args[0]);
                 }
+            }
+            else if (cmd == "show_database"){
+                var dat = fs.readFileSync('servers.json');
+                var cfg = JSON.parse(dat, null, 2);
+                console.log(cfg);
             }
         }
         else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
