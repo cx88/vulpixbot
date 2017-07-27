@@ -1,0 +1,63 @@
+{
+  "320578753543798784": {
+    "prefix": "!",
+    "ignored_channels": [
+
+    ],
+    "disabled_commands": [
+
+    ],
+    "messages" : {
+      "welcome": {
+        "msg": "Welcome to the server, (user)!",
+        "status": "on"
+      },
+      "mute": {
+        "msg": "(user) has been muted!",
+        "status": "on"
+      }
+    }
+  },
+  
+  "339588361712959489": {
+    "prefix": "!",
+    "ignored_channels": [
+      "changelog",
+      "general",
+      "commands"
+    ],
+    "disabled_commands": [
+
+    ],
+    "messages" : {
+      "welcome": {
+        "msg": "Welcome to the server, (user)!",
+        "status": "on"
+      },
+      "mute": {
+        "msg": "(user) has been muted!",
+        "status": "on"
+      }
+    }
+  },
+
+  "285465239582146560": {
+    "prefix": "!",
+    "ignored_channels": [
+
+    ],
+    "disabled_commands": [
+
+    ],
+    "messages" : {
+      "welcome": {
+        "msg": "Welcome to the server, (user)!",
+        "status": "on"
+      },
+      "mute": {
+        "msg": "(user) has been muted!",
+        "status": "on"
+      }
+    }
+  }
+}
