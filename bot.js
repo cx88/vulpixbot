@@ -124,7 +124,6 @@ bot.on('message', message => {
                     var results = "";
                     var vids = fs.readFileSync('database/thundaga.json');
                     var eps = JSON.parse(vids);
-                    console.log(eps);
                     for (key in Object.keys(eps)){
                         console.log(key);
                         console.log(eps[key]);
