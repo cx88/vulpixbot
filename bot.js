@@ -132,6 +132,10 @@ bot.on('message', message => {
                     console.log(message.content);
                     for (i = 0; i < ar.length; i++){
                         for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
+                            if (ar[i] == '18'){
+                                console.log(message.content + '  ::  ' + eps[ar[i]]["keywords"][j]);
+                            }
+                            
                             if (message.content.contains(' '+eps[ar[i]]["keywords"][j]+' ')){
                                 console.log(eps[ar[i]]["url"])
                                 results += eps[ar[i]]["url"] + "\n";
