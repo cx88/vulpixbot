@@ -127,8 +127,8 @@ bot.on('message', message => {
                     ar = Object.keys(eps);
                     console.log(args);
                     for (i = 0; i < ar.length; i++){
-                        for (i = 0; i < eps[ar[i]]["keywords"].length; i++){
-                            if (args.contains(eps[ar[i]]["keywords"][i])){
+                        for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
+                            if (args.contains(eps[ar[i]]["keywords"][j])){
                                 console.log(eps[ar[i]]["url"])
                                 results += eps[ar[i]]["url"] + "\n";
                                 break;
