@@ -25,7 +25,21 @@ function hasRole(user, role) {
 
 function dateNow(){
     var d = new Date();
-    return d.getFullYear().toString() + '-' + (d.getMonth() + 1).toString() + '-' + d.getDate().toString() + '_' + (d.getHours() + 1).toString() + ':' + (d.getMinutes() + 1).toString();
+    var y = d.getFullYear();
+    var m = d.getMonth() + 1;
+    var dt = d.getDate();
+    var hr = d.getHours() + 1;
+    var mnts = d.getMinutes() + 1;
+    if (m < 10) { m = '0'+m.toString(); }
+    if (dt < 10) { dt = '0'+dt.toString(); }
+    if (hr < 10) { hr = '0'+hr.toString(); }
+    if (mnts < 10) { mnts = '0'+mnts.toString(); }
+    y = y.toString();
+    m = m.toString();
+    dt = dt.toString();
+    hr = hr.toString();
+    mnts = mnts.toString();
+    return y + '-' + m + '-' + dt + '__' + hr + ':' + mnts;
 }
 
 function saveConfig(cfg){
@@ -42,6 +56,14 @@ function rand(int){
 bot.on('ready', () => {
     console.log('Vulpix: online');
     bot.user.setGame("Type v-config");
+});
+
+bot.on('error', (error) => {
+    console.log('I\'m crashing!');
+});
+
+bot.on('disconnected', (error) => {
+    console.log('I\'m disconnecting!');
 });
 
 bot.on('guildCreate', guild =>{
@@ -61,8 +83,11 @@ bot.on('guildCreate', guild =>{
 })
 
 bot.on('guildMemberAdd', member =>{
-    member.guild.defaultChannel.sendMessage(`Hey there, ${member.user.username} :heart:~`);
-    member.guild.roles
+    if (config[member.guild.id.toString()]["messages"]["welcome"]["status"] == "on"){
+        var msg = config[member.guild.id.toString()]["messages"]["welcome"]["msg"];
+        msg = mes.replace('(user)', member.user.username);
+        member.guild.defaultChannel.sendMessage(msg);
+    }
 });
 
 bot.on('message', message => {
