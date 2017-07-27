@@ -2,6 +2,7 @@
 const bot = new Discord.Client();
 var fs = require('fs');
 var servers = fs.readFileSync('servers.json');
+console.log(servers);
 var config = JSON.parse(servers);
 
 Array.prototype.contains = function(obj) {
@@ -54,7 +55,7 @@ function rand(int){
 }
 
 bot.on('ready', () => {
-    console.log('Vulpix: online');
+    console.log('Vulpix online');
     bot.user.setGame("Type v-config");
 });
 
