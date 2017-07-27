@@ -52,7 +52,7 @@ bot.on('ready', () => {
 
 bot.on('guildCreate', guild =>{
     console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
-    guild.defaultChannel.sendMessage('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
+    guild.defaultChannel.send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {};
     config[g]["prefix"] = "!";
@@ -70,7 +70,7 @@ bot.on('guildMemberAdd', member =>{
     if (config[member.guild.id.toString()]["messages"]["welcome"]["status"] == "on"){
         var msg = config[member.guild.id.toString()]["messages"]["welcome"]["msg"];
         msg = mes.replace('(user)', member.user.username);
-        member.guild.defaultChannel.sendMessage(msg);
+        member.guild.defaultChannel.send(msg);
     }
 });
 
@@ -83,10 +83,10 @@ bot.on('message', message => {
             args.splice(0, 1);
             console.log(dateNow() + ' ' + message.author.username + `: ` + message.content);
             if (cmd == "pc"){
-                message.channel.sendMessage('https://pokecommunity.com/~'+args[0]);
+                message.channel.send('https://pokecommunity.com/~'+args[0]);
             }
             else if (cmd == "rand" || cmd == "random"){
-                message.channel.sendMessage(rand(args[0]));
+                message.channel.send(rand(args[0]));
             }
             else if (cmd == "choose"){
                 _args = message.content.split(' ');
@@ -96,10 +96,10 @@ bot.on('message', message => {
                     if (i != _args.length - 1) { str += " "; }
                 }
                 options = str.split('|');
-                message.channel.sendMessage(options[rand(options.length)]);
+                message.channel.send(options[rand(options.length)]);
             }
             else if (cmd == "dex"){
-                    message.channel.sendMessage({embed: {
+                    message.channel.send({embed: {
                         color: 1762633,
                         title: "🡒001: Bulbasaur",
                         url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
@@ -114,11 +114,11 @@ bot.on('message', message => {
                 });
             }
             else if (cmd == "channel"){
-                message.channel.sendMessage(message.channel.name);
+                message.channel.send(message.channel.name);
             }
             else if (cmd == "thundaga"){
                 if (args[0] == undefined){
-                    message.channel.sendMessage("https://www.youtube.com/channel/UCS9280oK413_XO8abzQa8ig");
+                    message.channel.send("https://www.youtube.com/channel/UCS9280oK413_XO8abzQa8ig");
                 }
                 else{
                     var results = "";
@@ -132,13 +132,19 @@ bot.on('message', message => {
                             }
                         }
                     }
-                    message.channel.sendMessage(results);
+                    message.channel.send(results);
                 }
+            }
+            else if (cmd == "ebs"){
+                message.channel.send("http://sj-web.byethost18.com/");
+            }
+            else if (cmd == "pbs" || cmd == "pbs+" || cmd == "pbseditor" || cmd == "pbs_editor"){
+                message.channel.send("https://www.pokecommunity.com/showthread.php?t=393347");
             }
             else if (cmd == "show_database"){
                 var dat = fs.readFileSync('servers.json');
                 var cfg = JSON.parse(dat, null, 2);
-                message.channel.sendMessage(cfg);
+                message.channel.send(cfg);
             }
         }
         else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
@@ -151,26 +157,26 @@ bot.on('message', message => {
                 if (setting != undefined){
                     config[message.guild.id.toString()]["prefix"] = setting;
                     saveConfig(config);
-                    message.channel.sendMessage('Successfully set active command prefix to `'+config[message.guild.id.toString()]["prefix"]+'`.');
+                    message.channel.send('Successfully set active command prefix to `'+config[message.guild.id.toString()]["prefix"]+'`.');
                 }
                 else{
-                    message.channel.sendMessage('The prefix for commands is currently `'+thisconfig["prefix"]+'`.');
+                    message.channel.send('The prefix for commands is currently `'+thisconfig["prefix"]+'`.');
                 }
             }
             else if (param == "messages"){
                 var arg = args[1];
                 if (arg == "welcome"){
-                    message.channel.sendMessage('The message that is sent whenever a new user joins.```Message: '+thisconfig["messages"]["welcome"]["msg"]+'\nStatus: '+thisconfig["messages"]["welcome"]["status"]+'```');
+                    message.channel.send('The message that is sent whenever a new user joins.```Message: '+thisconfig["messages"]["welcome"]["msg"]+'\nStatus: '+thisconfig["messages"]["welcome"]["status"]+'```');
                 }
                 else if (arg == "mute"){
-                    message.channel.sendMessage('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+thisconfig["messages"]["mute"]["msg"]+'\r\nStatus: '+thisconfig["messages"]["mute"]["status"]+'```');
+                    message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+thisconfig["messages"]["mute"]["msg"]+'\r\nStatus: '+thisconfig["messages"]["mute"]["status"]+'```');
                 }
                 else{
-                    message.channel.sendMessage('These are messages the bot will send under specific circumstances. You can turn them on/off and change the message. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute```');
+                    message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off and change the message. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute```');
                 }
             }
             else if (param == "autorole"){
-                message.channel.sendMessage('When a new user joins, you can choose for the bot to give them a role.```Role given: '+thisconfig["autorole"]+'\r\nStatus: '+thisconfig["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
+                message.channel.send('When a new user joins, you can choose for the bot to give them a role.```Role given: '+thisconfig["autorole"]+'\r\nStatus: '+thisconfig["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
             }
             else if (param == "ignored_channels"){
                 var msg = 'If a command other than v-config is executed in any of the following channels, it will be ignored:```\n';
@@ -182,13 +188,13 @@ bot.on('message', message => {
                     }
                 }
                 msg += '``` Add or remove a channel with one of the following commands:```v-config ignored_channels add (channelname)\nv-config ignored_channels remove (channelname)```Channelname is the actual name of the channel, not a hyperlink or id.';
-                message.channel.sendMessage(msg);
+                message.channel.send(msg);
             }
             else if (param == "show"){
-                message.channel.sendMessage('```JavaScript\n'+JSON.stringify(thisconfig, null, 2)+'```');
+                message.channel.send('```JavaScript\n'+JSON.stringify(thisconfig, null, 2)+'```');
             }
             else{
-                message.channel.sendMessage('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config show```')
+                message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config show```')
             }
         }
     }
