@@ -123,8 +123,7 @@ bot.on('message', message => {
                 else{
                     var results = "";
                     var vids = fs.readFileSync('database/thundaga.json');
-                    console.log(vids);
-                    var eps = JSON.parse(eps).catch(console.log);
+                    var eps = JSON.parse(vids);
                     for (key in Object.keys(eps)){
                         for (i = 0; i < eps[key]["keywords"].length; i++){
                             if (args.contains(eps[key]["keywords"][i])){
