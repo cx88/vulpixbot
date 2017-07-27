@@ -14,6 +14,10 @@ Array.prototype.contains = function(obj) {
     return false;
 }
 
+String.prototype.contains = function(obj){
+    return this.indexOf(obj) !== -1;
+}
+
 function dateNow(){
     var d = new Date();
     var y = d.getFullYear();
@@ -128,7 +132,7 @@ bot.on('message', message => {
                     console.log(args);
                     for (i = 0; i < ar.length; i++){
                         for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
-                            if (args.contains(eps[ar[i]]["keywords"][j])){
+                            if (message.content.contains(eps[ar[i]]["keywords"][j])){
                                 console.log(eps[ar[i]]["url"])
                                 results += eps[ar[i]]["url"] + "\n";
                                 break;
