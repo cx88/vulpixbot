@@ -73,7 +73,7 @@ bot.on('guildCreate', guild =>{
 bot.on('guildMemberAdd', member =>{
     if (config[member.guild.id.toString()]["messages"]["welcome"]["status"] == "on"){
         var msg = config[member.guild.id.toString()]["messages"]["welcome"]["msg"];
-        msg = mes.replace('(user)', member.user.username);
+        msg = msg.replace('(user)', member.user.username);
         member.guild.defaultChannel.send(msg);
     }
 });
