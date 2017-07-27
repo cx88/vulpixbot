@@ -124,13 +124,13 @@ bot.on('message', message => {
                     var results = "";
                     var vids = fs.readFileSync('database/thundaga.json');
                     var eps = JSON.parse(vids);
-                    console.log(Object.keys(eps));
-                    for (key in Object.keys(eps)){
-                        console.log(key);
-                        console.log(eps[key]);
-                        for (i = 0; i < eps[key]["keywords"].length; i++){
-                            if (args.contains(eps[key]["keywords"][i])){
-                                results += eps[key]["url"] + "\n";
+                    ar = Object.keys(eps);
+                    for (i = 0; i < ar.length; i++){
+                        console.log(ar[i]);
+                        console.log(eps[ar[i]]);
+                        for (i = 0; i < eps[ar[i]]["keywords"].length; i++){
+                            if (args.contains(eps[ar[i]]["keywords"][i])){
+                                results += eps[ar[i]]["url"] + "\n";
                                 break;
                             }
                         }
