@@ -1,0 +1,24 @@
+{
+    "bulbasaur": {
+        "species": "001",
+        "kind": "Seed",
+        "type1": "Grass",
+        "type2": "Poison",
+        "ability1": "Overgrow",
+        "hiddenability": "Chlorophyll",
+        "catchrate": "45",
+        "height": "0.7m",
+        "weight": "6.9kg",
+        "base_exp": "64",
+        "evyield": [0,0,0,1,0,0],
+        "levelingrate": "Medium Slow",
+        "hatchtime": "5140 - 5396",
+        "genderratio": "12.5",
+        "stats": [45,49,49,65,65,45],
+        "evolutions": [
+            "Ivysaur at level 16",
+            "Venusaur at level 32"
+        ],
+        "desc": "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger."
+    }
+}

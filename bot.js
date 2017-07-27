@@ -116,18 +116,29 @@ bot.on('message', message => {
             else if (cmd == "channel"){
                 message.channel.sendMessage(message.channel.name);
             }
-            else if (cmd == "nick"){
+            else if (cmd == "thundaga"){
                 if (args[0] == undefined){
-                    message.guild.members.get(message.author.id).setNickname(message.author.username);
+                    message.channel.sendMessage("https://www.youtube.com/channel/UCS9280oK413_XO8abzQa8ig");
                 }
                 else{
-                   message.guild.members.get(message.author.id).setNickname(args[0]);
+                    var results = "";
+                    var vids = fs.readFileSync('database/thundaga.json');
+                    var eps = JSON.parse(eps);
+                    for (key in Object.keys(eps)){
+                        for (i = 0; i < eps[key]["keywords"].length; i++){
+                            if (args.contains(eps[key]["keywords"][i])){
+                                results += eps[key]["url"] + "\n";
+                                break;
+                            }
+                        }
+                    }
+                    message.channel.sendMessage(results);
                 }
             }
             else if (cmd == "show_database"){
                 var dat = fs.readFileSync('servers.json');
                 var cfg = JSON.parse(dat, null, 2);
-                console.log(cfg);
+                message.channel.sendMessage(cfg);
             }
         }
         else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
