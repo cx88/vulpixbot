@@ -132,7 +132,7 @@ bot.on('message', message => {
                     console.log(args);
                     for (i = 0; i < ar.length; i++){
                         for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
-                            if (message.content.contains(eps[ar[i]]["keywords"][j])){
+                            if (message.content.contains(' '+eps[ar[i]]["keywords"][j]+' ')){
                                 console.log(eps[ar[i]]["url"])
                                 results += eps[ar[i]]["url"] + "\n";
                                 break;
