@@ -143,7 +143,7 @@ bot.on('message', message => {
             }
             else if (cmd == "show_database"){
                 var dat = fs.readFileSync('servers.json');
-                var cfg = JSON.parse(dat, null, 2);
+                var cfg = JSON.parse(dat);
                 message.channel.send(cfg);
             }
         }
