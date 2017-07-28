@@ -269,19 +269,7 @@ bot.on('message', message => {
             }
             else if (cmd == "say"){
                 if (args[0] != undefined){
-                    var id;
-                    id = bot.channels.find("name", args[0]).id;
-                    message.channel.send(id);
-                    //message.channel.send('Channel "' + args[0] + '" not found. Make sure that it is not a hyperlink or id.');
-                    console.log(id == undefined);
-                    console.log(id == null);
-                    if (id != undefined && id != null){
-                        message.channel.send("sending a message to #general...")
-//                        var chat = bot.channels.get(id)
-//                        chat.sendMessage('ur late');
-                        bot.guilds.get(message.guild.id).channels.find('name', args[0]).send('ur late');
-//                      message.content.split('!say ' + args[0] + ' ')[1]);
-                    }
+                    bot.guilds.get(message.guild.id).channels.find('name', args[0]).send(message.content.split('!say ' + args[0] + ' ')[1]);
                 }
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
