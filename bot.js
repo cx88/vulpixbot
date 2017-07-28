@@ -37,6 +37,22 @@ function dateNow(){
     return y + '-' + m + '-' + dt + '__' + hr + ':' + mnts;
 }
 
+function setDefaultConfig(){
+    var g = guild.id.toString(); // Default Config settings.
+    config[g] = {};
+    config[g]["prefix"] = "!";
+    config[g]["ignored_channels"] = [];
+    config[g]["disabled_commands"] = [];
+    config[g]["messages"] = {};
+    config[g]["messages"]["welcome"] = {}
+    config[g]["messages"]["welcome"]["msg"] = "Welcome to the server, (user)!";
+    config[g]["messages"]["welcome"]["status"] = "on";
+    config[g]["messages"]["mute"] = {}
+    config[g]["messages"]["mute"]["msg"] = "(user) has been muted!"
+    config[g]["messages"]["mute"]["status"] = "on"
+    saveConfig(config);
+}
+
 function saveConfig(cfg){
     var data = JSON.stringify(cfg, null, 2);
     fs.writeFileSync('servers.json', data);
@@ -57,19 +73,7 @@ bot.on('ready', () => {
 bot.on('guildCreate', guild =>{
     console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
     guild.defaultChannel.send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
-    var g = guild.id.toString(); // Default Config settings.
-    config[g] = {};
-    config[g]["prefix"] = "!";
-    config[g]["ignored_channels"] = [];
-    config[g]["disabled_commands"] = [];
-    config[g]["messages"] = {};
-    config[g]["messages"]["welcome"] = {}
-    config[g]["messages"]["welcome"]["msg"] = "Welcome to the server, (user)!";
-    config[g]["messages"]["welcome"]["status"] = "on";
-    config[g]["messages"]["mute"] = {}
-    config[g]["messages"]["mute"]["msg"] = "(user) has been muted!"
-    config[g]["messages"]["mute"]["status"] = "on"
-    saveConfig(config);
+    setDefaultConfig();
 })
 
 bot.on('guildMemberAdd', member =>{
@@ -82,6 +86,9 @@ bot.on('guildMemberAdd', member =>{
 
 bot.on('message', message => {
     var thisconfig = config[message.guild.id.toString()];
+    if (thisconfig == undefined){
+        setDefaultConfig();
+    }
     if (!thisconfig["ignored_channels"].contains(message.channel.name)){
         if (message.content.startsWith(thisconfig["prefix"])){
             cmd = message.content.split(thisconfig["prefix"])[1].split(' ')[0];
