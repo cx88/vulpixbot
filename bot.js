@@ -270,7 +270,8 @@ bot.on('message', message => {
             else if (cmd == "say"){
                 if (args[0] != undefined){
                     try{
-                        bot.channels.find('name', args[0]).send(message.content.split('!say ' + args[0] + ' ')[1]);
+                        var id = bot.channels.find('name', args[0]);
+                        bot.channels.get(id).send(message.content.split('!say ' + args[0] + ' ')[1]);
                     }
                     catch (Error){
                         message.channel.send('Channel "' + args[0] + '" not found. Make sure that it is not a hyperlink or id.');
