@@ -37,6 +37,11 @@ function dateNow(){
     return y + '-' + m + '-' + dt + '__' + hr + ':' + mnts;
 }
 
+function hasRole(user, role){
+    var _role = user.guild.roles.find("name", role);
+    return user.member.roles.has(_role.id);
+}
+
 function setDefaultConfig(guild){
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {};
@@ -44,12 +49,14 @@ function setDefaultConfig(guild){
     config[g]["ignored_channels"] = [];
     config[g]["disabled_commands"] = [];
     config[g]["messages"] = {};
-    config[g]["messages"]["welcome"] = {}
+    config[g]["messages"]["welcome"] = {};
     config[g]["messages"]["welcome"]["msg"] = "Welcome to the server, (user)!";
     config[g]["messages"]["welcome"]["status"] = "on";
-    config[g]["messages"]["mute"] = {}
-    config[g]["messages"]["mute"]["msg"] = "(user) has been muted!"
-    config[g]["messages"]["mute"]["status"] = "on"
+    config[g]["messages"]["welcome"]["role"] = "Member";
+    config[g]["messages"]["mute"] = {};
+    config[g]["messages"]["mute"]["msg"] = "(user) has been muted!";
+    config[g]["messages"]["mute"]["status"] = "on";
+    config[g]["messages"]["mute"]["role"] = "Muted";
     saveConfig(config);
 }
 
@@ -85,10 +92,11 @@ bot.on('guildMemberAdd', member =>{
 });
 
 bot.on('message', message => {
-    var thisconfig = config[message.guild.id.toString()];
+    var guild = message.guild;
+    var thisconfig = config[guild.id.toString()];
     if (thisconfig == undefined){
-        setDefaultConfig(message.guild);
-        thisconfig = config[message.guild.id.toString()];
+        setDefaultConfig(guild);
+        thisconfig = config[guild.id.toString()];
     }
     if (!thisconfig["ignored_channels"].contains(message.channel.name)){
         if (message.content.startsWith(thisconfig["prefix"])){
@@ -164,11 +172,6 @@ bot.on('message', message => {
             else if (cmd == "pbs" || cmd == "pbs+" || cmd == "pbseditor" || cmd == "pbs_editor"){
                 message.channel.send("https://www.pokecommunity.com/showthread.php?t=393347");
             }
-            else if (cmd == "show_database"){
-                var dat = fs.readFileSync('servers.json');
-                var cfg = JSON.parse(dat);
-                message.channel.send(cfg);
-            }
             else if (cmd == "read"){
                 if (args[0] == undefined){
                     message.channel.send('Hello. I am Vulpix. I represent the annoyance of ' + message.author.username + '. You have failed to read one or more of their messages.\nInstead of being snarky and saying "Read the fucking messages, please!", they desperately used this command to have me talk for them. I hope you can appreciate their choice and fucking read for once.');
@@ -185,6 +188,9 @@ bot.on('message', message => {
                 else if (args[0] == "faq"){
                     message.channel.send('If only there was such a thing as **"FREQUENTLY ASKED QUESTIONS"**... Hmmm... Whether it\'s a website, resource or Discord server, they are likely to have a FAQ channel or document. For all that is holy, read that.');
                 }
+            }
+            else if (cmd == "debug"){
+                message.channel.send(hasRole(message.member, "Administrator").toString());
             }
         }
         else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
@@ -211,7 +217,8 @@ bot.on('message', message => {
             else if (param == "messages"){
                 var arg = args[1];
                 if (arg == "welcome"){
-                    message.channel.send('The message that is sent whenever a new user joins.```Message: '+thisconfig["messages"]["welcome"]["msg"]+'\nStatus: '+thisconfig["messages"]["welcome"]["status"]+'```');
+                    message.channel.send('The message that is sent whenever a new user joins.```Message: '+thisconfig["messages"]["welcome"]["msg"]+'\nStatus: '+thisconfig["messages"]["welcome"]["status"]+'``` \
+                    Use one of the following commands to change the settings:```v-config messages welcome msg');
                 }
                 else if (arg == "mute"){
                     message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+thisconfig["messages"]["mute"]["msg"]+'\r\nStatus: '+thisconfig["messages"]["mute"]["status"]+'```');
