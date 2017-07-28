@@ -99,10 +99,12 @@ function setDefaults(guild){
     config[g]["messages"]["welcome"]["msg"] = "Welcome to the server, (user)!";
     config[g]["messages"]["welcome"]["status"] = "on";
     config[g]["messages"]["welcome"]["role"] = "Member";
+    config[g]["messages"]["welcome"]["channel"] = "general";
     config[g]["messages"]["mute"] = {};
     config[g]["messages"]["mute"]["msg"] = "(user) has been muted!";
     config[g]["messages"]["mute"]["status"] = "on";
     config[g]["messages"]["mute"]["role"] = "Muted";
+    config[g]["messages"]["mute"]["channel"] = "general";
     saveConfig(config);
     var role = guild.roles.find("name", "Vulpix Admin");
     if (role == null || role == undefined){
@@ -231,7 +233,7 @@ bot.on('message', message => {
                 }
             }
             else if (cmd == "wiki" || cmd == "wikia"){
-
+                message.channel.send('Command under construction.');
             }
             else if (cmd == "ebs"){
                 message.channel.send("http://sj-web.byethost18.com/");
@@ -266,7 +268,14 @@ bot.on('message', message => {
                 message.channel.send(delet_this[rand(delet_this.length)]);
             }
             else if (cmd == "say"){
-                message.channel.send(bot.channels.find('name', 'welcome').id);
+                if (args[0] != undefined){
+                    try{
+                        bot.channels.find('name', args[0]).send(message.content.split('!say ' + args[0] + ' ')[1]);
+                    }
+                    catch (Error){
+                        message.channel.send('Channel "' + args[0] + '" not found. Make sure that it is not a hyperlink or id.');
+                    }
+                }
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
                 if (args[0] == undefined){
