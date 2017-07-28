@@ -161,8 +161,7 @@ bot.on('message', message => {
             }
             else if (cmd == "read"){
                 if (args[0] == undefined){
-                    message.channel.sendMessage('Hello. I am Vulpix. I represent the annoyance of ' + message.author.username + '. You have failed to read one or more of their messages. \
-                    Instead of being snarky and saying "Read the fucking messages, please!", they desperately used this command to have me talk for them. I hope you can appreciate their choice and fucking read for once.');
+                    message.channel.sendMessage('Hello. I am Vulpix. I represent the annoyance of ' + message.author.username + '. You have failed to read one or more of their messages.\nInstead of being snarky and saying "Read the fucking messages, please!", they desperately used this command to have me talk for them. I hope you can appreciate their choice and fucking read for once.');
                 }
             }
         }
