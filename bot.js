@@ -277,8 +277,7 @@ bot.on('message', message => {
                     console.log(id == null);
                     if (id != undefined && id != null){
                         message.channel.send("sending a message to #general...")
-                        console.log(bot.channels);
-                        bot.sendMessage(id, message.content.split('!say ' + args[0] + ' ')[1]);
+                        bot.channels.get(id).send(id, message.content.split('!say ' + args[0] + ' ')[1]);
 //                        bot.channels[id].send(/*message.content.split('!say ' + args[0] + ' ')[1]*/'Hello from #testing!');
                     }
                 }
