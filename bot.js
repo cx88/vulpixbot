@@ -277,7 +277,7 @@ bot.on('message', message => {
                         message.channel.send('Channel "' + args[0] + '" not found. Make sure that it is not a hyperlink or id.');
                     }
                     if (id != undefined && id != null){
-                        bot.channels.get(id).send(message.content.split('!say ' + args[0] + ' ')[1]);
+                        bot.channels.get("id", id).send(message.content.split('!say ' + args[0] + ' ')[1]);
                     }
                 }
             }
