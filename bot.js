@@ -152,6 +152,9 @@ bot.on('guildCreate', guild =>{
 })
 
 bot.on('guildMemberAdd', member =>{
+    if (config[member.guild.id.toString()] == undefined){
+        
+    }
     if (config[member.guild.id.toString()]["messages"]["welcome"]["status"] == "on"){
         var msg = config[member.guild.id.toString()]["messages"]["welcome"]["msg"];
         msg = msg.replace('(user)', member.user.username);
