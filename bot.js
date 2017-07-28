@@ -269,12 +269,15 @@ bot.on('message', message => {
             }
             else if (cmd == "say"){
                 if (args[0] != undefined){
+                    var id;
                     try{
-                        var id = bot.channels.find('name', args[0]);
-                        bot.channels.get(id).send(message.content.split('!say ' + args[0] + ' ')[1]);
+                        id = bot.channels.find('name', args[0]);
                     }
                     catch (Error){
                         message.channel.send('Channel "' + args[0] + '" not found. Make sure that it is not a hyperlink or id.');
+                    }
+                    if (id != undefined && id != null){
+                        bot.channels.get(id).send(message.content.split('!say ' + args[0] + ' ')[1]);
                     }
                 }
             }
