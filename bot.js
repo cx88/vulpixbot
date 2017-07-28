@@ -5,6 +5,9 @@ var servers = fs.readFileSync('servers.json');
 var config = JSON.parse(servers);
 var dlt = fs.readFileSync('database/delet_this.json');
 var delet_this = JSON.parse(dlt)["memes"];
+var vids = fs.readFileSync('database/thundaga.json');
+var eps = JSON.parse(vids);
+
 
 /*
 {
@@ -207,12 +210,13 @@ bot.on('message', message => {
                 }
                 else{
                     var results = "";
-                    var vids = fs.readFileSync('database/thundaga.json');
-                    var eps = JSON.parse(vids);
+                    var str = message.content;
+                    str.replace(" a ", " ");
+                    str.replace(" an ", " ");
                     ar = Object.keys(eps);
                     for (i = 0; i < ar.length; i++){
                         for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
-                            if (message.content.contains(' '+eps[ar[i]]["keywords"][j])){
+                            if (str.contains(' '+eps[ar[i]]["keywords"][j])){
                                 results += eps[ar[i]]["url"] + "\n";
                                 break;
                             }
@@ -262,7 +266,7 @@ bot.on('message', message => {
                 message.channel.send(delet_this[rand(delet_this.length)]);
             }
             else if (cmd == "say"){
-                bot.channels.get()
+                message.channel.send(bot.channels.find('name', 'newcomers').id.toString());
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
                 if (args[0] == undefined){
@@ -270,14 +274,24 @@ bot.on('message', message => {
                     config = JSON.parse(servers);
                     dlt = fs.readFileSync('database/delet_this.json');
                     delet_this = JSON.parse(dlt)["memes"];
+                    vids = fs.readFileSync('database/thundaga.json');
+                    eps = JSON.parse(vids);
+                    message.channel.send('Successfully reloaded `config`, `memes`, and `thundaga`.');
                 }
                 else if (args[0] == "config"){
                     servers = fs.readFileSync('servers.json');
                     config = JSON.parse(servers);
+                    message.channel.send('Successfully reloaded `config`.');
                 }
                 else if (args[0] == "memes"){
                     dlt = fs.readFileSync('database/delet_this.json');
                     delet_this = JSON.parse(dlt)["memes"];
+                    message.channel.send('Successfully reloaded `memes`.');
+                }
+                else if (args[0] == "thundaga"){
+                    vids = fs.readFileSync('database/thundaga.json');
+                    eps = JSON.parse(vids);
+                    message.channel.send('Successfully reloaded `thundaga`.');
                 }
             }
         }
