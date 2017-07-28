@@ -243,15 +243,18 @@ bot.on('message', message => {
                 else if (args[0] == "instructions" || args[0] == "instr" || args[0] == "instruction"){
                     message.channel.send('Hey there. It\'s seriously annoying if you don\'t read provided instructions. People will get snarky if you don\'t. So please, look for instructions wherever you downloaded or saw something. Read them and then follow them.');
                 }
-                else if (args[0] == "docu" || args[0] == "doc" || args[0] == "documentation"){
+                else if (args[0] == "docu" || args[0] == "doc" || args[0] == "documentation" || args[0] == "docs"){
                     message.channel.send('Hi. Read the documentation. It\'s there to help you. It will take away most questions you have. If you do have questions, **always** read provided documentation before you end up asking stupid questions.');
                 }
                 else if (args[0] == "faq"){
                     message.channel.send('If only there was such a thing as **"FREQUENTLY ASKED QUESTIONS"**... Hmmm... Whether it\'s a website, resource or Discord server, they are likely to have a FAQ channel or document. For all that is holy, read that.');
                 }
             }
-            else if (cmd == "debug"){
-                setDefaults(message.guild);
+            else if (cmd == "lenny"){
+                message.channel.send("( ͡° ͜ʖ ͡°)");
+            }
+            else if (cmd == "shrug"){
+                message.channel.send("¯\_(ツ)_/¯");
             }
         }
         else if (message.content.startsWith("v-config") && isBotAdmin(message.member)){ // Configuration of the bot for the server.
@@ -277,9 +280,15 @@ bot.on('message', message => {
             }
             else if (param == "messages"){
                 var arg = args[1];
+                var setting = args[2];
                 if (arg == "welcome"){
-                    message.channel.send('The message that is sent whenever a new user joins.```Message: '+thisconfig["messages"]["welcome"]["msg"]+'\nStatus: '+thisconfig["messages"]["welcome"]["status"]+'``` \
-                    Use one of the following commands to change the settings:```v-config messages welcome msg');
+                    if (setting != undefined){
+
+                    }
+                    else{
+                        message.channel.send('The message that is sent whenever a new user joins.```Message: '+thisconfig["messages"]["welcome"]["msg"]+'\nStatus: '+thisconfig["messages"]["welcome"]["status"]+'``` \
+                        Use one of the following commands to change the settings:```v-config messages welcome msg [your welcome message]\nv-config messages welcome on\nv-config messages welcome off```In the welcome message, `(user)` will be replaced with the username.');
+                    }
                 }
                 else if (arg == "mute"){
                     message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+thisconfig["messages"]["mute"]["msg"]+'\r\nStatus: '+thisconfig["messages"]["mute"]["status"]+'```');
@@ -303,11 +312,14 @@ bot.on('message', message => {
                 msg += '``` Add or remove a channel with one of the following commands:```v-config ignored_channels add (channelname)\nv-config ignored_channels remove (channelname)```Channelname is the actual name of the channel, not a hyperlink or id.';
                 message.channel.send(msg);
             }
+            else if (param == "default"){
+                setDefaults(message.guild);
+            }
             else if (param == "show"){
                 message.channel.send('```JavaScript\n'+JSON.stringify(thisconfig, null, 2)+'```');
             }
             else{
-                message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config show```')
+                message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config default\nv-config show```')
             }
         }
     }
