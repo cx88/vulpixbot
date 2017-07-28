@@ -37,7 +37,7 @@ function dateNow(){
     return y + '-' + m + '-' + dt + '__' + hr + ':' + mnts;
 }
 
-function setDefaultConfig(){
+function setDefaultConfig(guild){
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {};
     config[g]["prefix"] = "!";
@@ -87,7 +87,7 @@ bot.on('guildMemberAdd', member =>{
 bot.on('message', message => {
     var thisconfig = config[message.guild.id.toString()];
     if (thisconfig == undefined){
-        setDefaultConfig();
+        setDefaultConfig(message.guild);
     }
     if (!thisconfig["ignored_channels"].contains(message.channel.name)){
         if (message.content.startsWith(thisconfig["prefix"])){
