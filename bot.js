@@ -219,6 +219,7 @@ bot.on('message', message => {
                     str.replace(" an ", " ");
                     ar = Object.keys(eps);
                     var sent = false;
+                    var words = str.split(' ');
                     for (i = 0; i < ar.length; i++){
                         if (sent) { break; }
                         for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
@@ -226,6 +227,8 @@ bot.on('message', message => {
                                 var skip = false;
                                 if (eps[ar[i]]["blacklist"] != undefined){
                                     for (k = 0; k < eps[ar[i]]["blacklist"].length; k++){
+                                        console.log(eps[ar[i]]["keywords"][j]);
+                                        console.log(eps[ar[i]]["blacklist"][k]);
                                         if (str.contains(eps[ar[i]]["blacklist"][k])){
                                             skip = true;
                                             break;
