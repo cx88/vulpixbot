@@ -34,6 +34,9 @@
         "url": "https://www.youtube.com/watch?v=3Glbe66qFnI",
         "keywords": [
             "6", "six", "eventing", "events", "making event", "making events", "make event", "event basic", "event basics", "basic event", "basic events", "basic eventing"
+        ],
+        "blacklist": [
+            "gen", "generation"
         ]
     },
     "7": {
