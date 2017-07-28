@@ -251,7 +251,7 @@ bot.on('message', message => {
                 }
             }
             else if (cmd == "debug"){
-                setDefaults();
+                setDefaults(message.guild);
             }
         }
         else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
