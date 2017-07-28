@@ -273,6 +273,7 @@ bot.on('message', message => {
 //                    try{
                     console.log('-'+args[0]+'-');
                         id = bot.channels.find("name", args[0]).id;
+                        message.channel.send(id);
 //                    }
 //                    catch (Error){
                         message.channel.send('Channel "' + args[0] + '" not found. Make sure that it is not a hyperlink or id.');
