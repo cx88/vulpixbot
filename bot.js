@@ -116,7 +116,7 @@ function setDefaults(guild){
                 "MOVE_MEMBERS", "USE_VAD", "MANAGE_WEBHOOKS",
                 "MANAGE_EMOJIS"
             ],
-            mentionable?: true
+            mentionable: true
         })
     }
 }
