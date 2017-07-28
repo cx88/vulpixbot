@@ -266,7 +266,7 @@ bot.on('message', message => {
                 message.channel.send(delet_this[rand(delet_this.length)]);
             }
             else if (cmd == "say"){
-                message.channel.send(bot.channels.find('name', 'newcomers').id.toString());
+                message.channel.send(bot.channels.find('name', 'welcome').id);
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
                 if (args[0] == undefined){
