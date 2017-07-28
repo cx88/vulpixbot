@@ -258,11 +258,27 @@ bot.on('message', message => {
             else if (cmd == "shrug"){
                 message.channel.send("¯\_(ツ)_/¯");
             }
-            else if (cmd == "deletthis" || cmd == "delet_this"){
+            else if (cmd == "deletthis" || cmd == "delet_this" || cmd == "delet" || cmd == "delete"){
                 message.channel.send(delet_this[rand(delet_this.length)]);
             }
             else if (cmd == "say"){
                 bot.channels.get()
+            }
+            else if (cmd == "reload" && isBotAdmin(message.member)){
+                if (args[0] == undefined){
+                    servers = fs.readFileSync('servers.json');
+                    config = JSON.parse(servers);
+                    dlt = fs.readFileSync('database/delet_this.json');
+                    delet_this = JSON.parse(dlt)["memes"];
+                }
+                else if (args[0] == "config"){
+                    servers = fs.readFileSync('servers.json');
+                    config = JSON.parse(servers);
+                }
+                else if (args[0] == "memes"){
+                    dlt = fs.readFileSync('database/delet_this.json');
+                    delet_this = JSON.parse(dlt)["memes"];
+                }
             }
         }
         else if (message.content.startsWith("v-config") && isBotAdmin(message.member)){ // Configuration of the bot for the server.
