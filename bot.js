@@ -129,15 +129,9 @@ bot.on('message', message => {
                     var vids = fs.readFileSync('database/thundaga.json');
                     var eps = JSON.parse(vids);
                     ar = Object.keys(eps);
-                    console.log(message.content);
                     for (i = 0; i < ar.length; i++){
                         for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
-                            if (ar[i] == '18'){
-                                console.log(message.content + '  ::  ' + eps[ar[i]]["keywords"][j]);
-                            }
-                            
                             if (message.content.contains(' '+eps[ar[i]]["keywords"][j])){
-                                console.log(eps[ar[i]]["url"])
                                 results += eps[ar[i]]["url"] + "\n";
                                 break;
                             }
@@ -164,6 +158,12 @@ bot.on('message', message => {
                 var dat = fs.readFileSync('servers.json');
                 var cfg = JSON.parse(dat);
                 message.channel.send(cfg);
+            }
+            else if (cmd == "read"){
+                if (args[0] == undefined){
+                    message.channel.sendMessage('Hello. I am Vulpix. I represent the annoyance of ' + message.author.username + '. You have failed to read one or more of their messages. \
+                    Instead of being snarky and saying "Read the fucking messages, please!", they desperately used this command to have me talk for them. I hope you can appreciate their choice and fucking read for once.');
+                }
             }
         }
         else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
