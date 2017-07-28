@@ -88,6 +88,7 @@ bot.on('message', message => {
     var thisconfig = config[message.guild.id.toString()];
     if (thisconfig == undefined){
         setDefaultConfig(message.guild);
+        thisconfig = config[message.guild.id.toString()];
     }
     if (!thisconfig["ignored_channels"].contains(message.channel.name)){
         if (message.content.startsWith(thisconfig["prefix"])){
