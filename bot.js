@@ -133,7 +133,6 @@ function saveConfig(cfg){
     fs.writeFileSync('servers.json', data);
     servers = fs.readFileSync('servers.json');
     config = JSON.parse(servers);
-    console.log(config);
 }
 
 function rand(int){
@@ -358,11 +357,18 @@ bot.on('message', message => {
                     else if (setting == "on"){
 
                     }
-                    else if (string == "off"){
+                    else if (setting == "off"){
 
                     }
-                    else if (string == "channel"){
-
+                    else if (setting == "channel"){
+                        if (args[3] != undefined){
+                            config[guild.id.toString()]["messages"]["welcome"]["channel"] = args[3];
+                            saveConfig(config);
+                            message.channel.send('The welcome message will now be sent in `' + config[guild.id.toString()]["messages"]["welcome"]["channel"] + '`.');
+                        }
+                        else{
+                            message.channel.send('The channel the welcome message will be sent in. Currently set to ```' + thisconfig["messages"]["welcome"]["channel"] + '````Use the following command to change it: ```v-config messages welcome channel [channelname]```Note that it should be the channel **name**, not a hyperlink or id.');
+                        }
                     }
                     else{
                         message.channel.send('The message that is sent whenever a new user joins.```Message: '+thisconfig["messages"]["welcome"]["msg"]+'\nStatus: '+thisconfig["messages"]["welcome"]["status"]+'``` \
