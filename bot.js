@@ -63,8 +63,10 @@ bot.on('guildCreate', guild =>{
     config[g]["ignored_channels"] = [];
     config[g]["disabled_commands"] = [];
     config[g]["messages"] = {};
+    config[g]["messages"]["welcome"] = {}
     config[g]["messages"]["welcome"]["msg"] = "Welcome to the server, (user)!";
     config[g]["messages"]["welcome"]["status"] = "on";
+    config[g]["messages"]["mute"] = {}
     config[g]["messages"]["mute"]["msg"] = "(user) has been muted!"
     config[g]["messages"]["mute"]["status"] = "on"
     saveConfig(config);
