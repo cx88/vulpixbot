@@ -39,7 +39,12 @@ function dateNow(){
 
 function hasRole(member, role){
     var _role = member.guild.roles.find("name", role);
-    return member.roles.has(_role.id);
+    try{
+        return member.roles.has(_role.id);
+    }
+    catch (Error){
+        return false;
+    }
 }
 
 function setDefaultConfig(guild){
