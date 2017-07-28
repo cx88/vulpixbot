@@ -221,11 +221,12 @@ bot.on('message', message => {
                     var sent = false;
                     var words = str.split(' ');
                     for (i = 0; i < ar.length; i++){
+                        console.log(ar[i]);
                         if (sent) { break; }
                         for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
                             if (str.contains(eps[ar[i]]["keywords"][j])){
                                 var skip = false;
-                                eps[ar[i]]["blacklist"] = ["gen", "generation"];
+                                eps["6"]["blacklist"] = ["gen", "generation"];
                                 if (eps[ar[i]]["blacklist"] != undefined){
                                     console.log("Blacklist defined in " + ar[i])
                                     for (k = 0; k < eps[ar[i]]["blacklist"].length; k++){
