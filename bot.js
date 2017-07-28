@@ -100,7 +100,7 @@ function setDefaults(guild){
     config[g]["messages"]["mute"]["role"] = "Muted";
     saveConfig(config);
     var role = guild.roles.find("name", "Vulpix Admin");
-    if (role.id == undefined){
+    if (role == null || role == undefined){
         guild.createRole({
             name: 'Vulpix Admin',
             color: '#C6C6C6',
