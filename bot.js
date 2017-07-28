@@ -270,15 +270,13 @@ bot.on('message', message => {
             else if (cmd == "say"){
                 if (args[0] != undefined){
                     var id;
-//                    try{
-                    console.log('-'+args[0]+'-');
-                        id = bot.channels.find("name", args[0]).id;
-                        message.channel.send(id);
-//                    }
-//                    catch (Error){
-                        message.channel.send('Channel "' + args[0] + '" not found. Make sure that it is not a hyperlink or id.');
-//                    }
+                    id = bot.channels.find("name", args[0]).id;
+                    message.channel.send(id);
+                    //message.channel.send('Channel "' + args[0] + '" not found. Make sure that it is not a hyperlink or id.');
+                    console.log(id == undefined);
+                    console.log(id == null);
                     if (id != undefined && id != null){
+                        message.channel.send("sending a message to #general...")
                         bot.channels.find("id", id).send(message.content.split('!say ' + args[0] + ' ')[1]);
                     }
                 }
