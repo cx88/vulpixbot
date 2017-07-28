@@ -4,6 +4,38 @@ var fs = require('fs');
 var servers = fs.readFileSync('servers.json');
 var config = JSON.parse(servers);
 
+/*
+{
+  CREATE_INSTANT_INVITE: true,
+  KICK_MEMBERS: true,
+  BAN_MEMBERS: true,
+  ADMINISTRATOR: true,
+  MANAGE_CHANNELS: true,
+  MANAGE_GUILD: true,
+  ADD_REACTIONS: true,
+  READ_MESSAGES: true,
+  SEND_MESSAGES: true,
+  SEND_TTS_MESSAGES: true,
+  MANAGE_MESSAGES: true,
+  EMBED_LINKS: true,
+  ATTACH_FILES: true,
+  READ_MESSAGE_HISTORY: true,
+  MENTION_EVERYONE: true,
+  EXTERNAL_EMOJIS: true,
+  CONNECT: true,
+  SPEAK: true,
+  MUTE_MEMBERS: true,
+  DEAFEN_MEMBERS: true,
+  MOVE_MEMBERS: true,
+  USE_VAD: true,
+  CHANGE_NICKNAME: true,
+  MANAGE_NICKNAMES: true,
+  MANAGE_ROLES_OR_PERMISSIONS: true,
+  MANAGE_WEBHOOKS: true,
+  MANAGE_EMOJIS: true
+}
+*/
+
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
@@ -47,7 +79,11 @@ function hasRole(member, role){
     }
 }
 
-function setDefaultConfig(guild){
+function isBotAdmin(member){
+    return hasRole(member, "Vulpix Admin");
+}
+
+function setDefaults(guild){
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {};
     config[g]["prefix"] = "!";
@@ -63,6 +99,26 @@ function setDefaultConfig(guild){
     config[g]["messages"]["mute"]["status"] = "on";
     config[g]["messages"]["mute"]["role"] = "Muted";
     saveConfig(config);
+    var role = guild.roles.find("name", "Vulpix Admin");
+    if (role.id == undefined){
+        guild.createRole({
+            name: 'Vulpix Admin',
+            color: '#C6C6C6',
+            permissions: [
+                "KICK_MEMBERS", "ADD_REACTIONS",
+                "READ_MESSAGES", "SEND_MESSAGES",
+                "SEND_TTS_MESSAGES", "MANAGE_MESSAGES",
+                "EMBED_LINKS", "ATTACH_FILES",
+                "READ_MESSAGE_HISTORY", "EXTERNAL_EMOJIS",
+                "CONNECT", "SPEAK", "DEAFEN_MEMBERS",
+                "CHANGE_NICKNAME", "MANAGE_NICKNAMES",
+                "MANAGE_ROLES_OR_PERMISSIONS", "MUTE_MEMBERS",
+                "MOVE_MEMBERS", "USE_VAD", "MANAGE_WEBHOOKS",
+                "MANAGE_EMOJIS"
+            ],
+            mentionable?: true
+        })
+    }
 }
 
 function saveConfig(cfg){
@@ -85,7 +141,7 @@ bot.on('ready', () => {
 bot.on('guildCreate', guild =>{
     console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
     guild.defaultChannel.send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
-    setDefaultConfig();
+    setDefaults();
 })
 
 bot.on('guildMemberAdd', member =>{
@@ -100,7 +156,7 @@ bot.on('message', message => {
     var guild = message.guild;
     var thisconfig = config[guild.id.toString()];
     if (thisconfig == undefined){
-        setDefaultConfig(guild);
+        setDefaults(guild);
         thisconfig = config[guild.id.toString()];
     }
     if (!thisconfig["ignored_channels"].contains(message.channel.name)){
@@ -195,7 +251,7 @@ bot.on('message', message => {
                 }
             }
             else if (cmd == "debug"){
-                message.channel.send(hasRole(message.member, "Administrator").toString());
+                setDefaults();
             }
         }
         else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
