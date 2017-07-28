@@ -216,10 +216,13 @@ bot.on('message', message => {
                     str.replace(" a ", " ");
                     str.replace(" an ", " ");
                     ar = Object.keys(eps);
+                    var sent = false;
                     for (i = 0; i < ar.length; i++){
+                        if (sent) { break; }
                         for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
                             if (str.contains(' '+eps[ar[i]]["keywords"][j])){
-                                results += eps[ar[i]]["url"] + "\n";
+                                message.channel.send(eps[ar[i]]["url"]);
+                                sent = true;
                                 break;
                             }
                         }
@@ -267,9 +270,15 @@ bot.on('message', message => {
             else if (cmd == "deletthis" || cmd == "delet_this" || cmd == "delet" || cmd == "delete"){
                 message.channel.send(delet_this[rand(delet_this.length)]);
             }
-            else if (cmd == "say"){
+            else if (cmd == "say" && isBotAdmin(message.member)){
                 if (args[0] != undefined){
-                    bot.guilds.get(message.guild.id).channels.find('name', args[0]).send(message.content.split('!say ' + args[0] + ' ')[1]);
+                    var channel = bot.guilds.get(message.guild.id).channels.find('name', args[0]);
+                    if (channel != null && channel != undefined){
+                        channel.send(message.content.split('!say ' + args[0] + ' ')[1]);
+                    }
+                    else{
+                        message.channel.send('Channel ' + args[0] + 'does not exist.');
+                    }
                 }
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
