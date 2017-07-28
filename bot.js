@@ -254,7 +254,7 @@ bot.on('message', message => {
                 setDefaults(message.guild);
             }
         }
-        else if (message.content.startsWith("v-config")){ // Configuration of the bot for the server.
+        else if (message.content.startsWith("v-config") && isBotAdmin()){ // Configuration of the bot for the server.
             args = message.content.split(" ");
             args.splice(0, 1);
             var param = args[0];
