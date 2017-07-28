@@ -260,7 +260,7 @@ bot.on('message', message => {
                 message.channel.send("( ͡° ͜ʖ ͡°)");
             }
             else if (cmd == "shrug"){
-                message.channel.send("¯\_(ツ)_/¯");
+                message.channel.send("¯\\_(ツ)_/¯");
             }
             else if (cmd == "deletthis" || cmd == "delet_this" || cmd == "delet" || cmd == "delete"){
                 message.channel.send(delet_this[rand(delet_this.length)]);
@@ -292,6 +292,14 @@ bot.on('message', message => {
                     vids = fs.readFileSync('database/thundaga.json');
                     eps = JSON.parse(vids);
                     message.channel.send('Successfully reloaded `thundaga`.');
+                }
+            }
+            else if (cmd == "id" && isBotAdmin(message.member)){
+                if (args[0] == "channel"){
+                    message.channel.send(message.channel.id);
+                }
+                else if (args[0] == "server"){
+                    message.channel.send(message.guild.id);
                 }
             }
         }
