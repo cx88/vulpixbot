@@ -263,6 +263,9 @@ bot.on('message', message => {
                 else if (args[0] == "faq"){
                     message.channel.send('If only there was such a thing as **"FREQUENTLY ASKED QUESTIONS"**... Hmmm... Whether it\'s a website, resource or Discord server, they are likely to have a FAQ channel or document. For all that is holy, read that.');
                 }
+                else if (args[0] == "rules"){
+                    message.channel.send('Yo. If you don\'t read the rules, you\'ll get in trouble soon enough. Rules are there for very good reasons; organization, past experiences, and so on. Read them so you\'re sure that you comply with them.');
+                }
             }
             else if (cmd == "lenny"){
                 message.channel.send("( ͡° ͜ʖ ͡°)");
@@ -344,7 +347,16 @@ bot.on('message', message => {
                 var arg = args[1];
                 var setting = args[2];
                 if (arg == "welcome"){
-                    if (setting != undefined){
+                    if (setting == "msg"){
+                        var msg = message.content.split('v-config messages welcome msg ')[1];
+                    }
+                    else if (setting == "on"){
+
+                    }
+                    else if (string == "off"){
+
+                    }
+                    else if (string == "channel"){
 
                     }
                     else{
