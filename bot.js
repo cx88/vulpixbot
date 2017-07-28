@@ -3,6 +3,8 @@ const bot = new Discord.Client();
 var fs = require('fs');
 var servers = fs.readFileSync('servers.json');
 var config = JSON.parse(servers);
+var dlt = fs.readFileSync('database/delet_this.json');
+var delet_this = JSON.parse(dlt)["memes"];
 
 /*
 {
@@ -255,6 +257,12 @@ bot.on('message', message => {
             }
             else if (cmd == "shrug"){
                 message.channel.send("¯\_(ツ)_/¯");
+            }
+            else if (cmd == "deletthis" || cmd == "delet_this"){
+                message.channel.send(delet_this[rand(delet_this.length)]);
+            }
+            else if (cmd == "say"){
+                bot.channels.get()
             }
         }
         else if (message.content.startsWith("v-config") && isBotAdmin(message.member)){ // Configuration of the bot for the server.
