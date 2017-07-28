@@ -226,6 +226,7 @@ bot.on('message', message => {
                             if (str.contains(eps[ar[i]]["keywords"][j])){
                                 var skip = false;
                                 if (eps[ar[i]]["blacklist"] != undefined){
+                                    console.log("Blacklist defined in " + ar[i])
                                     for (k = 0; k < eps[ar[i]]["blacklist"].length; k++){
                                         console.log(eps[ar[i]]["keywords"][j]);
                                         console.log(eps[ar[i]]["blacklist"][k]);
