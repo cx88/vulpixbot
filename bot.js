@@ -277,8 +277,9 @@ bot.on('message', message => {
                     console.log(id == null);
                     if (id != undefined && id != null){
                         message.channel.send("sending a message to #general...")
-                        var chat = bot.channels.get(id)
-                        chat.sendMessage('ur late');
+//                        var chat = bot.channels.get(id)
+//                        chat.sendMessage('ur late');
+                        bot.guilds.get(message.guild.id).channels.find('name', args[0]).send('ur late');
 //                      message.content.split('!say ' + args[0] + ' ')[1]);
                     }
                 }
