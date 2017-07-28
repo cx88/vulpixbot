@@ -214,7 +214,6 @@ bot.on('message', message => {
                     message.channel.send("https://www.youtube.com/channel/UCS9280oK413_XO8abzQa8ig");
                 }
                 else{
-                    var results = "";
                     var str = message.content;
                     str.replace(" a ", " ");
                     str.replace(" an ", " ");
@@ -223,18 +222,23 @@ bot.on('message', message => {
                     for (i = 0; i < ar.length; i++){
                         if (sent) { break; }
                         for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
-                            if (str.contains(' '+eps[ar[i]]["keywords"][j])){
-                                message.channel.send(eps[ar[i]]["url"]);
-                                sent = true;
-                                break;
+                            if (str.contains(eps[ar[i]]["keywords"][j])){
+                                var skip = false;
+                                if (eps[ar[i]]["blacklist"] != undefined){
+                                    for (k = 0; k < eps[ar[i]]["blacklist"].length; k++){
+                                        if (str.contains(eps[ar[i]]["blacklist"][k])){
+                                            skip = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (!skip){
+                                    message.channel.send(eps[ar[i]]["url"]);
+                                    sent = true;
+                                    break;
+                                }
                             }
                         }
-                    }
-                    if (results == ""){
-                        message.channel.send('No results found.');
-                    }
-                    else{
-                        message.channel.send(results);
                     }
                 }
             }
