@@ -37,9 +37,9 @@ function dateNow(){
     return y + '-' + m + '-' + dt + '__' + hr + ':' + mnts;
 }
 
-function hasRole(user, role){
+function hasRole(member, role){
     var _role = user.guild.roles.find("name", role);
-    return user.member.roles.has(_role.id);
+    return member.roles.has(_role.id);
 }
 
 function setDefaultConfig(guild){
