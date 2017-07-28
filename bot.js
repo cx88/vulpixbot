@@ -225,13 +225,10 @@ bot.on('message', message => {
                         for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
                             if (str.contains(eps[ar[i]]["keywords"][j])){
                                 var skip = false;
-                                console.log(eps[ar[i]]);
-                                console.log(eps[ar[i]]["blacklist"]);
-                                console.log(eps[ar[i]].blacklist);
-                                eps["6"]["blacklist"] = ["gen", "generation"];
-                                if (eps[ar[i]]["blacklist"] != undefined){
-                                    for (k = 0; k < eps[ar[i]]["blacklist"].length; k++){
-                                        if (str.contains(eps[ar[i]]["blacklist"][k])){
+                                console.log(eps[ar[i]].blacklist[0]);
+                                if (eps[ar[i]].blacklist != undefined){
+                                    for (k = 0; k < eps[ar[i]].blacklist.length; k++){
+                                        if (str.contains(eps[ar[i]].blacklist[k])){
                                             skip = true;
                                             break;
                                         }
