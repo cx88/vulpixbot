@@ -1,12 +1,13 @@
 ﻿const Discord = require('discord.js');
 const bot = new Discord.Client();
+var paste = require('better-pastebin');
+var url = "https://pastebin.com/xwbrL2hj";
 var fs = require('fs');
-var servers = fs.readFileSync('servers.json');
-var config = JSON.parse(servers);
 var dlt = fs.readFileSync('database/delet_this.json');
 var delet_this = JSON.parse(dlt)["memes"];
 var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
+var config = "";
 
 
 /*
@@ -85,7 +86,7 @@ function hasRole(member, role){
 }
 
 function isBotAdmin(member){
-    return hasRole(member, "Vulpix Admin");
+    return hasRole(member, "Vulpix Admin") || member.user.id == member.guild.owner.user.id;
 }
 
 function setDefaults(guild){
@@ -130,8 +131,21 @@ function setDefaults(guild){
 
 function saveConfig(cfg){
     var data = JSON.stringify(cfg, null, 2);
-    fs.writeFileSync('servers.json', data);
-    servers = fs.readFileSync('servers.json');
+    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
+    paste.login('M3rein', 'WorldCrafter112', function(success, data){
+        if (!success){
+            console.log(`Failed (${data})`);
+        }
+        paste.edit(url, {
+            contents: data
+        });
+        paste.get(url, function(success, data){
+            if (success){
+                config = JSON.parse(data);
+            }
+        });
+    });
+
     config = JSON.parse(servers);
 }
 
@@ -140,6 +154,18 @@ function rand(int){
 }
 
 bot.on('ready', () => {
+    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
+    paste.login('M3rein', 'WorldCrafter112', function(success, data){
+        if (!success){
+            console.log(`Failed (${data})`);
+        }
+        paste.get(url, function(success, data){
+            if (success){
+                config = JSON.parse(data);
+            }
+        });
+    });
+
     console.log('Vulpix online');
     bot.user.setGame("Type v-config");
 });
