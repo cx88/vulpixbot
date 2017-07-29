@@ -121,7 +121,7 @@ function isBotAdmin(member){
 function setDefaults(guild){
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {
-        "prefix": "1",
+        "prefix": "?",
         "ignored_channels": [
 
         ],
@@ -371,7 +371,17 @@ bot.on('message', message => {
                         break;
                     }
                 }
-                message.reply(`you are currently level ${rank}. You have ${config[id]["ranks"][message.member.user.id] * 7} / ${req * 7} experience.`)
+                message.channel.send({embed:{
+                    color: 10876925,
+                    author: {
+                        name: message.member.user.username,
+                        icon_url: message.member.user.avatarURL
+                    },
+                    title: `**Level**`,
+                    description: `${rank}`
+                }})
+
+//                message.reply(`you are currently level ${rank}. You have ${config[id]["ranks"][message.member.user.id] * 7} / ${req * 7} experience.`)
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
                 if (args[0] == undefined){
