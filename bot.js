@@ -85,8 +85,17 @@ function hasRole(member, role){
     }
 }
 
+function channelExists(guild, channel){
+    var chnl = getChannel(guild, channel);
+    return chnl != null && chnl != undefined;
+}
+
+function getChannel(guild, channel){
+    return guild.channels.find('name', channel);
+}
+
 function isBotAdmin(member){
-    return hasRole(member, "Vulpix Admin") || member.user.id == member.guild.owner.user.id;
+    return hasRole(member, "Vulpix Admin") || member.user.id == member.guild.ownerID;
 }
 
 function setDefaults(guild){
@@ -137,17 +146,14 @@ function saveConfig(cfg){
         if (!success){
             console.log(`Failed (${data})`);
         }
-        console.log(`Successfully loaded Pastebin Account`);
         paste.edit(url, {
             contents: str
         });
-        console.log(`Successfully edited Pastebin data`)
         paste.get(url, function(success, dat){
             if (success){
                 config = JSON.parse(dat);
             }
         });
-        console.log(`Successfully reloaded Pastebin data`);
     });
 }
 
@@ -187,14 +193,11 @@ bot.on('guildMemberAdd', member =>{
         var channel = config[member.guild.id.toString()]["messages"]["welcome"]["channel"];
         var msg = config[member.guild.id.toString()]["messages"]["welcome"]["msg"];
         msg = msg.replace('(user)', member.user);
-        
-        console.log(channel);
-        var chnl = bot.guilds.get(member.guild.id).channels.find('name', channel);
-        if (chnl != null && chnl != undefined){
-            chnl.send(msg);
+        if (channelExists(member.guild, channel)){
+            getChannel(member.guild, channel).send(msg);
         }
         else{
-            message.channel.send('Channel ' + config[member.guild.id.toString()]["messages"]["welcome"]["channel"] + 'does not exist in `v-config messages welcome channel`.');
+            message.channel.send(`Channel ${channel} does not exist in \`v-config messages welcome channel\`.`);
         }
         
     }
