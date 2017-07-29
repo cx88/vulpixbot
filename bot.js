@@ -257,7 +257,7 @@ bot.on('guildMemberAdd', member =>{
             getChannel(member.guild, channel).send(msg);
         }
         else{
-            member.guild.defaultChannel.send(`Channel ${channel} does not exist as referred to in \`v-config messages welcome channel\`.`);
+            member.guild.defaultChannel.send(`Channel '${channel}' does not exist as referred to in \`v-config messages welcome channel\`. Welcome either way, ` + member.user);
         }
         
     }
