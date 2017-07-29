@@ -90,6 +90,7 @@ function isBotAdmin(member){
 }
 
 function setDefaults(guild){
+    console.log(`Resetting current guild to the default values.`);
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {};
     config[g]["prefix"] = "!";
@@ -136,14 +137,17 @@ function saveConfig(cfg){
         if (!success){
             console.log(`Failed (${data})`);
         }
+        console.log(`Successfully loaded Pastebin Account`);
         paste.edit(url, {
             contents: str
         });
-        paste.get(url, function(success, data){
+        console.log(`Successfully edited Pastebin data`)
+        paste.get(url, function(success, dat){
             if (success){
-                config = JSON.parse(data);
+                config = JSON.parse(dat);
             }
         });
+        console.log(`Successfully reloaded Pastebin data`);
     });
 }
 
