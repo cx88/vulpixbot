@@ -402,7 +402,7 @@ bot.on('message', message => {
             else if (cmd == "quote"){
                 if (message.mentions.users.first() != undefined){
                     var user = message.mentions.users.first();
-                    var msg = message.content.split(`${config[id]["prefix"]}quote <@${user.id}>`);
+                    var msg = message.content.split(`${config[id]["prefix"]}quote ${user} `)[1];
                     console.log(msg);
                     if (msg != undefined && msg != null && msg != "" && msg != " "){
                         if (config[id]["quotes"][user.id] == undefined){
