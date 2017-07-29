@@ -405,9 +405,20 @@ bot.on('message', message => {
                 console.log(username);
                 var user = message.guild.members.find(m => m.user.username.toLowerCase() === username.toLowerCase());
                 if (user == null){
-                    user = message.guild.members.find(m => m.user.name.toLowerCase() === username.toLowerCase());
+                    message.channel.send(`User not found.`);
                 }
-                console.log(user);
+                else{
+                    var msg = message.content.split(`${config[id]["prefix"]}quote ${username} `)[1];
+                    console.log(msg);
+                    if (msg != "" || msg != null){
+                        if (config[id]["quotes"][user.id] == undefined){
+                            config[id]["quotes"][user.id] = [
+                                msg
+                            ];
+                            message.channel.send(`Quote saved!`);
+                        }
+                    }
+                }
 
 
 
