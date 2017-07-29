@@ -223,16 +223,17 @@ bot.on('message', message => {
     if (config[id] == undefined){
         setDefaults(guild);
     }
-    if (config[id]["ranks"][message.member.user.id] == undefined){
-        config[id]["ranks"][message.member.user.id] = 0;
-    }
-    else{
-        config[id]["ranks"][message.member.user.id]++;
-        if (level_curve.contains(config[id]["ranks"][message.member.user.id])){
-            message.channel.send(`${message.member.user} leveled up to level ${level_curve.indexOf(config[id]["ranks"][message.member.user.id])}!`);
+    if (!message.content.startsWith(config[id]["prefix"]) && message.author.user.id != '339739859549683712'){
+        if (config[id]["ranks"][message.member.user.id] == undefined){
+            config[id]["ranks"][message.member.user.id] = 0;
+        }
+        else{
+           config[id]["ranks"][message.member.user.id]++;
+            if (level_curve.contains(config[id]["ranks"][message.member.user.id])){
+                message.channel.send(`${message.member.user} leveled up to level ${level_curve.indexOf(config[id]["ranks"][message.member.user.id])}!`);
+            }
         }
     }
-    console.log(`${message.author.username}: ${message.member.user.id}`);
     if (!config[id]["ignored_channels"].contains(message.channel.name)){
         if (message.content.startsWith(config[id]["prefix"])){
             cmd = message.content.split(config[id]["prefix"])[1].split(' ')[0];
@@ -365,9 +366,6 @@ bot.on('message', message => {
                 for (i = 0; i < level_curve.length; i++){
                     if (config[id]["ranks"][message.member.user.id] == undefined) { break; }
                     if (level_curve[i] > config[id]["ranks"][message.member.user.id]){
-                        console.log(level_curve[i]);
-                        console.log(config[id]["ranks"][message.member.user.id]);
-                        console.log(i);
                         rank = i - 1;
                         req = level_curve[i];
                         break;
@@ -476,6 +474,7 @@ bot.on('message', message => {
             }
             else if (param == "default"){
                 setDefaults(message.guild);
+                message.channel.send(`The configurations have been reset to the default.`);
             }
             else if (param == "show"){
                 message.channel.send('```JavaScript\n'+JSON.stringify(config[id], null, 2)+'```');
