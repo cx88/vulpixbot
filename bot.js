@@ -418,7 +418,7 @@ bot.on('message', message => {
                             message.channel.send(`Quote saved!`);
                         }
                         else{
-                            config[id]["quotes"].push(msg);
+                            config[id]["quotes"][user.id].push(msg);
                             message.channel.send(`Quote saved!`);
                         }
                     }
