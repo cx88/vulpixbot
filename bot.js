@@ -223,7 +223,7 @@ bot.on('message', message => {
     if (config[id] == undefined){
         setDefaults(guild);
     }
-    if (!message.content.startsWith(config[id]["prefix"]) && message.author.user.id != '339739859549683712'){
+    if (!message.content.startsWith(config[id]["prefix"]) && message.member.user.id != '339739859549683712'){
         if (config[id]["ranks"][message.member.user.id] == undefined){
             config[id]["ranks"][message.member.user.id] = 0;
         }
