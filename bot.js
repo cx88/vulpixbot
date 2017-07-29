@@ -422,6 +422,9 @@ bot.on('message', message => {
                             message.channel.send(`Quote saved!`);
                         }
                     }
+                    else if (config[id]["quotes"][user.id] == undefined && config[id]["quotes"][user.id].length == 0){
+                        message.channel.send(`This user doesn't have any quotes saved!`);
+                    }
                     else{
                         message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"][user.id].length)]}"\n - ${username}`);
                     }
@@ -437,6 +440,7 @@ bot.on('message', message => {
                 }
                 else{
                     config[id]["quotes"][user.id] = [];
+                    message.channel.send(`Successfully cleared all ${username}'s quotes.`);
                 }
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
