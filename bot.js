@@ -205,14 +205,14 @@ bot.on('guildMemberAdd', member =>{
 
 bot.on('message', message => {
     var guild = message.guild;
-    var thisconfig = config[guild.id.toString()];
-    if (thisconfig == undefined){
+    var cfg = config[guild.id.toString()];
+    if (cfg == undefined){
         setDefaults(guild);
-        thisconfig = config[guild.id.toString()];
+        cfg = config[guild.id.toString()];
     }
-    if (!thisconfig["ignored_channels"].contains(message.channel.name)){
-        if (message.content.startsWith(thisconfig["prefix"])){
-            cmd = message.content.split(thisconfig["prefix"])[1].split(' ')[0];
+    if (!cfg["ignored_channels"].contains(message.channel.name)){
+        if (message.content.startsWith(cfg["prefix"])){
+            cmd = message.content.split(cfg["prefix"])[1].split(' ')[0];
             args = message.content.split(" ");
             args.splice(0, 1);
             console.log(dateNow() + ' ' + message.author.username + `: ` + message.content);
@@ -335,18 +335,11 @@ bot.on('message', message => {
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
                 if (args[0] == undefined){
-                    servers = fs.readFileSync('servers.json');
-                    config = JSON.parse(servers);
                     dlt = fs.readFileSync('database/delet_this.json');
                     delet_this = JSON.parse(dlt)["memes"];
                     vids = fs.readFileSync('database/thundaga.json');
                     eps = JSON.parse(vids);
-                    message.channel.send('Successfully reloaded `config`, `memes`, and `thundaga`.');
-                }
-                else if (args[0] == "config"){
-                    servers = fs.readFileSync('servers.json');
-                    config = JSON.parse(servers);
-                    message.channel.send('Successfully reloaded `config`.');
+                    message.channel.send('Successfully reloaded `memes` and `thundaga`.');
                 }
                 else if (args[0] == "memes"){
                     dlt = fs.readFileSync('database/delet_this.json');
@@ -382,11 +375,12 @@ bot.on('message', message => {
                     else{
                         config[message.guild.id.toString()]["prefix"] = setting;
                         saveConfig(config);
-                        message.channel.send('Successfully set active command prefix to `'+config[message.guild.id.toString()]["prefix"]+'`.');
+                        cfg = config[guild.id.toString()];
+                        message.channel.send('Successfully set active command prefix to `'+cfg["prefix"]+'`.');
                     }
                 }
                 else{
-                    message.channel.send('The prefix for commands is currently `'+thisconfig["prefix"]+'`.');
+                    message.channel.send('The prefix for commands is currently `'+cfg["prefix"]+'`.');
                 }
             }
             else if (param == "messages"){
@@ -406,34 +400,35 @@ bot.on('message', message => {
                         if (args[3] != undefined){
                             config[guild.id.toString()]["messages"]["welcome"]["channel"] = args[3];
                             saveConfig(config);
-                            message.channel.send('The welcome message will now be sent in `' + config[guild.id.toString()]["messages"]["welcome"]["channel"] + '`.');
+                            cfg = config[guild.id.toString()];
+                            message.channel.send('The welcome message will now be sent in `' + cfg["messages"]["welcome"]["channel"] + '`.');
                         }
                         else{
-                            message.channel.send('The channel the welcome message will be sent in. Currently set to ```' + thisconfig["messages"]["welcome"]["channel"] + '````Use the following command to change it: ```v-config messages welcome channel [channelname]```Note that it should be the channel **name**, not a hyperlink or id.');
+                            message.channel.send('The channel the welcome message will be sent in. Currently set to ```' + cfg["messages"]["welcome"]["channel"] + '````Use the following command to change it: ```v-config messages welcome channel [channelname]```Note that it should be the channel **name**, not a hyperlink or id.');
                         }
                     }
                     else{
-                        message.channel.send('The message that is sent whenever a new user joins.```Message: '+thisconfig["messages"]["welcome"]["msg"]+'\nStatus: '+thisconfig["messages"]["welcome"]["status"]+'``` \
+                        message.channel.send('The message that is sent whenever a new user joins.```Message: '+cfg["messages"]["welcome"]["msg"]+'\nStatus: '+cfg["messages"]["welcome"]["status"]+'``` \
                         Use one of the following commands to change the settings:```v-config messages welcome msg [your welcome message]\nv-config messages welcome on\nv-config messages welcome off```In the welcome message, `(user)` will be replaced with the username.');
                     }
                 }
                 else if (arg == "mute"){
-                    message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+thisconfig["messages"]["mute"]["msg"]+'\r\nStatus: '+thisconfig["messages"]["mute"]["status"]+'```');
+                    message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+cfg["messages"]["mute"]["msg"]+'\r\nStatus: '+cfg["messages"]["mute"]["status"]+'```');
                 }
                 else{
                     message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off and change the message. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute```');
                 }
             }
             else if (param == "autorole"){
-                message.channel.send('When a new user joins, you can choose for the bot to give them a role.```Role given: '+thisconfig["autorole"]+'\r\nStatus: '+thisconfig["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
+                message.channel.send('When a new user joins, you can choose for the bot to give them a role.```Role given: '+cfg["autorole"]+'\r\nStatus: '+cfg["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
             }
             else if (param == "ignored_channels"){
                 var msg = 'If a command other than v-config is executed in any of the following channels, it will be ignored:```\n';
-                if (thisconfig["ignored_channels"].length == 0) { msg += "---"; }
+                if (cfg["ignored_channels"].length == 0) { msg += "---"; }
                 else{
-                    for (i = 0; i < thisconfig["ignored_channels"].length; i++){
-                        msg += thisconfig["ignored_channels"][i];
-                        if (i != thisconfig["ignored_channels"].length - 1) { msg += '\n'; }
+                    for (i = 0; i < cfg["ignored_channels"].length; i++){
+                        msg += cfg["ignored_channels"][i];
+                        if (i != cfg["ignored_channels"].length - 1) { msg += '\n'; }
                     }
                 }
                 msg += '``` Add or remove a channel with one of the following commands:```v-config ignored_channels add (channelname)\nv-config ignored_channels remove (channelname)```Channelname is the actual name of the channel, not a hyperlink or id.';
@@ -443,7 +438,7 @@ bot.on('message', message => {
                 setDefaults(message.guild);
             }
             else if (param == "show"){
-                message.channel.send('```JavaScript\n'+JSON.stringify(thisconfig, null, 2)+'```');
+                message.channel.send('```JavaScript\n'+JSON.stringify(cfg, null, 2)+'```');
             }
             else{
                 message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config default\nv-config show```')
