@@ -446,7 +446,7 @@ bot.on('message', message => {
             else if (cmd == "fortune" || cmd == "fortuna"){
                 message.channel.send(fortune[rand(fortune.length)]);
             }
-            else if (cmd == "8ball" || "8-ball"){
+            else if (cmd == "8ball" || cmd == "8-ball"){
                 message.channel.send(magic8ball[rand(magic8ball.length)]);
             }
             else if (cmd == "quote"){
@@ -536,7 +536,7 @@ bot.on('message', message => {
                     }
                 }
                 else{
-                    message.channel.send('The prefix for commands is currently `'+config[id]["prefix"]+'`.');
+                    message.channel.send('The prefix for commands is currently `'+config[id]["prefix"]+'`\nUse `v-config prefix [new prefix]` to change it.');
                 }
             }
             else if (param == "messages"){
@@ -547,12 +547,12 @@ bot.on('message', message => {
                         var msg = message.content.split('v-config messages welcome msg ')[1];
                         if (msg == null || msg == undefined || msg == "" || msg == " "){
                             message.channel.send(`The current welcoming message is: \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\`\nUse this command to change the message: \
-                            \`\`\`v-config messages welcome msg [message]\`\`\`Keep in mind that (user) inside the message will be replaced with the joinig player's name.`);
+                            \`\`\`v-config messages welcome msg [message]\`\`\`Keep in mind that \`(user)\` inside the message will be replaced with the joining player's name.`);
                         }
                         else{
                             config[id]["messages"]["welcome"]["msg"] = msg;
                             saveConfig();
-                            message.channel.send(`Successfully set welcome message to \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\``);
+                            message.channel.send(`Successfully set welcome message to: \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\``);
                         }
                     }
                     else if (setting == "on"){
@@ -593,7 +593,7 @@ bot.on('message', message => {
                     message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+config[id]["messages"]["mute"]["msg"]+'\r\nStatus: '+config[id]["messages"]["mute"]["status"]+'```');
                 }
                 else{
-                    message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off and change the message. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute```');
+                    message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off, change the messages, and choose in which channel they should be sent. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute```');
                 }
             }
             else if (param == "autorole"){
