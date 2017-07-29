@@ -430,7 +430,7 @@ bot.on('message', message => {
                     }
                 }
             }
-            else if (cmd == "clearquote" || cmd == "clearquotes"){
+            else if (cmd == "clearquote" || cmd == "clearquotes" && isBotAdmin(message.member)){
                 var username = args[0];
                 username = username.replace("%20", " ");
                 console.log(username);
