@@ -361,6 +361,13 @@ bot.on('message', message => {
                 }
             }
             else if (cmd == "rank" || cmd == "level"){
+                var user = message.member.user;
+                if (args[0] != undefined){
+                    try{
+                        user = message.mentions[0];
+                    }
+                    catch (error){ }
+                }
                 var rank = 0;
                 var req = 16;
                 for (i = 0; i < level_curve.length; i++){
