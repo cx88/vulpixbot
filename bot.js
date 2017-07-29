@@ -175,7 +175,7 @@ function rand(int){
 
 function save() { saveConfig(config); }
 
-setInterval(save, 30000);
+setInterval(save, 60000);
 
 bot.on('ready', () => {
     console.log('Vulpix online');
@@ -212,13 +212,13 @@ bot.on('message', message => {
     if (config[id] == undefined){
         setDefaults(guild);
     }
-    if (config[id][message.member.user.id] == undefined){
-        config[id][message.member.user.id] = 0;
+    if (config[id]["ranks"][message.member.user.id] == undefined){
+        config[id]["ranks"][message.member.user.id] = 0;
     }
     else{
-        config[id][message.member.user.id]++;
-        if (level_curve.contains(config[id][message.member.user.id])){
-            message.channel.send(`${message.member.user} leveled up to level ${level_curve.indexOf(config[id][message.member.user.id])}!`);
+        config[id]["ranks"][message.member.user.id]++;
+        if (level_curve.contains(config[id]["ranks"][message.member.user.id])){
+            message.channel.send(`${message.member.user} leveled up to level ${level_curve.indexOf(config[id]["ranks"][message.member.user.id])}!`);
         }
     }
     console.log(`${message.author.username}: ${message.member.user.id}`);
@@ -230,6 +230,9 @@ bot.on('message', message => {
             console.log(dateNow() + ' ' + message.author.username + `: ` + message.content);
             if (cmd == "pc"){
                 message.channel.send('https://pokecommunity.com/~'+args[0]);
+            }
+            else if (cmd == "soon"){
+                message.channel.send(`Soon:tm:`);
             }
             else if (cmd == "rand" || cmd == "random"){
                 message.channel.send(rand(args[0]));
@@ -344,6 +347,18 @@ bot.on('message', message => {
                         message.channel.send('Channel ' + args[0] + 'does not exist.');
                     }
                 }
+            }
+            else if (cmd == "rank" || cmd == "level"){
+                var rank = 0;
+                var req = 16;
+                for (i = 0; i < level_curve.length; i++){
+                    if (config[guild]["ranks"][message.member.user.id] == undefined) { break; }
+                    if (level_curve[i] > config[guild]["ranks"][message.member.user.id]){
+                        rank = i - 1;
+                        req = level_curve[i];
+                    }
+                }
+                message.reply(`you are currently level ${rank}. You have ${config[guild]["ranks"][message.member.user.id] * 5} / ${req * 5} experience.`)
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
                 if (args[0] == undefined){
