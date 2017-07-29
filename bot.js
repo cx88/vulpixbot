@@ -8,6 +8,7 @@ var delet_this = JSON.parse(dlt)["memes"];
 var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
 var config = "";
+var thread = require('sleep');
 
 
 /*
@@ -150,11 +151,18 @@ function saveConfig(cfg){
         paste.edit(url, {
             contents: str
         });
+    });
+    thread.sleep(1);
+    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
+    paste.login('M3rein', 'WorldCrafter112', function(success, data){
+        if (!success){
+            console.log(`Failed (${data})`);
+        }
         paste.get(url, function(success, dat){
             if (success){
                 config = JSON.parse(dat);
             }
-        });
+        }); 
     });
     console.log(`Save successful.`);
 }
