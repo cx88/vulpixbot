@@ -203,17 +203,24 @@ bot.on('guildMemberAdd', member =>{
 });
 
 bot.on('message', message => {
-    console.log(`${message.author.username}: ${message.member.user.id}`);
     var guild = message.guild;
     var id = guild.id;
-    var cfg = config[guild.id.toString()];
-    if (cfg == undefined){
+    if (config[id] == undefined){
         setDefaults(guild);
-        cfg = config[guild.id.toString()];
     }
-    if (!cfg["ignored_channels"].contains(message.channel.name)){
-        if (message.content.startsWith(cfg["prefix"])){
-            cmd = message.content.split(cfg["prefix"])[1].split(' ')[0];
+    if (config[id][message.member.user.id] == undefined){
+        config[id][message.member.user.id] = 0;
+    }
+    else{
+        config[id][message.member.user.id] += 5;
+        if (level_curve.contains(config[id][message.member.user.id])){
+            message.channel.send(`${message.member.user} leveled up to level ${level_curve.indexOf(config[id][message.member.user.id])}!`);
+        }
+    }
+    console.log(`${message.author.username}: ${message.member.user.id}`);
+    if (!config[id]["ignored_channels"].contains(message.channel.name)){
+        if (message.content.startsWith(config[id]["prefix"])){
+            cmd = message.content.split(config[id]["prefix"])[1].split(' ')[0];
             args = message.content.split(" ");
             args.splice(0, 1);
             console.log(dateNow() + ' ' + message.author.username + `: ` + message.content);
@@ -380,7 +387,7 @@ bot.on('message', message => {
                     }
                 }
                 else{
-                    message.channel.send('The prefix for commands is currently `'+cfg["prefix"]+'`.');
+                    message.channel.send('The prefix for commands is currently `'+config[id]["prefix"]+'`.');
                 }
             }
             else if (param == "messages"){
@@ -400,35 +407,34 @@ bot.on('message', message => {
                         if (args[3] != undefined){
                             config[guild.id.toString()]["messages"]["welcome"]["channel"] = args[3];
                             saveConfig(config);
-                            cfg = config[guild.id.toString()];
-                            message.channel.send('The welcome message will now be sent in `' + cfg["messages"]["welcome"]["channel"] + '`.');
+                            message.channel.send('The welcome message will now be sent in `' + config[id]["messages"]["welcome"]["channel"] + '`.');
                         }
                         else{
-                            message.channel.send('The channel the welcome message will be sent in. Currently set to ```' + cfg["messages"]["welcome"]["channel"] + '````Use the following command to change it: ```v-config messages welcome channel [channelname]```Note that it should be the channel **name**, not a hyperlink or id.');
+                            message.channel.send('The channel the welcome message will be sent in. Currently set to ```' + config[id]["messages"]["welcome"]["channel"] + '````Use the following command to change it: ```v-config messages welcome channel [channelname]```Note that it should be the channel **name**, not a hyperlink or id.');
                         }
                     }
                     else{
-                        message.channel.send('The message that is sent whenever a new user joins.```Message: '+cfg["messages"]["welcome"]["msg"]+'\nStatus: '+cfg["messages"]["welcome"]["status"]+'``` \
+                        message.channel.send('The message that is sent whenever a new user joins.```Message: '+config[id]["messages"]["welcome"]["msg"]+'\nStatus: '+config[id]["messages"]["welcome"]["status"]+'``` \
                         Use one of the following commands to change the settings:```v-config messages welcome msg [your welcome message]\nv-config messages welcome on\nv-config messages welcome off```In the welcome message, `(user)` will be replaced with the username.');
                     }
                 }
                 else if (arg == "mute"){
-                    message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+cfg["messages"]["mute"]["msg"]+'\r\nStatus: '+cfg["messages"]["mute"]["status"]+'```');
+                    message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+config[id]["messages"]["mute"]["msg"]+'\r\nStatus: '+config[id]["messages"]["mute"]["status"]+'```');
                 }
                 else{
                     message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off and change the message. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute```');
                 }
             }
             else if (param == "autorole"){
-                message.channel.send('When a new user joins, you can choose for the bot to give them a role.```Role given: '+cfg["autorole"]+'\r\nStatus: '+cfg["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
+                message.channel.send('When a new user joins, you can choose for the bot to give them a role.```Role given: '+config[id]["autorole"]+'\r\nStatus: '+config[id]["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
             }
             else if (param == "ignored_channels"){
                 var msg = 'If a command other than v-config is executed in any of the following channels, it will be ignored:```\n';
-                if (cfg["ignored_channels"].length == 0) { msg += "---"; }
+                if (config[id]["ignored_channels"].length == 0) { msg += "---"; }
                 else{
-                    for (i = 0; i < cfg["ignored_channels"].length; i++){
-                        msg += cfg["ignored_channels"][i];
-                        if (i != cfg["ignored_channels"].length - 1) { msg += '\n'; }
+                    for (i = 0; i < config[id]["ignored_channels"].length; i++){
+                        msg += config[id]["ignored_channels"][i];
+                        if (i != config[id]["ignored_channels"].length - 1) { msg += '\n'; }
                     }
                 }
                 msg += '``` Add or remove a channel with one of the following commands:```v-config ignored_channels add (channelname)\nv-config ignored_channels remove (channelname)```Channelname is the actual name of the channel, not a hyperlink or id.';
@@ -438,7 +444,7 @@ bot.on('message', message => {
                 setDefaults(message.guild);
             }
             else if (param == "show"){
-                message.channel.send('```JavaScript\n'+JSON.stringify(cfg, null, 2)+'```');
+                message.channel.send('```JavaScript\n'+JSON.stringify(config[id], null, 2)+'```');
             }
             else{
                 message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config default\nv-config show```')
