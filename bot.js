@@ -381,7 +381,7 @@ bot.on('message', message => {
                     title: `**Level**`,
                     description: `  ${rank}`,
                     thumbnail: {
-                        "url": "message.member.user.avatarURL"
+                        "url": message.member.user.avatarURL
                     },
                     fields: [{
                         name: "**Level**",
