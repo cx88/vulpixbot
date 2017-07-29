@@ -417,6 +417,10 @@ bot.on('message', message => {
                             ];
                             message.channel.send(`Quote saved!`);
                         }
+                        else{
+                            config[id]["quotes"].push(msg);
+                            message.channel.send(`Quote saved!`);
+                        }
                     }
                 }
 
