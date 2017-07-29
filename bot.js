@@ -120,22 +120,33 @@ function isBotAdmin(member){
 
 function setDefaults(guild){
     var g = guild.id.toString(); // Default Config settings.
-    config[g] = {};
-    config[g]["prefix"] = "!";
-    config[g]["ignored_channels"] = [];
-    config[g]["disabled_commands"] = [];
-    config[g]["ranks"] = {};
-    config[g]["messages"] = {};
-    config[g]["messages"]["welcome"] = {};
-    config[g]["messages"]["welcome"]["msg"] = "Welcome to the server, (user)!";
-    config[g]["messages"]["welcome"]["status"] = "on";
-    config[g]["messages"]["welcome"]["role"] = "Member";
-    config[g]["messages"]["welcome"]["channel"] = "general";
-    config[g]["messages"]["mute"] = {};
-    config[g]["messages"]["mute"]["msg"] = "(user) has been muted!";
-    config[g]["messages"]["mute"]["status"] = "on";
-    config[g]["messages"]["mute"]["role"] = "Muted";
-    config[g]["messages"]["mute"]["channel"] = "general";
+    config[g] = {
+        "prefix": "1",
+        "ignored_channels": [
+
+        ],
+        "disabled_commands": [
+
+        ],
+        "ranks": {
+
+        },
+        "messages": {
+            "welcome": {
+                "msg": "Welcome to the server, (user)!",
+                "status": "on",
+                "role": "Member",
+                "channel": "general"
+            },
+            "mute": {
+                "msg": "(user) has been muted!",
+                "status": "on",
+                "role": "Muted",
+                "channel": "general"
+            }
+        }
+    }
+
     saveConfig(config);
     var role = guild.roles.find("name", "Vulpix Admin");
     if (role == null || role == undefined){
