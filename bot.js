@@ -352,13 +352,13 @@ bot.on('message', message => {
                 var rank = 0;
                 var req = 16;
                 for (i = 0; i < level_curve.length; i++){
-                    if (config[guild]["ranks"][message.member.user.id] == undefined) { break; }
-                    if (level_curve[i] > config[guild]["ranks"][message.member.user.id]){
+                    if (config[id]["ranks"][message.member.user.id] == undefined) { break; }
+                    if (level_curve[i] > config[id]["ranks"][message.member.user.id]){
                         rank = i - 1;
                         req = level_curve[i];
                     }
                 }
-                message.reply(`you are currently level ${rank}. You have ${config[guild]["ranks"][message.member.user.id] * 5} / ${req * 5} experience.`)
+                message.reply(`you are currently level ${rank}. You have ${config[id]["ranks"][message.member.user.id] * 5} / ${req * 5} experience.`)
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
                 if (args[0] == undefined){
@@ -424,7 +424,7 @@ bot.on('message', message => {
                     }
                     else if (setting == "channel"){
                         if (args[3] != undefined){
-                            config[guild.id.toString()]["messages"]["welcome"]["channel"] = args[3];
+                            config[id]["messages"]["welcome"]["channel"] = args[3];
                             saveConfig(config);
                             message.channel.send('The welcome message will now be sent in `' + config[id]["messages"]["welcome"]["channel"] + '`.');
                         }
