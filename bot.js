@@ -177,7 +177,7 @@ function save(){
     console.log(`hi im a very annoying bot`);
 }
 
-setInterval(save, 5000);
+setInterval(saveConfig(config), 5000);
 
 bot.on('ready', () => {
     console.log('Vulpix online');
