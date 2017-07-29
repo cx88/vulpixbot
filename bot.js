@@ -378,8 +378,6 @@ bot.on('message', message => {
                         name: message.member.user.username,
                         icon_url: message.member.user.avatarURL
                     },
-                    title: `**Level**`,
-                    description: `  ${rank}`,
                     thumbnail: {
                         "url": message.member.user.avatarURL
                     },
