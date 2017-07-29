@@ -217,6 +217,7 @@ bot.on('guildMemberAdd', member =>{
 
 bot.on('message', message => {
     var guild = message.guild;
+    var id = guild.id;
     var cfg = config[guild.id.toString()];
     if (cfg == undefined){
         setDefaults(guild);
@@ -385,9 +386,9 @@ bot.on('message', message => {
                         message.channel.send('v- cannot be used as a command prefix.');
                     }
                     else{
-                        config[guild]["prefix"] = setting;
+                        config[id]["prefix"] = setting;
                         config = saveConfig(config);
-                        message.channel.send('Successfully set active command prefix to `'+config[guild]["prefix"]+'`.');
+                        message.channel.send('Successfully set active command prefix to `'+config[id]["prefix"]+'`.');
                     }
                 }
                 else{
