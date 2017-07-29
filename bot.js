@@ -253,12 +253,11 @@ bot.on('guildMemberAdd', member =>{
         var channel = config[member.guild.id.toString()]["messages"]["welcome"]["channel"];
         var msg = config[member.guild.id.toString()]["messages"]["welcome"]["msg"];
         msg = msg.replace('(user)', member.user);
-        console.log(channel);
         if (channelExists(member.guild, channel)){
             getChannel(member.guild, channel).send(msg);
         }
         else{
-            message.channel.send(`Channel ${channel} does not exist as referred to in \`v-config messages welcome channel\`.`);
+            member.channel.send(`Channel ${channel} does not exist as referred to in \`v-config messages welcome channel\`.`);
         }
         
     }
