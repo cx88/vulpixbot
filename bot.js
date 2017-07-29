@@ -362,8 +362,8 @@ bot.on('message', message => {
             }
             else if (cmd == "rank" || cmd == "level"){
                 var user = message.member.user;
-                if (message.mentions.length > 0){
-                    user = message.mentions[0];
+                if (message.mentions.users.length > 0){
+                    user = message.mentions.users.first();
                 }
                 var rank = 0;
                 var req = 16;
