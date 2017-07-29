@@ -144,6 +144,9 @@ function setDefaults(guild){
                 "role": "Muted",
                 "channel": "general"
             }
+        },
+        "quotes": {
+
         }
     }
 
@@ -395,8 +398,27 @@ bot.on('message', message => {
                         inline: true
                     }]
                 }})
-
-//                message.reply(`you are currently level ${rank}. You have ${config[id]["ranks"][message.member.user.id] * 7} / ${req * 7} experience.`)
+            }
+            else if (cmd == "quote"){
+                if (message.mentions.users.first() != undefined){
+                    var user = message.mentions.users.first();
+                    var msg = messages.content.split(config[id]["prefix"]+"quote " + user.username);
+                    if (msg != undefined && msg != null && msg != "" && msg != " "){
+                        if (config[id]["quotes"][user.id] == undefined){
+                            config[id]["quotes"][user.id] = [
+                                msg
+                            ];
+                        }
+                    }
+                    else{
+                        if (config[id]["quotes"][user.id] == undefined || config[id][user.id].length == 0){
+                            message.channel.send(`This user doesn't have any quotes yet!`);
+                        }
+                        else{
+                            message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"].length)]}"\n- ${user.username}`);
+                        }
+                    }
+                }
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
                 if (args[0] == undefined){
