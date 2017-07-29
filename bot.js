@@ -257,7 +257,7 @@ bot.on('guildMemberAdd', member =>{
             getChannel(member.guild, channel).send(msg);
         }
         else{
-            member.channel.send(`Channel ${channel} does not exist as referred to in \`v-config messages welcome channel\`.`);
+            member.guild.defaultChannel.send(`Channel ${channel} does not exist as referred to in \`v-config messages welcome channel\`.`);
         }
         
     }
@@ -582,7 +582,7 @@ bot.on('message', message => {
                             message.channel.send('The welcome message will now be sent in `' + config[id]["messages"]["welcome"]["channel"] + '`.');
                         }
                         else{
-                            message.channel.send('The channel the welcome message will be sent in. Currently set to ```' + config[id]["messages"]["welcome"]["channel"] + '````Use the following command to change it: ```v-config messages welcome channel [channelname]```Note that it should be the channel **name**, not a hyperlink or id.');
+                            message.channel.send('The channel the welcome message will be sent in. Currently set to ```' + config[id]["messages"]["welcome"]["channel"] + '```Use the following command to change it: ```v-config messages welcome channel [channelname]```Note that it should be the channel **name**, not a hyperlink or id.');
                         }
                     }
                     else{
