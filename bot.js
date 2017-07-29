@@ -173,6 +173,8 @@ function rand(int){
     return Math.floor(Math.random() * parseInt(int));
 }
 
+setInterval(console.log(`hi im an annoying bot`, 5000));
+
 bot.on('ready', () => {
     console.log('Vulpix online');
     bot.user.setGame("Type v-config");
