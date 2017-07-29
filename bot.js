@@ -195,7 +195,7 @@ function setDefaults(guild){
         }
     }
 
-    saveConfig(config);
+    saveConfig();
     var role = guild.roles.find("name", "Vulpix Admin");
     if (role == null || role == undefined){
         guild.createRole({
@@ -218,8 +218,8 @@ function setDefaults(guild){
     }
 }
 
-function saveConfig(cfg){
-    var str = JSON.stringify(cfg, null, 2);
+function saveConfig(){
+    var str = JSON.stringify(config, null, 2);
     paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
     paste.login('M3rein', 'WorldCrafter112', function(success, data){
         paste.edit(url, {
@@ -232,9 +232,7 @@ function rand(int){
     return Math.floor(Math.random() * parseInt(int));
 }
 
-function save() { saveConfig(config); }
-
-setInterval(save, 30000);
+setInterval(saveConfig, 30000);
 
 bot.on('ready', () => {
     console.log('Vulpix online');
@@ -266,6 +264,7 @@ bot.on('guildMemberAdd', member =>{
 });
 
 bot.on('message', message => {
+    if (message.member.user.id == '159985870458322944') return;
     var guild = message.guild;
     var id = guild.id;
     if (config[id] == undefined){
@@ -532,7 +531,7 @@ bot.on('message', message => {
                     }
                     else{
                         config[id]["prefix"] = setting;
-                        saveConfig(config);
+                        saveConfig();
                         message.channel.send('Successfully set active command prefix to `'+config[id]["prefix"]+'`.');
                     }
                 }
@@ -546,17 +545,34 @@ bot.on('message', message => {
                 if (arg == "welcome"){
                     if (setting == "msg"){
                         var msg = message.content.split('v-config messages welcome msg ')[1];
+                        config[id]["messages"]["welcome"]["msg"] = msg;
+                        saveConfig();
+                        message.channel.send(`Successfully set welcome message to \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\``);
                     }
                     else if (setting == "on"){
-
+                        if (config[id]["messages"]["welcome"]["status"] == "on"){
+                            message.channel.send(`The welcome message was already enabled. Nothing happened.`);
+                        }
+                        else{
+                            config[id]["messages"]["welcome"]["status"] = "on";
+                            saveConfig();
+                            message.channel.send(`The welcome message will now be sent for every new member that joins the server.`);
+                        }
                     }
                     else if (setting == "off"){
-
+                        if (config[id]["messages"]["welcome"]["status"] == "off"){
+                            message.channel.send(`The welcome message was already disabled. Nothing happened.`);
+                        }
+                        else{
+                            config[id]["messages"]["welcome"]["status"] = "off";
+                            saveConfig();
+                            message.channel.send(`The welcome message will no longer be sent for every new member that joins the server.`);
+                        }
                     }
                     else if (setting == "channel"){
                         if (args[3] != undefined){
                             config[id]["messages"]["welcome"]["channel"] = args[3];
-                            saveConfig(config);
+                            saveConfig();
                             message.channel.send('The welcome message will now be sent in `' + config[id]["messages"]["welcome"]["channel"] + '`.');
                         }
                         else{
