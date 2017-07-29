@@ -354,11 +354,14 @@ bot.on('message', message => {
                 for (i = 0; i < level_curve.length; i++){
                     if (config[id]["ranks"][message.member.user.id] == undefined) { break; }
                     if (level_curve[i] > config[id]["ranks"][message.member.user.id]){
+                        console.log(level_curve[i]);
+                        console.log(config[id]["ranks"][message.member.user.id]);
+                        console.log(i);
                         rank = i - 1;
                         req = level_curve[i];
                     }
                 }
-                message.reply(`you are currently level ${rank}. You have ${config[id]["ranks"][message.member.user.id] * 5} / ${req * 5} experience.`)
+                message.reply(`you are currently level ${rank}. You have ${config[id]["ranks"][message.member.user.id] * 7} / ${req * 7} experience.`)
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
                 if (args[0] == undefined){
