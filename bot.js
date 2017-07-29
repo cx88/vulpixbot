@@ -157,7 +157,16 @@ bot.on('guildMemberAdd', member =>{
     if (config[member.guild.id.toString()]["messages"]["welcome"]["status"] == "on"){
         var msg = config[member.guild.id.toString()]["messages"]["welcome"]["msg"];
         msg = msg.replace('(user)', member.user.username);
-        member.guild.defaultChannel.send(msg);
+//        member.guild.defaultChannel.send(msg);
+        
+        var channel = bot.guilds.get(message.guild.id).channels.find('name', config[member.guild.id.toString()]["messages"]["welcome"]["channel"]);
+        if (channel != null && channel != undefined){
+            channel.send(msg);
+        }
+        else{
+            message.channel.send('Channel ' + config[member.guild.id.toString()]["messages"]["welcome"]["channel"] + 'does not exist in `v-config messages welcome channel`.');
+        }
+        
     }
 });
 
