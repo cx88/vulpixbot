@@ -30,6 +30,51 @@ var level_curve = [ 0,
     11932, 13664, 15442, 17814, 20000  // 36 - 40
 ]
 
+var fortune = [
+    "Most certainly.",
+    "I dare say so.",
+    "I can say that that is so.",
+    "Naturally.",
+    "Without a doubt.",
+    "Obviously.",
+    "Destined to be.",
+    "Yes.",
+    "Of course.",
+
+    "Not a chance.",
+    "Never.",
+    "I estimate your chance at circa 0.1%.",
+    "No.",
+    "How could you even think so.",
+    "I have yet to see something this ridiculous.",
+    "The sun is rather to burn out this era.",
+    "You would have lost a lot of money if you bet.",
+    "Four eagles. That means no."
+]
+
+var magic8ball = [
+    "It is certain.",
+    "It is decidedly so.",
+    "Without a doubt.",
+    "Yes - definitely.",
+    "You may rely on it.",
+    "As I see it, yes.",
+    "Most likely.",
+    "Outlook good.",
+    "Yes.",
+    "Signs point to yes.",
+    "Reply hazy, try again.",
+    "Ask again later.",
+    "Better not tell you now.",
+    "Cannot predict now.",
+    "Concentrate and ask again.",
+    "Don't count on it.",
+    "My reply is no.",
+    "My sources say no.",
+    "Outlook not so good.",
+    "Very doubtful."
+]
+
 /*
 {
   CREATE_INSTANT_INVITE: true,
@@ -399,17 +444,21 @@ bot.on('message', message => {
                     }]
                 }})
             }
+            else if (cmd == "fortune" || cmd == "fortuna"){
+                message.channel.send(fortune[rand(fortune.length)]);
+            }
+            else if (cmd == "8ball" || "8-ball"){
+                message.channel.send(magic8ball[rand(magic8ball.length)]);
+            }
             else if (cmd == "quote"){
                 var username = args[0];
                 username = username.replace("%20", " ");
-                console.log(username);
                 var user = message.guild.members.find(m => m.user.username.toLowerCase() === username.toLowerCase());
                 if (user == null){
                     message.channel.send(`User not found.`);
                 }
                 else{
                     var msg = message.content.split(`${config[id]["prefix"]}quote ${username} `)[1];
-                    console.log(msg);
                     if (msg != "" && msg != null && msg != undefined && msg != " "){
                         if (config[id]["quotes"][user.id] == undefined){
                             config[id]["quotes"][user.id] = [
@@ -433,7 +482,6 @@ bot.on('message', message => {
             else if (cmd == "clearquote" || cmd == "clearquotes" && isBotAdmin(message.member)){
                 var username = args[0];
                 username = username.replace("%20", " ");
-                console.log(username);
                 var user = message.guild.members.find(m => m.user.username.toLowerCase() === username.toLowerCase());
                 if (user == null){
                     message.channel.send(`User not found.`);
