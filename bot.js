@@ -212,7 +212,7 @@ bot.on('message', message => {
         config[id][message.member.user.id] = 0;
     }
     else{
-        config[id][message.member.user.id] += 5;
+        config[id][message.member.user.id]++;
         if (level_curve.contains(config[id][message.member.user.id])){
             message.channel.send(`${message.member.user} leveled up to level ${level_curve.indexOf(config[id][message.member.user.id])}!`);
         }
