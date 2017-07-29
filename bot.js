@@ -19,7 +19,16 @@ paste.login('M3rein', 'WorldCrafter112', function(success, data){
         }
     });
 });
-
+var level_curve = [ 0,
+    8,    18,   31,   45,   61,   // 1 - 5
+    78,   96,   117,  140,  165,  // 6 - 10
+    194,  228,  257,  289,  328,  // 11 - 15
+    364,  420,  492,  572,  651,  // 16 - 20
+    727,  812,  914,  1053, 1192, // 21 - 25
+    1385, 1596, 1863, 2145, 2484, // 26 - 30
+    2881, 3333, 3892, 4578, 5199, // 31 - 35
+    5966, 6832, 7721, 8907, 10000 // 36 - 40
+]
 
 /*
 {
@@ -110,12 +119,12 @@ function isBotAdmin(member){
 }
 
 function setDefaults(guild){
-    console.log(`Resetting current guild to the default values.`);
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {};
     config[g]["prefix"] = "!";
     config[g]["ignored_channels"] = [];
     config[g]["disabled_commands"] = [];
+    config[g]["ranks"] = {};
     config[g]["messages"] = {};
     config[g]["messages"]["welcome"] = {};
     config[g]["messages"]["welcome"]["msg"] = "Welcome to the server, (user)!";
@@ -151,33 +160,13 @@ function setDefaults(guild){
 }
 
 function saveConfig(cfg){
-    console.log(`Saving...`);
     var str = JSON.stringify(cfg, null, 2);
     paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
     paste.login('M3rein', 'WorldCrafter112', function(success, data){
-        if (!success){
-            console.log(`Failed (${data})`);
-        }
         paste.edit(url, {
             contents: str
         });
     });
-//    var w = new Date(new Date().getTime() + 500);
-//    while (w > new Date()){}
-//    var cnfg = "";
-//    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
-//    paste.login('M3rein', 'WorldCrafter112', function(success, data){
-//        if (!success){
-//            console.log(`Failed (${data})`);
-//        }
-//        paste.get(url, function(success, dat){
-//            if (success){
-//                cnfg = JSON.parse(dat);
-//            }
-//        }); 
-//    });
-    console.log(`Save successful.`);
-//    return cnfg;
 }
 
 function rand(int){
@@ -214,6 +203,7 @@ bot.on('guildMemberAdd', member =>{
 });
 
 bot.on('message', message => {
+    console.log(`${message.author.username}: ${message.author.username.id}`);
     var guild = message.guild;
     var id = guild.id;
     var cfg = config[guild.id.toString()];
