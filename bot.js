@@ -400,12 +400,13 @@ bot.on('message', message => {
                 }})
             }
             else if (cmd == "quote"){
-                if (message.mentions.users.first() != undefined){
-                    var user = message.mentions.users.first();
-                    var msg = message.content.split(`${config[id]["prefix"]}quote ${user} `)[1];
-                    console.log(msg);
-                    if (msg != undefined && msg != null && msg != "" && msg != " "){
-                        if (config[id]["quotes"][user.id] == undefined){
+                var username = args[0];
+                var user = bot.guild.members.find(m => m.user.username.toLowerCase().includes(username));
+                message.channel.send(user);
+
+
+
+/*                        if (config[id]["quotes"][user.id] == undefined){
                             config[id]["quotes"][user.id] = [
                                 msg
                             ];
@@ -420,7 +421,7 @@ bot.on('message', message => {
                             message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"].length)]}"\n- ${user.username}`);
                         }
                     }
-                }
+                }*/
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
                 if (args[0] == undefined){
