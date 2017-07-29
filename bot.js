@@ -186,7 +186,7 @@ function rand(int){
 
 function save() { saveConfig(config); }
 
-setInterval(save, 60000);
+setInterval(save, 30000);
 
 bot.on('ready', () => {
     console.log('Vulpix online');
@@ -362,11 +362,8 @@ bot.on('message', message => {
             }
             else if (cmd == "rank" || cmd == "level"){
                 var user = message.member.user;
-                if (args[0] != undefined){
-                    try{
-                        user = message.mentions[0];
-                    }
-                    catch (error){ }
+                if (message.mentions.length > 0){
+                    user = message.mentions[0];
                 }
                 var rank = 0;
                 var req = 16;
