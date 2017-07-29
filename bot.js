@@ -545,9 +545,15 @@ bot.on('message', message => {
                 if (arg == "welcome"){
                     if (setting == "msg"){
                         var msg = message.content.split('v-config messages welcome msg ')[1];
-                        config[id]["messages"]["welcome"]["msg"] = msg;
-                        saveConfig();
-                        message.channel.send(`Successfully set welcome message to \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\``);
+                        if (msg == null || msg == undefined || msg == "" || msg == " "){
+                            message.channel.send(`The current welcoming message is: \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\`\nUse this command to change the message: \
+                            \`\`\`v-config messages welcome msg [message]\`\`\`Keep in mind that (user) inside the message will be replaced with the joinig player's name.`);
+                        }
+                        else{
+                            config[id]["messages"]["welcome"]["msg"] = msg;
+                            saveConfig();
+                            message.channel.send(`Successfully set welcome message to \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\``);
+                        }
                     }
                     else if (setting == "on"){
                         if (config[id]["messages"]["welcome"]["status"] == "on"){
@@ -580,8 +586,7 @@ bot.on('message', message => {
                         }
                     }
                     else{
-                        message.channel.send('The message that is sent whenever a new user joins.```Message: '+config[id]["messages"]["welcome"]["msg"]+'\nStatus: '+config[id]["messages"]["welcome"]["status"]+'``` \
-                        Use one of the following commands to change the settings:```v-config messages welcome msg [your welcome message]\nv-config messages welcome on\nv-config messages welcome off```In the welcome message, `(user)` will be replaced with the username.');
+                        message.channel.send('The message that is sent whenever a new user joins.```Message: '+config[id]["messages"]["welcome"]["msg"]+'\nStatus: '+config[id]["messages"]["welcome"]["status"]+'\nChannel: '+config[id]["messages"]["welcome"]["channel"]+'```Use one of the following commands to change the settings:```v-config messages welcome msg [your welcome message]\nv-config messages welcome on\nv-config messages welcome off```In the welcome message, `(user)` will be replaced with the username.');
                     }
                 }
                 else if (arg == "mute"){
