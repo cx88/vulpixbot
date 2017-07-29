@@ -410,7 +410,7 @@ bot.on('message', message => {
                 else{
                     var msg = message.content.split(`${config[id]["prefix"]}quote ${username} `)[1];
                     console.log(msg);
-                    if (msg != "" || msg != null){
+                    if (msg != "" && msg != null && msg != undefined && msg != " "){
                         if (config[id]["quotes"][user.id] == undefined){
                             config[id]["quotes"][user.id] = [
                                 msg
@@ -421,6 +421,9 @@ bot.on('message', message => {
                             config[id]["quotes"][user.id].push(msg);
                             message.channel.send(`Quote saved!`);
                         }
+                    }
+                    else{
+                        message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"][user.id].length)]}"\n - ${username}`);
                     }
                 }
 
