@@ -586,7 +586,7 @@ bot.on('message', message => {
                         }
                     }
                     else{
-                        message.channel.send('The message that is sent whenever a new user joins.```Message: '+config[id]["messages"]["welcome"]["msg"]+'\nStatus: '+config[id]["messages"]["welcome"]["status"]+'\nChannel: '+config[id]["messages"]["welcome"]["channel"]+'```Use one of the following commands to change the settings:```v-config messages welcome msg [your welcome message]\nv-config messages welcome on\nv-config messages welcome off```In the welcome message, `(user)` will be replaced with the username.');
+                        message.channel.send('The message that is sent whenever a new user joins.```Message: '+config[id]["messages"]["welcome"]["msg"]+'\nStatus: '+config[id]["messages"]["welcome"]["status"]+'\nChannel: '+config[id]["messages"]["welcome"]["channel"]+'```\nUse one of the following commands to change the settings:```v-config messages welcome msg [message]\nv-config messages welcome on\nv-config messages welcome off\nv-config messages welcome channel [channelname]```In the welcome message, `(user)` will be replaced with the username.');
                     }
                 }
                 else if (arg == "mute"){
