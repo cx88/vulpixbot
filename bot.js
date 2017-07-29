@@ -8,7 +8,17 @@ var delet_this = JSON.parse(dlt)["memes"];
 var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
 var config = "";
-//var thread = require('sleep');
+paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
+paste.login('M3rein', 'WorldCrafter112', function(success, data){
+    if (!success){
+        console.log(`Failed (${data})`);
+    }
+    paste.get(url, function(success, data){
+        if (success){
+            config = JSON.parse(data);
+        }
+    });
+});
 
 
 /*
@@ -117,7 +127,7 @@ function setDefaults(guild){
     config[g]["messages"]["mute"]["status"] = "on";
     config[g]["messages"]["mute"]["role"] = "Muted";
     config[g]["messages"]["mute"]["channel"] = "general";
-    config = saveConfig(config);
+    saveConfig(config);
     var role = guild.roles.find("name", "Vulpix Admin");
     if (role == null || role == undefined){
         guild.createRole({
@@ -152,22 +162,22 @@ function saveConfig(cfg){
             contents: str
         });
     });
-    var w = new Date(new Date().getTime() + 500);
-    while (w > new Date()){}
-    var cnfg = "";
-    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
-    paste.login('M3rein', 'WorldCrafter112', function(success, data){
-        if (!success){
-            console.log(`Failed (${data})`);
-        }
-        paste.get(url, function(success, dat){
-            if (success){
-                cnfg = JSON.parse(dat);
-            }
-        }); 
-    });
+//    var w = new Date(new Date().getTime() + 500);
+//    while (w > new Date()){}
+//    var cnfg = "";
+//    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
+//    paste.login('M3rein', 'WorldCrafter112', function(success, data){
+//        if (!success){
+//            console.log(`Failed (${data})`);
+//        }
+//        paste.get(url, function(success, dat){
+//            if (success){
+//                cnfg = JSON.parse(dat);
+//            }
+//        }); 
+//    });
     console.log(`Save successful.`);
-    return cnfg;
+//    return cnfg;
 }
 
 function rand(int){
@@ -175,18 +185,6 @@ function rand(int){
 }
 
 bot.on('ready', () => {
-    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
-    paste.login('M3rein', 'WorldCrafter112', function(success, data){
-        if (!success){
-            console.log(`Failed (${data})`);
-        }
-        paste.get(url, function(success, data){
-            if (success){
-                config = JSON.parse(data);
-            }
-        });
-    });
-
     console.log('Vulpix online');
     bot.user.setGame("Type v-config");
 });
@@ -387,7 +385,7 @@ bot.on('message', message => {
                     }
                     else{
                         config[id]["prefix"] = setting;
-                        config = saveConfig(config);
+                        saveConfig(config);
                         message.channel.send('Successfully set active command prefix to `'+config[id]["prefix"]+'`.');
                     }
                 }
@@ -411,7 +409,7 @@ bot.on('message', message => {
                     else if (setting == "channel"){
                         if (args[3] != undefined){
                             config[guild.id.toString()]["messages"]["welcome"]["channel"] = args[3];
-                            config = saveConfig(config);
+                            saveConfig(config);
                             cfg = config[guild.id.toString()];
                             message.channel.send('The welcome message will now be sent in `' + cfg["messages"]["welcome"]["channel"] + '`.');
                         }
