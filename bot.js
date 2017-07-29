@@ -368,22 +368,22 @@ bot.on('message', message => {
                 var rank = 0;
                 var req = 16;
                 for (i = 0; i < level_curve.length; i++){
-                    if (config[id]["ranks"][message.member.user.id] == undefined) { break; }
-                    if (level_curve[i] > config[id]["ranks"][message.member.user.id]){
+                    if (config[id]["ranks"][user.id] == undefined) { break; }
+                    if (level_curve[i] > config[id]["ranks"][user.id]){
                         rank = i - 1;
                         req = level_curve[i];
                         break;
                     }
                 }
-                var exp = config[id]["ranks"][message.member.user.id] * 7 + " / " + req * 7;
+                var exp = config[id]["ranks"][user.id] * 7 + " / " + req * 7;
                 message.channel.send({embed:{
                     color: 10876925,
                     author: {
-                        name: message.member.user.username,
-                        icon_url: message.member.user.avatarURL
+                        name: user.username,
+                        icon_url: user.avatarURL
                     },
                     thumbnail: {
-                        "url": message.member.user.avatarURL
+                        "url": user.avatarURL
                     },
                     fields: [{
                         name: "**Level**",
