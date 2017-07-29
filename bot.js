@@ -385,12 +385,9 @@ bot.on('message', message => {
                         message.channel.send('v- cannot be used as a command prefix.');
                     }
                     else{
-                        cfg["prefix"] = setting;
-                        console.log(cfg["prefix"]);
-                        console.log(config[message.guild.id.toString()]["prefix"]);
+                        config[guild]["prefix"] = setting;
                         config = saveConfig(config);
-                        cfg = config[guild.id.toString()];
-                        message.channel.send('Successfully set active command prefix to `'+cfg["prefix"]+'`.');
+                        message.channel.send('Successfully set active command prefix to `'+config[guild]["prefix"]+'`.');
                     }
                 }
                 else{
