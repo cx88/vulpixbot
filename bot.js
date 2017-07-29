@@ -174,7 +174,7 @@ function rand(int){
 }
 
 function save(){
-    console.log(`hi im an annoying bot`);
+    console.log(`hi im a very annoying bot`);
 }
 
 setInterval(save(), 5000);
