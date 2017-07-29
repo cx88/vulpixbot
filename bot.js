@@ -145,8 +145,6 @@ function saveConfig(cfg){
             }
         });
     });
-
-    config = JSON.parse(servers);
 }
 
 function rand(int){
