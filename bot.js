@@ -359,6 +359,7 @@ bot.on('message', message => {
                         console.log(i);
                         rank = i - 1;
                         req = level_curve[i];
+                        break;
                     }
                 }
                 message.reply(`you are currently level ${rank}. You have ${config[id]["ranks"][message.member.user.id] * 7} / ${req * 7} experience.`)
