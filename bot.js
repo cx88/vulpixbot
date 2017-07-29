@@ -172,7 +172,6 @@ bot.on('ready', () => {
         paste.get(url, function(success, data){
             if (success){
                 config = JSON.parse(data);
-                console.log(config);
             }
         });
     });
