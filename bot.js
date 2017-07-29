@@ -173,7 +173,11 @@ function rand(int){
     return Math.floor(Math.random() * parseInt(int));
 }
 
-setInterval(console.log(`hi im an annoying bot`), 5000);
+function save(){
+    console.log(`hi im an annoying bot`);
+}
+
+setInterval(save(), 5000);
 
 bot.on('ready', () => {
     console.log('Vulpix online');
