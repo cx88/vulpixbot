@@ -403,7 +403,10 @@ bot.on('message', message => {
                 var username = args[0];
                 username = username.replace("%20", " ");
                 console.log(username);
-                var user = message.guild.members.find(m => m.user.username === username);
+                var user = message.guild.members.find(m => m.user.username.toLowerCase() === username.toLowerCase());
+                if (user == null){
+                    user = message.guild.members.find(m => m.user.name.toLowerCase() === username.toLowerCase());
+                }
                 console.log(user);
 
 
