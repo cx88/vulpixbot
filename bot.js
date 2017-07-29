@@ -117,7 +117,7 @@ function setDefaults(guild){
     config[g]["messages"]["mute"]["status"] = "on";
     config[g]["messages"]["mute"]["role"] = "Muted";
     config[g]["messages"]["mute"]["channel"] = "general";
-    saveConfig(config);
+    config = saveConfig(config);
     var role = guild.roles.find("name", "Vulpix Admin");
     if (role == null || role == undefined){
         guild.createRole({
@@ -152,8 +152,9 @@ function saveConfig(cfg){
             contents: str
         });
     });
-    var w = new Date(new Date().getTime() + 2000);
+    var w = new Date(new Date().getTime() + 500);
     while (w > new Date()){}
+    var cnfg = "";
     paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
     paste.login('M3rein', 'WorldCrafter112', function(success, data){
         if (!success){
@@ -161,11 +162,12 @@ function saveConfig(cfg){
         }
         paste.get(url, function(success, dat){
             if (success){
-                config = JSON.parse(dat);
+                cnfg = JSON.parse(dat);
             }
         }); 
     });
     console.log(`Save successful.`);
+    return cnfg;
 }
 
 function rand(int){
@@ -383,8 +385,10 @@ bot.on('message', message => {
                         message.channel.send('v- cannot be used as a command prefix.');
                     }
                     else{
-                        config[message.guild.id.toString()]["prefix"] = setting;
-                        saveConfig(config);
+                        cfg["prefix"] = setting;
+                        console.log(cfg["prefix"]);
+                        console.log(config[message.guild.id.toString()]["prefix"]);
+                        config = saveConfig(config);
                         cfg = config[guild.id.toString()];
                         message.channel.send('Successfully set active command prefix to `'+cfg["prefix"]+'`.');
                     }
@@ -409,7 +413,7 @@ bot.on('message', message => {
                     else if (setting == "channel"){
                         if (args[3] != undefined){
                             config[guild.id.toString()]["messages"]["welcome"]["channel"] = args[3];
-                            saveConfig(config);
+                            config = saveConfig(config);
                             cfg = config[guild.id.toString()];
                             message.channel.send('The welcome message will now be sent in `' + cfg["messages"]["welcome"]["channel"] + '`.');
                         }
