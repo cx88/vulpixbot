@@ -203,7 +203,7 @@ bot.on('guildMemberAdd', member =>{
 });
 
 bot.on('message', message => {
-    console.log(`${message.author.username}: ${message.author.user.id}`);
+    console.log(`${message.author.username}: ${message.member.user.id}`);
     var guild = message.guild;
     var id = guild.id;
     var cfg = config[guild.id.toString()];
