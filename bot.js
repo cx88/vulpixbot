@@ -130,14 +130,14 @@ function setDefaults(guild){
 }
 
 function saveConfig(cfg){
-    var data = JSON.stringify(cfg, null, 2);
+    var str = JSON.stringify(cfg, null, 2);
     paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
     paste.login('M3rein', 'WorldCrafter112', function(success, data){
         if (!success){
             console.log(`Failed (${data})`);
         }
         paste.edit(url, {
-            contents: data
+            contents: str
         });
         paste.get(url, function(success, data){
             if (success){
@@ -160,6 +160,7 @@ bot.on('ready', () => {
         paste.get(url, function(success, data){
             if (success){
                 config = JSON.parse(data);
+                console.log(config);
             }
         });
     });
