@@ -362,6 +362,10 @@ bot.on('message', message => {
             }
             else if (cmd == "rank" || cmd == "level"){
                 var user = message.member.user;
+                message.channel.send(message.mentions);
+                message.channel.send(message.mentions.length);
+                message.channel.send(message.mentions.users);
+                message.channel.send(message.mentions.users.length);
                 if (message.mentions.users.length > 0){
                     user = message.mentions.users.first();
                 }
