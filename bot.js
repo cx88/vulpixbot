@@ -426,25 +426,18 @@ bot.on('message', message => {
                         message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"][user.id].length)]}"\n - ${username}`);
                     }
                 }
-
-
-
-/*                        if (config[id]["quotes"][user.id] == undefined){
-                            config[id]["quotes"][user.id] = [
-                                msg
-                            ];
-                            message.channel.send(`Quote saved!`);
-                        }
-                    }
-                    else{
-                        if (config[id]["quotes"][user.id] == undefined || config[id][user.id].length == 0){
-                            message.channel.send(`This user doesn't have any quotes yet!`);
-                        }
-                        else{
-                            message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"].length)]}"\n- ${user.username}`);
-                        }
-                    }
-                }*/
+            }
+            else if (cmd == "clearquote" || cmd == "clearquotes"){
+                var username = args[0];
+                username = username.replace("%20", " ");
+                console.log(username);
+                var user = message.guild.members.find(m => m.user.username.toLowerCase() === username.toLowerCase());
+                if (user == null){
+                    message.channel.send(`User not found.`);
+                }
+                else{
+                    config[id]["quotes"][user.id] = [];
+                }
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
                 if (args[0] == undefined){
