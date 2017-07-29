@@ -172,12 +172,12 @@ bot.on('ready', () => {
 bot.on('guildCreate', guild =>{
     console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
     guild.defaultChannel.send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
-    setDefaults();
+    setDefaults(guild);
 })
 
 bot.on('guildMemberAdd', member =>{
     if (config[member.guild.id.toString()] == undefined){
-        setDefaults();
+        setDefaults(member.guild);
     }
     if (config[member.guild.id.toString()]["messages"]["welcome"]["status"] == "on"){
         var channel = config[member.guild.id.toString()]["messages"]["welcome"]["channel"];
