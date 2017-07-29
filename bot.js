@@ -152,7 +152,8 @@ function saveConfig(cfg){
             contents: str
         });
     });
-//    thread.sleep(1);
+    var w = new Date(new Date().getTime() + 1000);
+    while (w > new Date()){}
     paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
     paste.login('M3rein', 'WorldCrafter112', function(success, data){
         if (!success){
