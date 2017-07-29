@@ -371,6 +371,7 @@ bot.on('message', message => {
                         break;
                     }
                 }
+                var exp = config[id]["ranks"][message.member.user.id] * 7 + " / " + req * 7;
                 message.channel.send({embed:{
                     color: 10876925,
                     author: {
@@ -378,7 +379,19 @@ bot.on('message', message => {
                         icon_url: message.member.user.avatarURL
                     },
                     title: `**Level**`,
-                    description: `${rank}`
+                    description: `  ${rank}`,
+                    thumbnail: {
+                        "url": "message.member.user.avatarURL"
+                    },
+                    fields: [{
+                        name: "**Level**",
+                        value: "  " + rank,
+                        inline: true
+                    },{
+                        name: "**Experience**",
+                        value: exp,
+                        inline: true
+                    }]
                 }})
 
 //                message.reply(`you are currently level ${rank}. You have ${config[id]["ranks"][message.member.user.id] * 7} / ${req * 7} experience.`)
