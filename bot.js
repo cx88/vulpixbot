@@ -401,7 +401,7 @@ bot.on('message', message => {
             }
             else if (cmd == "quote"){
                 var username = args[0];
-                var user = bot.guild.members.find(m => m.user.username.toLowerCase().includes(username));
+                var user = message.guild.members.find(m => m.user.username.toLowerCase().includes(username));
                 message.channel.send(user);
 
 
