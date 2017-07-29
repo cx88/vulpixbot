@@ -422,7 +422,7 @@ bot.on('message', message => {
                             message.channel.send(`Quote saved!`);
                         }
                     }
-                    else if (config[id]["quotes"][user.id] == undefined && config[id]["quotes"][user.id].length == 0){
+                    else if (config[id]["quotes"][user.id] == undefined || config[id]["quotes"][user.id].length == 0){
                         message.channel.send(`This user doesn't have any quotes saved!`);
                     }
                     else{
