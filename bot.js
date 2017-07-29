@@ -8,7 +8,7 @@ var delet_this = JSON.parse(dlt)["memes"];
 var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
 var config = "";
-var thread = require('sleep');
+//var thread = require('sleep');
 
 
 /*
@@ -152,7 +152,7 @@ function saveConfig(cfg){
             contents: str
         });
     });
-    thread.sleep(1);
+//    thread.sleep(1);
     paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
     paste.login('M3rein', 'WorldCrafter112', function(success, data){
         if (!success){
