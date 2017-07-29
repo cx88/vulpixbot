@@ -401,7 +401,7 @@ bot.on('message', message => {
             }
             else if (cmd == "quote"){
                 var username = args[0];
-                username.replace("%20", " ");
+                username = username.replace("%20", " ");
                 console.log(username);
                 var user = message.guild.members.find(m => m.user.username === username);
                 console.log(user);
