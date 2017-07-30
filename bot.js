@@ -374,7 +374,7 @@ bot.on('message', message => {
                     evolutions = poke.evolutions.join("\n");
                     evolutions += "\n";
                 }
-                var kind = `${args[0].capitalize()}, the ${poke.kind} Pokémon.`;
+                var kind = `${args[0].capitalize() == "Type:" ? "Type: Null" : args[0].capitalize()}, the ${poke.kind} Pokémon.`;
                 var desc = poke.desc;
                 var embed = {
                     embed: {
