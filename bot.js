@@ -333,7 +333,7 @@ bot.on('message', message => {
                 var tmp = fs.readFileSync('database/colors.json');
                 var colors = JSON.parse(tmp);
                 var color = colors[poke.type1.toLowerCase()];
-                var types = `**Types:** ${poke.type1} ${poke.type2 != "Unknown" ? `| ${poke.type2}` : ""}`;
+                var types = `**Types:** ${poke.type1} ${poke.type2 != "Unknown" && poke.type2 != undefined ? `| ${poke.type2}` : ""}`;
                 var s = poke.stats
                 var stats = `**Base Stats**: ${s[0]} | ${s[1]} | ${s[2]} | ${s[3]} | ${s[4]} | ${s[5]}`;
                 var abilities = `Normal: ${getAbility(poke.ability1)} ${poke.ability2 != undefined ? "| " + getAbility(poke.ability2) : ""}`;
@@ -352,12 +352,14 @@ bot.on('message', message => {
                 var exp = `**Base EXP**: ${poke.base_exp}`;
                 var catchrate = `**Catch Rate**: ${poke.catchrate}`;
                 var evyield = `**EV Yield**: `;
-                var stats = [`HP`, `Atk`, `Def`, `SpAtk`, `SpDef`, `Speed`]
+                var evs = [];
+                var _stats = [`HP`, `Atk`, `Def`, `SpAtk`, `SpDef`, `Speed`]
                 for (i = 0; i < poke.evyield.length; i++){
                     if (poke.evyield[i] > 0){
-                        evyield += `${poke.evyield[i]} ${stats[i]}, `
+                        evs += `${poke.evyield[i]} ${_stats[i]}`;
                     }
                 }
+                evyield += evs.join(', ');
                 evyield.split(',')
                     .splice(-1, 1)
                     .join(',');
@@ -371,7 +373,7 @@ bot.on('message', message => {
                     evolutions = poke.evolutions.join("\n");
                     evolutions += "\n";
                 }
-                var kind = `${args[0].capitalize}, the ${poke.kind} Pokémon.`;
+                var kind = `${args[0].capitalize()}, the ${poke.kind} Pokémon.`;
                 var desc = poke.desc;
                 var embed = {
                     embed: {
