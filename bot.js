@@ -358,15 +358,17 @@ bot.on('message', message => {
                         evyield += `${poke.evyield[i]} ${stats[i]}, `
                     }
                 }
-                evyield.split(', ').join(', ')
+                evyield.split(', ')
+                    .slice(0, -1)
+                    .join(', ')
                 var hatchtime = `${poke.hatchtime} steps`
                 var shuffle = poke.shuffle;
                 var image = poke.url;
                 console.log(`shuffle: ${shuffle}`);
                 console.log(`image: ${image}`);
-                var evolutions;
+                var evolutions = "";
                 if (poke.evolutions != undefined && poke.evolutions.length > 0){
-                    var evolutions = poke.evolutions.join("\n");
+                    evolutions = poke.evolutions.join("\n");
                 }
                 var embed = {
                     embed: {
