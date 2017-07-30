@@ -523,6 +523,16 @@ bot.on('message', message => {
             else if (cmd == "8ball" || cmd == "8-ball"){
                 message.channel.send(magic8ball[rand(magic8ball.length)]);
             }
+            else if (cmd == "eval" || cmd == "evaluate"){
+                var str = message.content.split(` `).splice(0, 1).join(` `);
+                console.log(str);
+                try{
+                   message.channel.send(eval(str));
+                }
+                catch (err){
+                    message.channel.send(`Failed to evaluate expression.`);
+                }
+            }
             else if (cmd == "quote"){
                 if (args[0] == undefined) {
                     message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that the user should be their **name**, not a tag, nickname, or id.`);
