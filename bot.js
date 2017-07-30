@@ -380,7 +380,7 @@ bot.on('message', message => {
                         }
                     }
                 }
-                if (shuffle != undefined){
+                if (shuffle != undefined && shuffle != null && shuffle != ""){
                     embed["embed"]["thumbnail"] = {
                         "url": `https://`+shuffle
                     }
