@@ -242,7 +242,7 @@ function setDefaults(guild){
 }
 
 function saveConfig(){
-    var str = hashToString(config);
+    var str = jsonToString(config);
     paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
     paste.login('M3rein', 'WorldCrafter112', function(success, data){
         paste.edit(url, {
