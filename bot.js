@@ -361,6 +361,7 @@ bot.on('message', message => {
                 evyield.slice(0, -2);
                 var hatchtime = `${poke.hatchtime} steps`
                 var shuffle = poke.shuffle;
+                console.log(shuffle);
                 var image = poke.image;
                 var evolutions = poke.evolutions.join("\n");
                 message.channel.send({embed: {
@@ -372,7 +373,7 @@ bot.on('message', message => {
                         "url": image
                     },
                     thumbnail: {
-                        "url": shuffle
+                        "url": `https://`+shuffle
                     }
                 }});
             }
