@@ -121,6 +121,10 @@ String.prototype.contains = function(obj){
     return this.indexOf(obj) !== -1;
 }
 
+String.prototype.capitalize = function(){
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 function dateNow(){
     var d = new Date();
     var y = d.getFullYear();
@@ -310,14 +314,18 @@ bot.on('message', message => {
             }
             else if (cmd == "dex"){
                 var file = fs.readFileSync('database/pokemon.json');
-                console.log(dateNow());
                 var dat = JSON.parse(file);
-                console.log(dateNow());
-                console.log(dat["Bulbasaur"]["evolutions"]);
+                var mon;
+                if (message.content.contains('type') || message.content.contains('null')){
+                    mon = dat["Type: Null"];
+                }
+                else{
+                    mon = dat[args[0].capitalize];
+                }
 
                     message.channel.send({embed: {
                         color: 1762633,
-                        title: "🡒001: Bulbasaur",
+                        title: `🡒${mon.species}: ${args[0].capitalize}`,
                         url: "https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)",
                         description: "**Types:** Grass | Poison\n**Base Stats:** 45 | 49 | 49 | 65 | 65 | 45\n**Abilities:**\nNormal: Overgrow\nHidden: Chlorophyll\n**Height:** 0.7m\n**Weight:** 6.9kg\n**Gender Ratio:**\nMale: 87.5%\nFemale: 12.5%\n**Growth Rate:** Medium Slow\n**Base EXP:** 64\n**Catch Rate:** 45\n**EV Yield:** 1 SpAtk\n**Hatch Time:** 5140 - 5396 steps**\nEvolutions:**\nBulbasaur 🡒 Level 16 🡒 Ivysaur 🡒 Level 32 🡒 Venusaur\n\nBulbasaur, The Seed Pokémon.\nBulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
                         image: {
