@@ -472,12 +472,8 @@ bot.on('message', message => {
             }
             else if (cmd == "say" && isBotAdmin(message.member)){
                 if (args[0] != undefined){
-                    var channel = bot.guilds.get(message.guild.id).channels.find('name', args[0]);
-                    if (channel != null && channel != undefined){
-                        channel.send(message.content.split('!say ' + args[0] + ' ')[1]);
-                    }
-                    else{
-                        message.channel.send('Channel ' + args[0] + 'does not exist.');
+                    if (channelExists(message.guild, args[0])){
+                        getChannel(args[0]).send(message.content.split(`${config[id].prefix}say ${args[0]} `)[1]);
                     }
                 }
             }
