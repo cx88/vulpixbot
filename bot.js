@@ -270,6 +270,9 @@ bot.on('message', message => {
         setDefaults(guild);
     }
     if (!message.content.startsWith(config[id]["prefix"]) && !message.content.startsWith("v-") && message.member.user.id != '339739859549683712'){
+        if (config[id]["ranks"] == undefined){
+            config[id]["ranks"] = {};
+        }
         if (config[id]["ranks"][message.member.user.id] == undefined){
             config[id]["ranks"][message.member.user.id] = 0;
         }
