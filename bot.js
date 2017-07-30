@@ -332,7 +332,10 @@ bot.on('message', message => {
                 var abilities = `Abilities: ${poke.ability1}`;
                 message.channel.send({embed: {
                     color: 1762633,
-                    title: `🡒${poke.species}: ${args[0].capitalize()}`,
+                    author: {
+                        "name": `🡒${poke.species}: ${args[0].capitalize()}`,
+                        "icon_url": `${poke.shuffle}`
+                    },
                     url: `https://bulbapedia.bulbagarden.net/wiki/${args[0].capitalize()}_(Pok%C3%A9mon)`,
                     description: `${types}\n${stats}\n**Abilities:**\nNormal: Overgrow\nHidden: Chlorophyll\n**Height:** 0.7m\n**Weight:** 6.9kg\n**Gender Ratio:**\nMale: 87.5%\nFemale: 12.5%\n**Growth Rate:** Medium Slow\n**Base EXP:** 64\n**Catch Rate:** 45\n**EV Yield:** 1 SpAtk\n**Hatch Time:** 5140 - 5396 steps**\nEvolutions:**\nBulbasaur 🡒 Level 16 🡒 Ivysaur 🡒 Level 32 🡒 Venusaur\n\nBulbasaur, The Seed Pokémon.\nBulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.`,
                     image: {
