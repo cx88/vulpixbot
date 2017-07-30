@@ -358,11 +358,13 @@ bot.on('message', message => {
                         evyield += `${poke.evyield[i]} ${stats[i]}, `
                     }
                 }
-                evyield.slice(0, -2);
+                evyield.slice(0, -1);
+                evyield.slice(0, -1);
                 var hatchtime = `${poke.hatchtime} steps`
                 var shuffle = poke.shuffle;
-                console.log(shuffle);
-                var image = poke.image;
+                var image = poke.url;
+                console.log(`shuffle: ${shuffle}`);
+                console.log(`image: ${image}`);
                 var evolutions;
                 if (poke.evolutions != undefined && poke.evolutions.length > 0){
                     var evolutions = poke.evolutions.join("\n");
@@ -373,7 +375,7 @@ bot.on('message', message => {
                     url: `https://bulbapedia.bulbagarden.net/wiki/${args[0].capitalize()}_(Pok%C3%A9mon)`,
                     description: `${types}\n${stats}\n**Abilities:**\n${abilities}${poke.hiddenability != undefined ? `\nHidden: ${getAbility(poke.hiddenability)}` : ""}\n${height}\n${weight}\n${genderratio}\n${growthrate}\n${exp}\n${catchrate}\n${evyield}\n${hatchtime}\nEvolutions:**\n${evolutions}\nBulbasaur, The Seed Pokémon.\nBulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.`,
                     image: {
-                        "url": `https://`+image
+                        "url": image
                     },
                     thumbnail: {
                         "url": `https://`+shuffle
