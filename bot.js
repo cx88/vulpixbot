@@ -337,7 +337,7 @@ bot.on('message', message => {
                 var types = `**Types:** ${poke.type1} ${poke.type2 != "Unknown" ? `| ${poke.type2}` : ""}`;
                 var s = poke.stats
                 var stats = `**Base Stats**: ${s[0]} | ${s[1]} | ${s[2]} | ${s[3]} | ${s[4]} | ${s[5]}`;
-                var abilities = `Normal: ${getAbility(poke.ability)} ${poke.ability2 != undefined ? "| " + getAbility(poke.ability2) : ""}`;
+                var abilities = `Normal: ${getAbility(poke.ability1)} ${poke.ability2 != undefined ? "| " + getAbility(poke.ability2) : ""}`;
                 var shuffle = poke.shuffle;
                 console.log(shuffle);
                 var image = poke.image;
