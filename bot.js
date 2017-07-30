@@ -324,8 +324,8 @@ bot.on('message', message => {
                 var file = fs.readFileSync('database/pokemon.json');
                 var dat = JSON.parse(file);
                 var mon;
-                if (message.content.contains('type') || message.content.contains('null')){
-                    mon = dat["Type: Null"];
+                if (message.content.toLowerCase().contains('type') || message.content.toLowerCase().contains('null')){
+                    poke = dat["Type: Null"];
                 }
                 else{
                     poke = dat[args[0].capitalize()];
