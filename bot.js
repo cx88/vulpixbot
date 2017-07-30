@@ -307,9 +307,10 @@ bot.on('message', message => {
             }
             else if (cmd == "dex"){
                 var file = fs.readFileSync('database/pokemon.json');
-                message.channel.send(dateNow());
+                console.log(dateNow());
                 var dat = JSON.parse(file);
-                message.channel.send(dateNow());
+                console.log(dateNow());
+                console.log(dat["Bulbasaur"]["evolutions"]);
 
                     message.channel.send({embed: {
                         color: 1762633,
