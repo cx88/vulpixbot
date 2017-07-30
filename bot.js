@@ -369,20 +369,24 @@ bot.on('message', message => {
                 if (poke.evolutions != undefined && poke.evolutions.length > 0){
                     var evolutions = poke.evolutions.join("\n");
                 }
-                message.channel.send({embed: {
-                    color: color,
-                    title: `🡒${poke.species}: ${args[0].capitalize()}`,
-                    url: `https://bulbapedia.bulbagarden.net/wiki/${args[0].capitalize()}_(Pok%C3%A9mon)`,
-                    description: `${types}\n${stats}\n**Abilities:**\n${abilities}${poke.hiddenability != undefined ? `\nHidden: ${getAbility(poke.hiddenability)}` : ""}\n${height}\n${weight}\n${genderratio}\n${growthrate}\n${exp}\n${catchrate}\n${evyield}\n${hatchtime}\nEvolutions:**\n${evolutions}\nBulbasaur, The Seed Pokémon.\nBulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.`,
-                    image: {
-                        "url": `https://`+image
-                    },
-                    if (shuffle != undefined) {
-                        thumbnail: {
-                            "url": `https://`+shuffle
+                var embed = {
+                    embed: {
+                        color: color,
+                        title: `🡒${poke.species}: ${args[0].capitalize()}`,
+                        url: `https://bulbapedia.bulbagarden.net/wiki/${args[0].capitalize()}_(Pok%C3%A9mon)`,
+                        description: `${types}\n${stats}\n**Abilities:**\n${abilities}${poke.hiddenability != undefined ? `\nHidden: ${getAbility(poke.hiddenability)}` : ""}\n${height}\n${weight}\n${genderratio}\n${growthrate}\n${exp}\n${catchrate}\n${evyield}\n${hatchtime}\nEvolutions:**\n${evolutions}\nBulbasaur, The Seed Pokémon.\nBulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.`,
+                        image: {
+                            "url": `https://`+image
                         }
                     }
-                }});
+                }
+                if (shuffle != undefined){
+                    embed[embed][thumbnail] = {
+                        "url": `https://`+shuffle
+                    }
+                }
+
+                message.channel.send(embed);
             }
             else if (cmd == "channel"){
                 message.channel.send(message.channel.name);
