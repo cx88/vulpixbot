@@ -271,7 +271,7 @@ bot.on('guildMemberAdd', member =>{
 });
 
 bot.on('message', message => {
-    if (message.member.user.id == '159985870458322944') return;
+    if (message.member.user.bot) return;
     var guild = message.guild;
     var id = guild.id;
     if (config[id] == undefined){
