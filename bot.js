@@ -524,6 +524,10 @@ bot.on('message', message => {
                 message.channel.send(magic8ball[rand(magic8ball.length)]);
             }
             else if (cmd == "quote"){
+                if (args[0] == undefined) {
+                    message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that the user should be their **name**, not a tag, nickname, or id.`);
+                    return;
+                }
                 var username = args[0];
                 username = username.replace("%20", " ");
                 var user = message.guild.members.find(m => m.user.username.toLowerCase() === username.toLowerCase());
