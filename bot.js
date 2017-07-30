@@ -523,9 +523,8 @@ bot.on('message', message => {
             else if (cmd == "8ball" || cmd == "8-ball"){
                 message.channel.send(magic8ball[rand(magic8ball.length)]);
             }
-            else if (cmd == "eval" || cmd == "evaluate"){
-                var str = message.content.split(` `).splice(0, 1).join(` `);
-                console.log(str);
+            else if (cmd == "eval"){
+                var str = message.content.split(`${config[id].prefix}eval `)[1];
                 try{
                    message.channel.send(eval(str));
                 }
