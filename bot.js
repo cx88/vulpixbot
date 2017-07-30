@@ -145,9 +145,7 @@ function dateNow(){
 }
 
 function getAbility(ability){
-    var abil = ability.replace(`_`, ` `);
-    var url = `https://bulbapedia.bulbagarden.net/wiki/${ability}_(Ability\\)`;
-    return `[${abil}](${url})`;
+    return `[${ability.replace(`_`, ` `)}](https://bulbapedia.bulbagarden.net/wiki/${ability}_(Ability\\))`;
 }
 
 function hasRole(member, role){
@@ -339,13 +337,25 @@ bot.on('message', message => {
                 var s = poke.stats
                 var stats = `**Base Stats**: ${s[0]} | ${s[1]} | ${s[2]} | ${s[3]} | ${s[4]} | ${s[5]}`;
                 var abilities = `Normal: ${getAbility(poke.ability1)} ${poke.ability2 != undefined ? "| " + getAbility(poke.ability2) : ""}`;
+                var height = `**Height**: ${poke.height}`;
+                var weight = `**Weight**: ${poke.weight}`;
+                var genderratio = `**Gender Ratio**: `
+                if (poke.genderratio == "Genderless"){
+                    genderratio += `Genderless`;
+                }
+                else{
+                    var female = parseInt(poke.genderratio.split('%')[0]);
+                    var male = 100 - female;
+                    genderratio += `\nMale: ${male}%\nFemale: ${female}`
+                }
+                var growthrate = `**Growth Rate**: ${poke.growthrate}`;
                 var shuffle = poke.shuffle;
                 var image = poke.image;
                 message.channel.send({embed: {
                     color: color,
                     title: `🡒${poke.species}: ${args[0].capitalize()}`,
                     url: `https://bulbapedia.bulbagarden.net/wiki/${args[0].capitalize()}_(Pok%C3%A9mon)`,
-                    description: `${types}\n${stats}\n**Abilities:**\n${abilities}${poke.hiddenability != undefined ? `\n${getAbility(poke.hiddenability)}` : ""}\n**Height:** 0.7m\n**Weight:** 6.9kg\n**Gender Ratio:**\nMale: 87.5%\nFemale: 12.5%\n**Growth Rate:** Medium Slow\n**Base EXP:** 64\n**Catch Rate:** 45\n**EV Yield:** 1 SpAtk\n**Hatch Time:** 5140 - 5396 steps**\nEvolutions:**\nBulbasaur 🡒 Level 16 🡒 Ivysaur 🡒 Level 32 🡒 Venusaur\n\nBulbasaur, The Seed Pokémon.\nBulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.`,
+                    description: `${types}\n${stats}\n**Abilities:**\n${abilities}${poke.hiddenability != undefined ? `\nHidden: ${getAbility(poke.hiddenability)}` : ""}\n${height}\n${weight}\n${genderratio}\n${growthrate}\n**Base EXP:** 64\n**Catch Rate:** 45\n**EV Yield:** 1 SpAtk\n**Hatch Time:** 5140 - 5396 steps**\nEvolutions:**\nBulbasaur 🡒 Level 16 🡒 Ivysaur 🡒 Level 32 🡒 Venusaur\n\nBulbasaur, The Seed Pokémon.\nBulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.`,
                     image: {
                         "url": "https://cdn.bulbagarden.net/upload/archive/2/21/20170712171828%21001Bulbasaur.png"
                     },
