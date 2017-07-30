@@ -313,6 +313,10 @@ bot.on('message', message => {
                 message.channel.send(options[rand(options.length)]);
             }
             else if (cmd == "dex"){
+                if (args[0] == undefined){
+                    message.channel.send(`If you want to see the data on a Pokémon, use \`${config["prefix"]}dex [pokemon]\`.`);
+                    return;
+                }
                 var file = fs.readFileSync('database/pokemon.json');
                 var dat = JSON.parse(file);
                 var mon;
@@ -320,7 +324,10 @@ bot.on('message', message => {
                     mon = dat["Type: Null"];
                 }
                 else{
+                    console.log(args[0]);
+                    console.log(args[0].capitalize);
                     mon = dat[args[0].capitalize];
+                    console.log(dat["Vulpix"]);
                 }
 
                     message.channel.send({embed: {
