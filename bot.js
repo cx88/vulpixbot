@@ -146,8 +146,7 @@ function dateNow(){
 
 function getAbility(ability){
     var abil = ability.replace(`_`, ` `);
-    var url = `https://bulbapedia.bulbagarden.net/wiki/${ability}_(Ability)`;
-    return `[${abil}](${url})`;
+    return `[${abil}](<https://bulbapedia.bulbagarden.net/wiki/${ability}_(Ability)>)`;
 }
 
 function hasRole(member, role){
