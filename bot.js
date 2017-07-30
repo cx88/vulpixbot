@@ -125,8 +125,19 @@ String.prototype.capitalize = function(){
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-function jsonToString(hash){
-    return JSON.stringify(hash, null, 2);
+function jsonToString(json){
+    if (json.construcor == Array){
+        str = `
+[`
+for (i = 0; i < json.length; i++){
+    str += '  ${json[i]}\n'
+}
+`]`
+        return str;
+    }
+    else{
+        return JSON.stringify(json, null, 2);
+    }
 }
 
 function dateNow(){
@@ -738,13 +749,27 @@ bot.on('message', message => {
             message.channel.send(`The configurations have been reset to the default.`);
         }
         else if (param == "show"){
-            if (args[1] == undefined){
-                message.channel.send(`Use one of the following values to show: \`\`\`v-config show prefix\nv-config show ignored_channels\nv-config show messages\nv-config show quotes\nv-config show ranks\`\`\``);
+            var msg = "";
+            if (args[1] == "prefix"){
+                msg = config[id].prefix;
+            }
+            else if (args[1] == "ignored_channels"){
+                msg = jsonToString(config[id].ignored_channels);
+            }
+            else if (args[1] == "messages"){
+                msg = jsonToString(config[id].messages);
+            }
+            else if (args[1] == "quotes"){
+                msg = jsonToString(config[id].quotes);
+            }
+            else if (args[1] == "ranks"){
+                msg = jsonToString(config[id].ranks);
             }
             else{
-                console.log(['hi', 'world'].constructor);
-                console.log({'hi': 'world', 'hello': 'world'}.constructor);
+                message.channel.send(`Use one of the following values to show: \`\`\`v-config show prefix\nv-config show ignored_channels\nv-config show messages\nv-config show quotes\nv-config show ranks\`\`\``);
+                return;
             }
+            message.channel.send('```JavaScript\n'+msg+'```');
         }
         else{
             message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config default\nv-config show```')
