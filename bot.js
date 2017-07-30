@@ -381,7 +381,7 @@ bot.on('message', message => {
                     }
                 }
                 if (shuffle != undefined){
-                    embed[embed][thumbnail] = {
+                    embed["embed"]["thumbnail"] = {
                         "url": `https://`+shuffle
                     }
                 }
