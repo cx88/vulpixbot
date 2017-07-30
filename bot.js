@@ -359,8 +359,8 @@ bot.on('message', message => {
                     }
                 }
                 evyield.split(', ')
-                    .slice(0, -1)
-                    .join(', ')
+                    .splice(-1, 1)
+                    .join(', ');
                 var hatchtime = `${poke.hatchtime} steps`
                 var shuffle = poke.shuffle;
                 var image = poke.url;
