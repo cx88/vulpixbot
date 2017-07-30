@@ -682,28 +682,28 @@ bot.on('message', message => {
                 else{
                     var index = config[id].ignored_channels.indexOf(args[2]);
                     if (index != -1){
-                        message.channel.send(`Commands are already disabled in that channel.`);
+                        message.channel.send(`Vulpix commands are already disabled in that channel or it doesn't exist.`);
                     }
                     else{
                         config[id].ignored_channels.push(args[2]);
                         saveConfig();
-                        message.channel.send(`Vulpix commands are now enabled in channel "${args[2]}".`);
+                        message.channel.send(`Vulpix commands are now disabled in channel "${args[2]}".`);
                     }
                 }
             }
             else if (args[1] == "remove"){
                 if (args[2] == undefined){
-                    message.channel.send(`Use \`v-config ignored_channels remove [channelname]\` to enable Vulpix commands in a channel. Note that "channelname" should be JUST the name of the channel; not the id or tag.`);
+                    message.channel.send(`Use \`v-config ignored_channels remove [channelname]\` to enable Vulpix commands in a channel. Note that "channelname" should be just the name of the channel; not the id or tag.`);
                 }
                 else{
                     var index = config[id].ignored_channels.indexOf(args[2]);
                     if (index == -1){
-                        message.channel.send(`Commands are already enabled in that channel.`);
+                        message.channel.send(`Vulpix commands are already enabled in that channel or it doesn't exist.`);
                     }
                     else{
                         config[id].ignored_channels.splice(index, 1);
                         saveConfig();
-                        message.channel.send(`Vulpix commands are now disabled in channel "${args[2]}".`);
+                        message.channel.send(`Vulpix commands are now enabled in channel "${args[2]}".`);
                     }
                 }
             }
@@ -716,7 +716,7 @@ bot.on('message', message => {
                         if (i != config[id]["ignored_channels"].length - 1) { msg += '\n'; }
                     }
                 }
-                msg += '``` Add or remove a channel with one of the following commands:```v-config ignored_channels add (channelname)\nv-config ignored_channels remove (channelname)```Channelname is the actual name of the channel, not a hyperlink or id.';
+                msg += '``` Add or remove a channel with one of the following commands:```v-config ignored_channels add [channelname]\nv-config ignored_channels remove [channelname]```Channelname is the actual name of the channel, not a hyperlink or id.';
                 message.channel.send(msg);
             }
         }
