@@ -326,7 +326,7 @@ bot.on('message', message => {
                 else{
                     poke = dat[args[0].capitalize()];
                 }
-                var types = `**Types:** ${poke.type1} ${poke.type2 != undefined ? `| ${poke.type2}` : ""}`;
+                var types = `**Types:** ${poke.type1} ${poke.type2 != "Unknown" ? `| ${poke.type2}` : ""}`;
                 var s = poke.stats
                 var stats = `Base Stats: ${s[0]} | ${s[1]} | ${s[2]} | ${s[3]} | ${s[4]} | ${s[5]}`;
                 var abilities = `Abilities: ${poke.ability1}`;
