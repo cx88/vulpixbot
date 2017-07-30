@@ -344,8 +344,8 @@ bot.on('message', message => {
                     genderratio += `Genderless`;
                 }
                 else{
-                    var female = parseInt(poke.genderratio.split('%')[0]);
-                    var male = 100 - female;
+                    var female = parseFloat(poke.genderratio.split('%')[0]);
+                    var male = parseFloat(parseFloat(100) - female);
                     genderratio += `\nMale: ${male}%\nFemale: ${female}%`
                 }
                 var growthrate = `**Growth Rate**: ${poke.levelingrate}`;
@@ -356,7 +356,7 @@ bot.on('message', message => {
                 var _stats = [`HP`, `Atk`, `Def`, `SpAtk`, `SpDef`, `Speed`]
                 for (i = 0; i < poke.evyield.length; i++){
                     if (poke.evyield[i] > 0){
-                        evs += `${poke.evyield[i]} ${_stats[i]}`;
+                        evs.push(`${poke.evyield[i]} ${_stats[i]}`);
                     }
                 }
                 evyield += evs.join(', ');
