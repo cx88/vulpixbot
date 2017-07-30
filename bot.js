@@ -257,9 +257,8 @@ bot.on('guildMemberAdd', member =>{
             getChannel(member.guild, channel).send(msg);
         }
         else{
-            member.guild.defaultChannel.send(`Channel '${channel}' does not exist as referred to in \`v-config messages welcome channel\`. Welcome either way, ` + member.user);
+            member.guild.defaultChannel.send(`Channel '${channel}' does not exist as referred to in \`v-config messages welcome channel\`. Welcome either way, ` + member.user + `!`);
         }
-        
     }
 });
 
@@ -307,6 +306,11 @@ bot.on('message', message => {
                 message.channel.send(options[rand(options.length)]);
             }
             else if (cmd == "dex"){
+                var file = fs.readFileSync('database/pokemon.json');
+                message.channel.send(dateNow());
+                var dat = JSON.parse(file);
+                message.channel.send(dateNow());
+
                     message.channel.send({embed: {
                         color: 1762633,
                         title: "🡒001: Bulbasaur",
