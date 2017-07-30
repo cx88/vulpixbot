@@ -330,6 +330,7 @@ bot.on('message', message => {
                 else{
                     poke = dat[args[0].capitalize()];
                 }
+                if (poke == undefined || poke == null) return;
                 var tmp = fs.readFileSync('database/colors.json');
                 var colors = JSON.parse(tmp);
                 var color = colors[poke.type1.toLowerCase()];
