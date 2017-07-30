@@ -293,7 +293,7 @@ bot.on('message', message => {
     }
     if (!config[id]["ignored_channels"].contains(message.channel.name)){
         if (message.content.startsWith(config[id]["prefix"])){
-            cmd = message.content.split(config[id]["prefix"])[1].split(' ')[0];
+            cmd = message.content.splice(0, 1).split(' ')[0];
             args = message.content.split(" ");
             args.splice(0, 1);
             console.log(dateNow() + ' ' + message.author.username + `: ` + message.content);
