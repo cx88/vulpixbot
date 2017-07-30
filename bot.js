@@ -377,8 +377,10 @@ bot.on('message', message => {
                     image: {
                         "url": `https://`+image
                     },
-                    thumbnail: {
-                        "url": `https://`+shuffle
+                    if (shuffle != undefined) {
+                        thumbnail: {
+                            "url": `https://`+shuffle
+                        }
                     }
                 }});
             }
