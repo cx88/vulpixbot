@@ -1,4 +1,4 @@
-﻿const Discord = require('discord.js');
+const Discord = require('discord.js');
 const bot = new Discord.Client();
 var paste = require('better-pastebin');
 var url = "https://pastebin.com/xwbrL2hj";
@@ -127,16 +127,10 @@ String.prototype.capitalize = function(){
 
 function jsonToString(json){
     if (json.construcor == Array){
-        str = `
-[`
-for (i = 0; i < json.length; i++){
-    str += '  ${json[i]}\n'
-}
-`]`
-        return str;
+        return `[\n    "${json.join('",\n    "')}"\n]`
     }
     else{
-        return JSON.stringify(json, null, 2);
+        return JSON.stringify(json, null, 4);
     }
 }
 
