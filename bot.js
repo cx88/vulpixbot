@@ -208,15 +208,15 @@ function setDefaults(guild){
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {
         "prefix": "?",
-        "ignored_channels": [
-
-        ],
         "disabled_commands": [
 
         ],
         "ranks": {
 
         },
+        "channels": {
+
+        }
         "messages": {
             "welcome": {
                 "msg": "Welcome to the server, (user)!",
@@ -233,6 +233,12 @@ function setDefaults(guild){
         },
         "quotes": {
 
+        }
+    }
+    for (channel in guild.channels){
+        config[g].channels[channel.id] = {
+            "disabled_all": false,
+            "disabled_commands": []
         }
     }
 
@@ -864,8 +870,11 @@ bot.on('message', message => {
             else if (args[1] == "ranks"){
                 msg = jsonToString(config[id].ranks);
             }
+            else if (args[1] == "channels"){
+                msg = jsonToString(config[id].channels);
+            }
             else{
-                message.channel.send(`Use one of the following values to show: \`\`\`v-config show prefix\nv-config show ignored_channels\nv-config show messages\nv-config show quotes\nv-config show ranks\`\`\``);
+                message.channel.send(`Use one of the following values to show: \`\`\`v-config show prefix\nv-config show ignored_channels\nv-config show messages\nv-config show quotes\nv-config show ranks\nv-config show channels\`\`\``);
                 return;
             }
             message.channel.send('```JavaScript\n'+msg+'```');
