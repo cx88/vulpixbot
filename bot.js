@@ -528,16 +528,13 @@ bot.on('message', message => {
                     },
                     fields: [{
                         name: "**Level**",
-                        value: "  " + rank,
-                        inline: true
+                        value: "  " + rank
                     },{
                         name: "**Experience**",
-                        value: exp,
-                        inline: true
+                        value: exp
                     },{
                         name: "**Rank**",
-                        value: `${getRank(guild, user)}/${guild.members.count}`,
-                        inline: true
+                        value: `${getRank(guild, user)}/${guild.members.length}`
                     }]
                 }})
             }
