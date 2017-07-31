@@ -631,7 +631,7 @@ bot.on('message', message => {
                     if (args[1] == undefined){
                         message.channel.send(message.channel.id);
                     }
-                    else if (channelExists(args[1])){
+                    else if (channelExists(guild, args[1])){
                         message.channel.send(`ID of channel "${args[1]}": ${getChannel(guild, args[1]).id}`);
                     }
                 }
