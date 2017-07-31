@@ -183,7 +183,7 @@ function getRank(guild, user){
 }
 
 function userExists(guild, user){
-    var user = getUer(guild, user);
+    var user = getUser(guild, user);
     return user != null && user != udnefined;
 }
 
