@@ -75,6 +75,14 @@ var magic8ball = [
     "Very doubtful."
 ]
 
+var commands = [
+    "pc", "soon", "rand", "choose",
+    "dex", "thundaga", "wikia", "ebs",
+    "pbs+", "read", "lenny", "shrug",
+    "delet", "rank", "fortune", "8ball",
+    "eval", "quote", "user"
+]
+
 /*
 {
   CREATE_INSTANT_INVITE: true,
@@ -275,11 +283,24 @@ function rand(int){
     return Math.floor(Math.random() * parseInt(int));
 }
 
+function command(channel, arg, cmd){
+    try{
+        return arg == cmd && !config[channel.guild.id].channels[channel.id].disabled_commands.contains(cmd);
+    }
+    catch (err){
+        config[channel.guild.id].channels = {};
+        config[channel.guild.id].channels[channel.id] = {};
+        config[channel.guild.id].channels[channel.id].disabled_commands = [];
+        saveConfig();
+        return true;
+    }
+}
+
 setInterval(saveConfig, 30000);
 
 bot.on('ready', () => {
     console.log('Vulpix online');
-    bot.user.setGame("Type v-config");
+    bot.user.setGame("Maintenance");
 });
 
 bot.on('guildCreate', guild =>{
@@ -309,10 +330,11 @@ bot.on('message', message => {
     if (message.member.user.bot) return;
     var guild = message.guild;
     var id = guild.id;
+    var channel = message.channel;
     if (config[id] == undefined){
         setDefaults(guild);
     }
-    if (!message.content.startsWith(config[id]["prefix"]) && !message.content.startsWith("v-") && message.member.user.id != '339739859549683712'){
+    if (!message.content.startsWith(config[id].prefix) && !message.content.startsWith("v-")){
         if (config[id]["ranks"] == undefined){
             config[id]["ranks"] = {};
         }
@@ -332,16 +354,17 @@ bot.on('message', message => {
             args = message.content.split(" ");
             args.splice(0, 1);
             console.log(dateNow() + ' ' + message.author.username + `: ` + message.content);
-            if (cmd == "pc"){
+            if (command(channel, cmd, "pc")){
+                if (args[0] == undefined) return;
                 message.channel.send('https://pokecommunity.com/~'+args[0]);
             }
-            else if (cmd == "soon"){
+            else if (command(channel, cmd, "soon")){
                 message.channel.send(`Soon:tm:`);
             }
-            else if (cmd == "rand" || cmd == "random"){
+            else if (command(channel, cmd, "rand")){
                 message.channel.send(rand(args[0]));
             }
-            else if (cmd == "choose"){
+            else if (command(channel, cmd, "choose")){
                 _args = message.content.split(' ');
                 var str = "";
                 for (i = 1; i < _args.length; i++){
@@ -351,7 +374,7 @@ bot.on('message', message => {
                 options = str.split('|');
                 message.channel.send(options[rand(options.length)]);
             }
-            else if (cmd == "dex"){
+            else if (command(channel, cmd, "dex")){
                 if (args[0] == undefined){
                     message.channel.send(`If you want to see the data on a Pokémon, use \`${config[id].prefix}dex [pokemon]\`.`);
                     return;
@@ -430,10 +453,7 @@ bot.on('message', message => {
 
                 message.channel.send(embed);
             }
-            else if (cmd == "channel"){
-                message.channel.send(message.channel.name);
-            }
-            else if (cmd == "thundaga"){
+            else if (command(channel, cmd, "thundaga")){
                 if (args[0] == undefined){
                     message.channel.send("https://www.youtube.com/channel/UCS9280oK413_XO8abzQa8ig");
                 }
@@ -467,16 +487,16 @@ bot.on('message', message => {
                     }
                 }
             }
-            else if (cmd == "wiki" || cmd == "wikia"){
+            else if (command(channel, cmd, "wikia")){
                 message.channel.send('Command under construction.');
             }
-            else if (cmd == "ebs"){
+            else if (command(channel, cmd, "ebs")){
                 message.channel.send("http://sj-web.byethost18.com/");
             }
-            else if (cmd == "pbs" || cmd == "pbs+" || cmd == "pbseditor" || cmd == "pbs_editor"){
+            else if (command(channel, cmd, "pbs+")){
                 message.channel.send("https://www.pokecommunity.com/showthread.php?t=393347");
             }
-            else if (cmd == "read"){
+            else if (command(channel, cmd, "read")){
                 if (args[0] == undefined){
                     message.channel.send('Hello. I am Vulpix. I represent the annoyance of ' + message.author.username + '. You have failed to read one or more of their messages.\nInstead of being snarky and saying "Read the fucking messages, please!", they desperately used this command to have me talk for them. I hope you can appreciate their choice and fucking read for once.');
                 }
@@ -496,23 +516,16 @@ bot.on('message', message => {
                     message.channel.send('Yo. If you don\'t read the rules, you\'ll get in trouble soon enough. Rules are there for very good reasons; organization, past experiences, and so on. Read them so you\'re sure that you comply with them.');
                 }
             }
-            else if (cmd == "lenny"){
+            else if (command(channel, cmd, "lenny")){
                 message.channel.send("( ͡° ͜ʖ ͡°)");
             }
-            else if (cmd == "shrug"){
+            else if (command(channel, cmd, "shrug")){
                 message.channel.send("¯\\_(ツ)_/¯");
             }
-            else if (cmd == "deletthis" || cmd == "delet_this" || cmd == "delet" || cmd == "delete"){
+            else if (command(channel, cmd, "delet")){
                 message.channel.send(delet_this[rand(delet_this.length)]);
             }
-            else if (cmd == "say" && isBotAdmin(message.member)){
-                if (args[0] != undefined){
-                    if (channelExists(message.guild, args[0])){
-                        getChannel(message.guild, args[0]).send(message.content.split(`${config[id].prefix}say ${args[0]} `)[1]);
-                    }
-                }
-            }
-            else if (cmd == "rank" || cmd == "level"){
+            else if (command(channel, cmd, "rank")){
                 var user = message.member.user;
                 if (message.mentions.users.first() != undefined){
                     user = message.mentions.users.first();
@@ -553,13 +566,13 @@ bot.on('message', message => {
                     }]
                 }})
             }
-            else if (cmd == "fortune" || cmd == "fortuna"){
+            else if (command(channel, cmd, "fortune")){
                 message.channel.send(fortune[rand(fortune.length)]);
             }
-            else if (cmd == "8ball" || cmd == "8-ball"){
+            else if (command(channel, cmd, "8ball")){
                 message.channel.send(magic8ball[rand(magic8ball.length)]);
             }
-            else if (cmd == "eval"){
+            else if (command(channel, cmd, "eval")){
                 var str = message.content.split(`${config[id].prefix}eval `)[1];
                 try{
                    message.channel.send(eval(str));
@@ -568,7 +581,7 @@ bot.on('message', message => {
                     message.channel.send(`Failed to evaluate expression.`);
                 }
             }
-            else if (cmd == "quote"){
+            else if (command(channel, cmd, "quote")){
                 if (args[0] == undefined) {
                     message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that the user should be their **name**, not a tag, nickname, or id.`);
                     return;
@@ -608,7 +621,8 @@ bot.on('message', message => {
                     }
                 }
             }
-            else if (cmd == "user"){
+            else if (command(channel, cmd, "user")){
+                if (args[0] == undefined) return;
                 var user;
                 if (message.mentions.users.first() != undefined){
                     user = message.mentions.users.first();
@@ -619,7 +633,16 @@ bot.on('message', message => {
                         user = getUser(guild, tmp);
                     }
                 }
+                console.log(user.username);
                 if (user != undefined && user != null){
+                    console.log(user.avatarURL);
+                    console.log(user.username);
+                    console.log(user.id);
+                    console.log(user.presence.status);
+                    console.log(user.presence.game);
+                    console.log(user.bot);
+                    console.log(user.createdAt);
+                    console.log(user.createdTimestamp);
                     message.channel.send({embed: {
                         color: 10876925,
                         author: {
@@ -658,10 +681,18 @@ bot.on('message', message => {
                             value: user.createdTimestamp,
                             inline: true
                         }]
-                    }});
+                    }}).catch(err => console.log(err));
+                    console.log('success');
                 }
             }
-            else if (cmd == "clearquote" || cmd == "clearquotes" && isBotAdmin(message.member)){
+            else if (cmd == "say" && isBotAdmin(message.member)){
+                if (args[0] != undefined){
+                    if (channelExists(message.guild, args[0])){
+                        getChannel(message.guild, args[0]).send(message.content.split(`${config[id].prefix}say ${args[0]} `)[1]);
+                    }
+                }
+            }
+            else if (cmd == "clearquotes" && isBotAdmin(message.member)){
                 var username = args[0];
                 username = username.replace("%20", " ");
                 var user = message.guild.members.find(m => m.user.username.toLowerCase() === username.toLowerCase());
@@ -723,20 +754,20 @@ bot.on('message', message => {
         args.splice(0, 1);
         var cmd = args[0];
         var setting = args[1];
-        console.log(dateNow() + ' ' + message.author.username + `: ` + message.content);
+        console.log(`${dateNow()} ${message.author.username}: ${message.content}`);
         if (cmd == "prefix"){
             if (setting != undefined){
                 if (setting == "v-"){
-                    message.channel.send('v- cannot be used as a command prefix.');
+                    message.channel.send(`\`v-\` cannot be used as a command prefix.`);
                 }
                 else{
                     config[id]["prefix"] = setting;
                     saveConfig();
-                    message.channel.send('Successfully set active command prefix to `'+config[id]["prefix"]+'`.');
+                    message.channel.send(`Successfully set active command prefix to \`${config[id]["prefix"]}\`.`);
                 }
             }
             else{
-                message.channel.send('The prefix for commands is currently `'+config[id]["prefix"]+'`\nUse `v-config prefix [new prefix]` to change it.');
+                message.channel.send(`The prefix for commands is currently ${config[id].prefix}. Use \`v-config prefix [new prefix]\` to change it.`);
             }
         }
         else if (cmd == "messages"){
@@ -846,9 +877,84 @@ bot.on('message', message => {
             }
         }
         else if (cmd == "channels"){
-            var channels = guild.channels.array();
-            console.log(channels);cmd
-            if (args[1])
+            if (config[id].channels == undefined){
+                config[id].channels = {};
+            }
+            var channels = [];
+            for (i = 0; i < guild.channels.array().length; i++){
+                if (guild.channels.array()[i].type == 'text') { channels.push(guild.channels.array()[i].name); }
+            }
+            if (channels.contains(args[1])){
+                channelid = getChannel(message.guild, args[1]).id;
+                if (config[id].channels[channelid] == undefined){
+                    config[id].channels[channelid] = {
+                        "disable_all": false,
+                        "disabled_commands": []
+                    };
+                }
+                if (args[2] == "disablecommand" || args[2] == "disable_command"){
+                    if (args[3] != undefined){
+                        if (!commands.contains(args[3])){
+                            message.channel.send(`Command "${args[3]}" is not a valid Vulpix command.`);
+                            return;
+                        }
+                        if (config[id].channels[channelid].disabled_commands.contains(args[3])){
+                            message.channel.send(`"${args[3]}" is already disabled in channel "${args[1]}".`);
+                        }
+                        else{
+                            config[id].channels[channelid].disabled_commands.push(args[3]);
+                            saveConfig();
+                            message.channel.send(`"${args[3]}" is now disabled in channel "${args[1]}".`);
+                        }
+                    }
+                    else{
+                        message.channel.send(`To disable one of the following Vulpix commands: \`\`\`\n${commands.join('\n')}\`\`\`\nType the following: \`\`\`\nv-config channels [channel] disable_command [command]\`\`\`You should not write a prefix before the command, only the name.`);
+                    }
+                }
+                else if (args[2] == "enablecommand" || args[2] == "enable_command"){
+                    if (args[3] != undefined){
+                        if (!commands.contains(args[3])){
+                            message.channel.send(`Command "${args[3]}" is not a valid Vulpix command.`);
+                            return;
+                        }
+                        if (!config[id].channels[channelid].disabled_commands.contains(args[3])){
+                            message.channel.send(`"${args[3]}" is already enabled in channel "${args[1]}".`);
+                        }
+                        else{
+                            config[id].channels[channelid].disabled_commands.splice(config[id].channels[channelid].disabled_commands.indexOf(args[3]), 1);
+                            saveConfig();
+                            message.channel.send(`"${args[3]}" is now enabled in channel "${args[1]}".`);
+                        }
+                    }
+                    else{
+                        message.channel.send(`To enable one of the following Vulpix commands: \`\`\`\n${commands.join('\n')}\`\`\`Type the following: \`\`\`\nv-config channels [channel] enable_command [command]\`\`\`You should not write a prefix before the command, only the name.`);
+                    }
+                }
+                else if (args[2] == "disable_all"){
+                    config[id].channels[channelid].disabled_commands = [];
+                    for (i = 0; i < commands.length; i++){
+                        config[id].channels[channelid].disabled_commands.push(commands[i]);
+                    }
+                    saveConfig();
+                    message.channel.send(`All public Vulpix commands besides "v-config" are now disabled in channel "${args[1]}".`)
+                }
+                else if (args[2] == "enable_all"){
+                    config[id].channels[channelid].disabled_commands = [];
+                    saveConfig();
+                    message.channel.send(`All public Vulpix commands are now enabled in channel "${args[1]}".`)
+                }
+                else{
+                    message.channel.send(`${`These commands are currently disabled in channel "${args[1]}": \`\`\`\n${config[id].channels[channelid].disabled_commands.length == 0 ? "---" : config[id].channels[channelid].disabled_commands.join('\n')}\`\`\``} To disable or enable a command/all commands for a channel, use one of the following commands:\`\`\`\nv-config channels [channel] disable_command\nv-config channels [channel] enable_command\nv-config channels [channel] disable_all\nv-config channels [channel] enable_all\`\`\``);
+                }
+            }
+            else if (args[1] == undefined){
+                channels.splice(channels.indexOf('General'), 1);
+                var msg = 'v-config channels ' + channels.join('\nv-config channels ');
+                message.channel.send(`Use one of the following commands to configure commands for a channel: \`\`\`\n${msg}\`\`\``);
+            }
+            else{
+                message.channel.send(`Channel "${args[1]}" doesn't exist.`);
+            }
         }
         else if (cmd == "default"){
             setDefaults(message.guild);
