@@ -182,6 +182,15 @@ function getRank(guild, user){
     }
 }
 
+function userExists(guild, user){
+    var user = getUer(guild, user);
+    return user != null && user != udnefined;
+}
+
+function getUser(guild, user){
+    return guild.members.find('name', user);
+}
+
 function channelExists(guild, channel){
     var chnl = getChannel(guild, channel);
     return chnl != null && chnl != undefined;
@@ -619,10 +628,23 @@ bot.on('message', message => {
             }
             else if (cmd == "id" && isBotAdmin(message.member)){
                 if (args[0] == "channel"){
-                    message.channel.send(message.channel.id);
+                    if (args[1] == undefined){
+                        message.channel.send(message.channel.id);
+                    }
+                    else if (channelExists(args[1])){
+                        message.channel.send(`ID of channel "${args[1]}": ${getChannel(args[1]).id}`);
+                    }
                 }
                 else if (args[0] == "server"){
                     message.channel.send(message.guild.id);
+                }
+                else if (args[0] == "user"){
+                    if (args[1] == undefined){
+                        message.channel.send(`ID of user "${message.member.user.username}": ${message.member.user.id}`);
+                    }
+                    else if (userExists(guild, args[1])){
+                        message.channel.send(`ID of user "${getUser(guild, args[1])}": ${getUser(guild, args[1]).id}`);
+                    }
                 }
             }
         }
