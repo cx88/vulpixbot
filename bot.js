@@ -534,7 +534,7 @@ bot.on('message', message => {
                         value: exp
                     },{
                         name: "**Rank**",
-                        value: `${getRank(guild, user)}/${guild.members.length}`
+                        value: `${getRank(guild, user)}/${guild.memberCount}`
                     }]
                 }})
             }
