@@ -632,7 +632,7 @@ bot.on('message', message => {
                         message.channel.send(message.channel.id);
                     }
                     else if (channelExists(args[1])){
-                        message.channel.send(`ID of channel "${args[1]}": ${getChannel(args[1]).id}`);
+                        message.channel.send(`ID of channel "${args[1]}": ${getChannel(guild, args[1]).id}`);
                     }
                 }
                 else if (args[0] == "server"){
