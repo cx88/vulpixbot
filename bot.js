@@ -506,7 +506,7 @@ bot.on('message', message => {
             else if (cmd == "say" && isBotAdmin(message.member)){
                 if (args[0] != undefined){
                     if (channelExists(message.guild, args[0])){
-                        getChannel(args[0]).send(message.content.split(`${config[id].prefix}say ${args[0]} `)[1]);
+                        getChannel(message.guild, args[0]).send(message.content.split(`${config[id].prefix}say ${args[0]} `)[1]);
                     }
                 }
             }
