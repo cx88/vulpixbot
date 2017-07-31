@@ -177,7 +177,11 @@ function getRank(guild, user){
         return b[1] - a[1]
     });
 
-    return sortable.indexOf([user.id, config[guild.id].ranks[user.id]]);
+    console.log(config[guild.id].ranks);
+    console.log(config[guild.id].ranks[user.id]);
+    console.log(sortable);
+    var ar = [user.id, config[guild.id].ranks[user.id];
+    console.log(ar);
 }
 
 function channelExists(guild, channel){
@@ -416,7 +420,6 @@ bot.on('message', message => {
                 }
 
                 message.channel.send(embed);
-                console.log(getRank(guild, message.member.user));
             }
             else if (cmd == "channel"){
                 message.channel.send(message.channel.name);
