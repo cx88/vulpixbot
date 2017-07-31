@@ -515,6 +515,10 @@ bot.on('message', message => {
                 if (message.mentions.users.first() != undefined){
                     user = message.mentions.users.first();
                 }
+                if (user.bot){
+                    message.channel.send(`Bots do not have a rank.`);
+                    return;
+                }
                 var rank = 0;
                 var req = 16;
                 for (i = 0; i < level_curve.length; i++){
