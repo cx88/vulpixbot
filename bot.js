@@ -612,7 +612,9 @@ bot.on('message', message => {
                     user = message.mentions.users.first();
                 }
                 else if (args[0] != undefined){
+                    console.log(args[0]);
                     var tmp = message.content.split(`${config[id].prefix}user `)[1];
+                    console.log(tmp);
                     if (userExists(guild, tmp)){
                         user = getUser(guild, tmp);
                     }
@@ -642,7 +644,7 @@ bot.on('message', message => {
                             inline: true
                         },{
                             name: `**Game**`,
-                            value: user.presence.game,
+                            value: user.presence.game.name,
                             inline: true
                         },{
                             name: `**Bot**`,
