@@ -624,7 +624,7 @@ bot.on('message', message => {
                             name: user.username,
                             icon_url: user.avatarURL
                         },
-                        title: `${user.username}#${user.discriminator}`,
+                        title: user.tag,
                         thumbnail: {
                             url: user.avatarURL
                         },
@@ -641,8 +641,8 @@ bot.on('message', message => {
                             value: user.presence.status,
                             inline: true
                         },{
-                            name: `**Tag**`,
-                            value: user.tag,
+                            name: `**Game**`,
+                            value: user.presence.game,
                             inline: true
                         },{
                             name: `**Bot**`,
