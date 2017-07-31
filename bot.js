@@ -578,7 +578,14 @@ bot.on('message', message => {
                     message.channel.send(`User not found.`);
                 }
                 else{
-                    var msg = message.content.split(`${config[id]["prefix"]}quote ${username} `)[1];
+                    var msg;
+                    if (message.mentions.users.first() == undefined){
+                        msg = message.content.split(`${config[id].prefix}quote ${username} `)[1];
+                    }
+                    else{
+                        user = message.mentions.users.first();
+                        msg = message.content.split(`${config[id].prefix}quote ${user}`);
+                    }
                     if (msg != "" && msg != null && msg != undefined && msg != " "){
                         if (config[id]["quotes"][user.id] == undefined){
                             config[id]["quotes"][user.id] = [
@@ -597,6 +604,59 @@ bot.on('message', message => {
                     else{
                         message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"][user.id].length)]}"\n - ${username}`);
                     }
+                }
+            }
+            else if (cmd == "user"){
+                var user;
+                if (message.mentions.users.first() != undefined){
+                    user = message.mentions.users.first();
+                }
+                else if (args[0] != undefined){
+                    var tmp = message.content.split(`${config[id].prefix}user `)[1];
+                    if (userExists(guild, tmp)){
+                        user = getUser(guild, tmp);
+                    }
+                }
+                if (user != undefined){
+                    message.channel.send({embed{
+                        color: 10876925,
+                        author: {
+                            name: user.username,
+                            icon_url: user.avatarURL
+                        },
+                        title: `${user.username}#${user.discriminator}`,
+                        thumbnail: {
+                            url: user.avatarURL
+                        },
+                        fields: [{
+                            name: `**Nickname**`,
+                            value: user.nickname,
+                            inline: true
+                        },{
+                            name: `**User ID**`,
+                            value: user.id,
+                            inline: true
+                        },{
+                            name: `**Status**`,
+                            value: user.presence.status,
+                            inline: true
+                        },{
+                            name: `**Tag**`,
+                            value: user.tag,
+                            inline: true
+                        },{
+                            name: `**Bot**`,
+                            value: user.bot
+                        },{
+                            name: `**Created At**`,
+                            value: user.createdAt,
+                            inline: true
+                        },{
+                            name: `**Created Timestamp**`,
+                            value: user.createdTimestamp,
+                            inline: true
+                        }]
+                    }});
                 }
             }
             else if (cmd == "clearquote" || cmd == "clearquotes" && isBotAdmin(message.member)){
