@@ -216,7 +216,7 @@ function setDefaults(guild){
         },
         "channels": {
 
-        }
+        },
         "messages": {
             "welcome": {
                 "msg": "Welcome to the server, (user)!",
