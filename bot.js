@@ -167,6 +167,19 @@ function hasRole(member, role){
     }
 }
 
+function getRank(guild, user){
+    var sortable = [];
+    for (var id in config[guild.id].ranks) {
+        sortable.push([id, config[guild.id].ranks[id]]);
+    }
+
+    sortable.sort(function(a, b) {
+        return b[1] - a[1]
+    });
+
+    console.log(sortable.indexOf([user.id, config[guild.id].ranks[user.id]]));
+}
+
 function channelExists(guild, channel){
     var chnl = getChannel(guild, channel);
     return chnl != null && chnl != undefined;
@@ -403,6 +416,7 @@ bot.on('message', message => {
                 }
 
                 message.channel.send(embed);
+                console.log(getRank(guild, message.member.user));
             }
             else if (cmd == "channel"){
                 message.channel.send(message.channel.name);
