@@ -618,7 +618,7 @@ bot.on('message', message => {
                     }
                 }
                 if (user != undefined){
-                    message.channel.send({embed{
+                    message.channel.send({embed: {
                         color: 10876925,
                         author: {
                             name: user.username,
