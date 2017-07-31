@@ -612,14 +612,12 @@ bot.on('message', message => {
                     user = message.mentions.users.first();
                 }
                 else if (args[0] != undefined){
-                    console.log(args[0]);
                     var tmp = message.content.split(`${config[id].prefix}user `)[1];
-                    console.log(userExists(guild, tmp));
                     if (userExists(guild, tmp)){
                         user = getUser(guild, tmp);
                     }
                 }
-                if (user != undefined){
+                if (user != undefined && user != null){
                     message.channel.send({embed: {
                         color: 10876925,
                         author: {
