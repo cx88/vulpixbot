@@ -639,11 +639,14 @@ bot.on('message', message => {
                     message.channel.send(message.guild.id);
                 }
                 else if (args[0] == "user"){
+                    if (message.mentions.users.first() != undefined){
+                        message.channel.send(`ID of user "${message.mentions.users.first().username}": ${message.mentions.users.first().id}`)
+                    }
                     if (args[1] == undefined){
                         message.channel.send(`ID of user "${message.member.user.username}": ${message.member.user.id}`);
                     }
                     else if (userExists(guild, args[1])){
-                        message.channel.send(`ID of user "${getUser(guild, args[1])}": ${getUser(guild, args[1]).id}`);
+                        message.channel.send(`ID of user "${getUser(guild, args[1]).username}": ${getUser(guild, args[1]).id}`);
                     }
                 }
             }
