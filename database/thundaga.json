@@ -28,6 +28,9 @@
         "url": "https://www.youtube.com/watch?v=eoQSCd8OEOI",
         "keywords": [
             "5", "five", "trainers", "trainer"
+        ],
+        "blacklist": [
+            "animation"
         ]
     },
     "6": {
