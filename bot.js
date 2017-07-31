@@ -237,12 +237,6 @@ function setDefaults(guild){
 
         }
     }
-    for (channel in guild.channels){
-        config[g].channels[channel.id] = {
-            "disabled_all": false,
-            "disabled_commands": []
-        }
-    }
 
     saveConfig();
     var role = guild.roles.find("name", "Vulpix Admin");
@@ -727,10 +721,10 @@ bot.on('message', message => {
     if (message.content.startsWith("v-config") && isBotAdmin(message.member)){ // Configuration of the bot for the server.
         args = message.content.split(" ");
         args.splice(0, 1);
-        var param = args[0];
+        var cmd = args[0];
         var setting = args[1];
         console.log(dateNow() + ' ' + message.author.username + `: ` + message.content);
-        if (param == "prefix"){
+        if (cmd == "prefix"){
             if (setting != undefined){
                 if (setting == "v-"){
                     message.channel.send('v- cannot be used as a command prefix.');
@@ -745,7 +739,7 @@ bot.on('message', message => {
                 message.channel.send('The prefix for commands is currently `'+config[id]["prefix"]+'`\nUse `v-config prefix [new prefix]` to change it.');
             }
         }
-        else if (param == "messages"){
+        else if (cmd == "messages"){
             var arg = args[1];
             var setting = args[2];
             if (arg == "welcome"){
@@ -802,10 +796,10 @@ bot.on('message', message => {
                 message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off, change the messages, and choose in which channel they should be sent. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute```');
             }
         }
-        else if (param == "autorole"){
+        else if (cmd == "autorole"){
             message.channel.send('When a new user joins, you can choose for the bot to give them a role.```Role given: '+config[id]["autorole"]+'\r\nStatus: '+config[id]["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
         }
-        else if (param == "ignored_channels"){
+        else if (cmd == "ignored_channels"){
             if (args[1] == "add"){
                 if (args[2] == undefined){
                     message.channel.send(`Use \`v-config ignored_channels add [channelname]\` to disable Vulpix commands in a channel (other than v-config). Note that "channelname" should be JUST the name of the channel; not the id or tag.`);
@@ -851,11 +845,16 @@ bot.on('message', message => {
                 message.channel.send(msg);
             }
         }
-        else if (param == "default"){
+        else if (cmd == "channels"){
+            var channels = guild.channels.array();
+            console.log(channels);cmd
+            if (args[1])
+        }
+        else if (cmd == "default"){
             setDefaults(message.guild);
             message.channel.send(`The configurations have been reset to the default.`);
         }
-        else if (param == "show"){
+        else if (cmd == "show"){
             var msg = "";
             if (args[1] == "prefix"){
                 msg = config[id].prefix;
@@ -882,7 +881,7 @@ bot.on('message', message => {
             message.channel.send('```JavaScript\n'+msg+'```');
         }
         else{
-            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config default\nv-config show```')
+            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config default\nv-config channels\nv-config show```')
         }
     }
 });
