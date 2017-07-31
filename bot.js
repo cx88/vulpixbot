@@ -208,6 +208,8 @@ function setDefaults(guild){
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {
         "prefix": "?",
+        "ignored_channels": [
+        ],
         "disabled_commands": [
 
         ],
