@@ -644,7 +644,7 @@ bot.on('message', message => {
                             inline: true
                         },{
                             name: `**Game**`,
-                            value: user.presence.game.name,
+                            value: user.presence.game ? user.presence.game.name : "---",
                             inline: true
                         },{
                             name: `**Bot**`,
