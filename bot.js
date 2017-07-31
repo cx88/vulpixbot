@@ -1,15 +1,16 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 var paste = require('better-pastebin');
-var url = "https://pastebin.com/xwbrL2hj";
+var url = "https://pastebin.com/4cAUChCC";
 var fs = require('fs');
 var dlt = fs.readFileSync('database/delet_this.json');
 var delet_this = JSON.parse(dlt)["memes"];
 var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
 var config = "";
+var main_color = 10876925;
 paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
-paste.login('M3rein', 'WorldCrafter112', function(success, data){
+paste.login('VulpixBot', 'Ambaer', function(success, data){
     if (!success){
         console.log(`Failed (${data})`);
     }
@@ -19,18 +20,18 @@ paste.login('M3rein', 'WorldCrafter112', function(success, data){
         }
     });
 });
-var level_curve = [ 0,
-    16,    36,    62,    90,    122,   // 1 - 5
-    156,   192,   234,   280,   330,   // 6 - 10
-    388,   456,   514,   578,   656,   // 11 - 15
-    728,   840,   984,   1144,  1302,  // 16 - 20
-    1454,  1624,  1828,  2106,  2384,  // 21 - 25
-    2770,  3192,  3726,  4290,  4968,  // 26 - 30
-    5762,  6666,  7784,  9156,  10398, // 31 - 35
-    11932, 13664, 15442, 17814, 20000  // 36 - 40
+const level_curve = [ 0,
+  24,    54,    93,    135,   183,   // 1  - 5
+  234,   288,   351,   420,   495,   // 6  - 10
+  582,   684,   771,   867,   984,   // 11 - 15
+  1092,  1260,  1476,  1716,  1953,  // 16 - 20
+  2181,  2436,  2742,  3159,  3576,  // 21 - 25
+  4155,  4788,  5589,  6435,  7452,  // 26 - 30
+  8643,  9999,  11676, 13734, 15597, // 31 - 35
+  17898, 20496, 23163, 26721, 30000  // 35 - 40
 ]
 
-var fortune = [
+const fortune = [
     "Most certainly.",
     "I dare say so.",
     "I can say that that is so.",
@@ -52,7 +53,7 @@ var fortune = [
     "Four eagles. That means no."
 ]
 
-var magic8ball = [
+const magic8ball = [
     "It is certain.",
     "It is decidedly so.",
     "Without a doubt.",
@@ -75,12 +76,12 @@ var magic8ball = [
     "Very doubtful."
 ]
 
-var commands = [
+const commands = [
     "pc", "soon", "rand", "choose",
     "dex", "thundaga", "wikia", "ebs",
     "pbs+", "read", "lenny", "shrug",
     "delet", "rank", "fortune", "8ball",
-    "eval", "quote", "user"
+    "eval", "quote", "user", "bug",
 ]
 
 /*
@@ -190,13 +191,43 @@ function getRank(guild, user){
     }
 }
 
-function userExists(guild, user){
-    var user = getUser(guild, user);
+function userExists(guild, username){
+    var user = getUser(guild, username);
     return user != null && user != undefined;
 }
 
 function getUser(guild, user){
-    return guild.members.find(m => m.user.username.toLowerCase() === user.toLowerCase()).user;
+    try{
+        return guild.members.find(m => m.user.username.toLowerCase() === user.toLowerCase()).user;
+    }
+    catch (err){
+        return null;
+    }
+}
+
+function tryGetUser(message){
+    args = message.content.split(' ');
+    var user;
+    for (i = 0; i < args.length; i++){
+        if (user != null && user != undefined) break;
+        if (message.mentions.users.first() != undefined){
+            user = message.mentions.users.first();
+        }
+        else{
+            var name = args[i];
+            name = name.replace('%20', ' ');
+            if (userExists(message.guild, name)){
+                user = getUser(message.guild, name);
+            }
+            else{
+                var name = message.guild.members.find('nickname', name);
+                if (name != null && name != undefined){
+                    user = name.user;
+                }
+            }
+        }
+    }
+    return user;
 }
 
 function channelExists(guild, channel){
@@ -224,6 +255,9 @@ function setDefaults(guild){
         "ranks": {
 
         },
+        "users": {
+
+        },
         "channels": {
 
         },
@@ -242,6 +276,9 @@ function setDefaults(guild){
             }
         },
         "quotes": {
+
+        },
+        "bugs": {
 
         }
     }
@@ -272,7 +309,7 @@ function setDefaults(guild){
 function saveConfig(){
     var str = jsonToString(config);
     paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
-    paste.login('M3rein', 'WorldCrafter112', function(success, data){
+    paste.login('VulpixBot', 'Ambaer', function(success, data){
         paste.edit(url, {
             contents: str
         });
@@ -296,9 +333,27 @@ function command(channel, arg, cmd){
     }
 }
 
+function getBugEmbed(title, description, username, url){
+    return {embed: {
+        color: main_color,
+        author: {
+            name: username,
+            icon_url: url
+        },
+        fields: [{
+            name: `**Bug Title**`,
+            value: title
+        },{
+            name: `**Bug Description**`,
+            value: description
+        }]
+    }};
+}
+
 setInterval(saveConfig, 30000);
 
 bot.on('ready', () => {
+    console.log(level_curve.map(item => item * 1.5))
     console.log('Vulpix online');
     bot.user.setGame("Type v-config");
 });
@@ -331,9 +386,7 @@ bot.on('message', message => {
     var guild = message.guild;
     var id = guild.id;
     var channel = message.channel;
-    if (config[id] == undefined){
-        setDefaults(guild);
-    }
+    if (config[id] == undefined) return;
     if (!message.content.startsWith(config[id].prefix) && !message.content.startsWith("v-")){
         if (config[id]["ranks"] == undefined){
             config[id]["ranks"] = {};
@@ -498,7 +551,7 @@ bot.on('message', message => {
             }
             else if (command(channel, cmd, "read")){
                 if (args[0] == undefined){
-                    message.channel.send('Hello. I am Vulpix. I represent the annoyance of ' + message.author.username + '. You have failed to read one or more of their messages.\nInstead of being snarky and saying "Read the fucking messages, please!", they desperately used this command to have me talk for them. I hope you can appreciate their choice and fucking read for once.');
+                    message.channel.send('Hello. I am Vulpix. I represent the annoyance of ' + message.author.username + '. You have failed to read one or more of their messages.\nInstead of being snarky and saying "Read the fucking messages, please!", they desperately used this command to have me talk for them. I hope you can appreciate their choice and read for once.');
                 }
                 else if (args[0] == "wiki" || args[0] == "wikia"){
                     message.channel.send('Hello. I see you have failed to look up the wikia. Shame on you. It wasn\'t made for decoration purposes. People put time into making that and providing you with information. You should respect that and read the wikia. If you end up not finding what you need, try again and state that you did in fact read the wikia.');
@@ -514,6 +567,9 @@ bot.on('message', message => {
                 }
                 else if (args[0] == "rules"){
                     message.channel.send('Yo. If you don\'t read the rules, you\'ll get in trouble soon enough. Rules are there for very good reasons; organization, past experiences, and so on. Read them so you\'re sure that you comply with them.');
+                }
+                else if (args[0] == "error"){
+                    message.channel.send('Ey. Error messages are often very English and easy to understand. Please, before you ask for help... read the error message. They\'re so self-explanatory most of the times...');
                 }
             }
             else if (command(channel, cmd, "lenny")){
@@ -546,7 +602,7 @@ bot.on('message', message => {
                 }
                 var exp = config[id]["ranks"][user.id] * 7 + " / " + req * 7;
                 message.channel.send({embed:{
-                    color: 10876925,
+                    color: main_color,
                     author: {
                         name: user.username,
                         icon_url: user.avatarURL
@@ -635,7 +691,7 @@ bot.on('message', message => {
                 }
                 if (user != undefined && user != null){
                     message.channel.send({embed: {
-                        color: 10876925,
+                        color: main_color,
                         author: {
                             name: user.username,
                             icon_url: user.avatarURL
@@ -673,6 +729,174 @@ bot.on('message', message => {
                             inline: true
                         }]
                     }});
+                }
+            }
+            else if (command(channel, cmd, "bug")){
+                if (config[id].bugs == undefined){
+                    config[id].bugs = {};
+                    saveConfig();
+                }
+                if (args[0] == "list"){
+                    var bug_titles = Object.keys(config[id].bugs);
+                    message.channel.send(`Known bugs:\`\`\`\n${bug_titles.length == 0 ? `---` : bug_titles.join('\n')}\`\`\``)
+                }
+                else if (args[0] == "submit"){
+                    if (config[id].users != undefined){
+                        if (config[id].users[message.member.user.id] != undefined){
+                            if (!config[id].users[message.member.user.id].can_submit_bugs){
+                                message.channel.send(`You are not authorized to submit bugs.`);
+                                return;
+                            }
+                        }
+                    }
+                    if (args[1] == undefined){
+                        message.channel.send(`Submit a bug using the following command: \`\`\`\n${config[id].prefix}bug submit name:"Bug title"; description:"A descriptive description of the bug. Give as much relevant information as possible."\`\`\`Note that you cannot use the \`"\` character in the title or description.`);
+                    }
+                    else{
+                        var msg = message.content.split(`${config[id].prefix}bug submit `)[1];
+                        try{
+                            if (msg.match(/"/g).length != 4){
+                                message.channel.send(`Invalid bug submission format.`);
+                                return;
+                            }
+                        }
+                        catch (err){
+                            message.channel.send(`Invalid bug submission format.`);
+                            return;
+                        }
+                        var name;
+                        var desc;
+                        if (msg.contains('name:')){
+                            name = msg.split('name:')[1].split('"')[1].split('"')[0];
+                        }
+                        else{
+                            message.channel.send(`Invalid bug submission format.`);
+                            return;
+                        }
+                        if (msg.contains('description:')){
+                            desc = msg.split('description:')[1].split('"')[1].split('"')[0];
+                        }
+                        else{
+                            message.channel.send(`Invalid bug submission format.`);
+                            return;
+                        }
+                        name = name.toUpperCase();
+                        desc = msg.split('description:')[1].split('"')[1].split('"')[0];
+                        if (config[id].bugs[name] != undefined){
+                            message.channel.send(`There is already a bug with that title.`);
+                            return;
+                        }
+                        name = name.toUpperCase();
+                        config[id].bugs[name] = {};
+                        config[id].bugs[name].desc = desc;
+                        config[id].bugs[name].username = message.member.user.tag;
+                        config[id].bugs[name].url = message.member.user.avatarURL;
+                        saveConfig();
+                        message.channel.send(`Successfully submitted a new bug:`);
+                        message.channel.send(getBugEmbed(name, config[id].bugs[name].desc, config[id].bugs[name].username, config[id].bugs[name].url));
+                    }
+                }
+                else if (args[0] == "view"){
+                    if (args[1] != undefined){
+                        var name = message.content.split(`${config[id].prefix}bug view `)[1];
+                        name = name.toUpperCase();
+                        if (config[id].bugs[name] != undefined){
+                            message.channel.send(getBugEmbed(name, config[id].bugs[name].desc, config[id].bugs[name].username, config[id].bugs[name].url));
+                        }
+                        else{
+                            message.channel.send(`There is no bug with such a title.`);
+                        }
+                    }
+                    else{
+                        message.channel.send(`To view a bug with its description, use \`${config[id].prefix}bug view [bug title]\`.`);
+                    }
+                }
+                else if (args[0] == "close"){
+                    if (isBotAdmin(message.member)){
+                        if (args[1] != undefined){
+                            var name = message.content.split(`${config[id].prefix}bug close `)[1];
+                            name = name.toUpperCase();
+                            if (config[id].bugs[name] != undefined){
+                                delete config[id].bugs[name];
+                                saveConfig();
+                                message.channel.send(`Succefully closed bug "${name}".`);
+                            }
+                            else{
+                                message.channel.send(`There is no bug with such a title.`);
+                            }
+                        }
+                        else{
+                            message.channel.send(`To close a bug submission, use \`${config[id].prefix}bug close [bug title]\``);
+                        }
+                    }
+                }
+                else if (args[0] == "allow"){
+                    if (isBotAdmin(message.member)){
+                        var user = tryGetUser(message);
+                        if (user != undefined){
+                            if (config[id].users == undefined){
+                                config[id].users = {};
+                                saveConfig();
+                                message.channel.send(`This user is already able to submit bugs.`);
+                                return;
+                            }
+                            if (config[id].users[user.id] == undefined){
+                                config[id].users[user.id] = {};
+                                saveConfig();
+                                message.channel.send(`This user is already able to submit bugs.`);
+                                return;
+                            }
+                            if (config[id].users[user.id].can_submit_bugs){
+                                message.channel.send(`This user is already able to submit bugs.`);
+                                return;
+                            }
+                            else{
+                                config[id].users[user.id].can_submit_bugs = true;
+                                saveConfig();
+                                message.channel.send(`This user can now submit bugs.`);
+                            }
+                        }
+                        else{
+                            message.channel.send(`User couldn't be found.`);
+                        }
+                    }
+                }
+                else if (args[0] == "disallow"){
+                    if (isBotAdmin(message.member)){
+                        var user = tryGetUser(message);
+                        if (user != undefined){
+                            if (config[id].users == undefined){
+                                config[id].users = {};
+                                config[id].users[user.id] = {};
+                                config[id].users[user.id].can_submit_bugs = false;
+                                saveConfig();
+                                message.channel.send(`This user is no longer able to submit bugs.`);
+                                return;
+                            }
+                            if (config[id].users[user.id] == undefined){
+                                config[id].users[user.id] = {};
+                                config[id].users[user.id].can_submit_bugs = false;
+                                saveConfig();
+                                message.channel.send(`This user is no longer able to submit bugs.`);
+                                return;
+                            }
+                            if (!config[id].users[user.id].can_submit_bugs){
+                                message.channel.send(`This user is already unable to submit bugs.`);
+                                return;
+                            }
+                            else{
+                                config[id].users[user.id].can_submit_bugs = false;
+                                saveConfig();
+                                message.channel.send(`This user can no longer submit bugs.`);
+                            }
+                        }
+                        else{
+                            message.channel.send(`User couldn't be found.`);
+                        }
+                    }
+                }
+                else{
+                    message.channel.send(`Use one of the following commands for more information:\`\`\`\n${config[id].prefix}bug list\n${config[id].prefix}bug view\n${config[id].prefix}bug submit\n${config[id].prefix}bug close\n${config[id].prefix}bug disallow [user]\n${config[id].prefix}bug allow [user]\`\`\``);
                 }
             }
             else if (cmd == "say" && isBotAdmin(message.member)){
@@ -878,7 +1102,6 @@ bot.on('message', message => {
                 channelid = getChannel(message.guild, args[1]).id;
                 if (config[id].channels[channelid] == undefined){
                     config[id].channels[channelid] = {
-                        "disable_all": false,
                         "disabled_commands": []
                     };
                 }
@@ -970,8 +1193,14 @@ bot.on('message', message => {
             else if (args[1] == "channels"){
                 msg = jsonToString(config[id].channels);
             }
+            else if (args[1] == "bugs"){
+                msg = jsonToString(config[id].bugs);
+            }
+            else if (args[1] == "users"){
+                msg = jsonToString(config[id].users);
+            }
             else{
-                message.channel.send(`Use one of the following values to show: \`\`\`v-config show prefix\nv-config show ignored_channels\nv-config show messages\nv-config show quotes\nv-config show ranks\nv-config show channels\`\`\``);
+                message.channel.send(`Use one of the following values to show: \`\`\`v-config show prefix\nv-config show ignored_channels\nv-config show messages\nv-config show quotes\nv-config show ranks\nv-config show channels\nv-config show bugs\nv-config show users\`\`\``);
                 return;
             }
             message.channel.send('```JavaScript\n'+msg+'```');
