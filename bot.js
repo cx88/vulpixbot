@@ -81,7 +81,7 @@ const commands = [
     "dex", "thundaga", "wikia", "ebs",
     "pbs+", "read", "lenny", "shrug",
     "delet", "rank", "fortune", "8ball",
-    "eval", "quote", "user", "bug",
+    "eval", "quote", "user", "bug", "spoon"
 ]
 
 /*
@@ -124,6 +124,14 @@ Array.prototype.contains = function(obj) {
         }
     }
     return false;
+}
+
+Array.prototype.shuffle = function shuffle() {
+    for (let i = this.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [this[i - 1], this[j]] = [this[j], this[i - 1]];
+    }
+    return this;
 }
 
 String.prototype.contains = function(obj){
@@ -641,10 +649,8 @@ bot.on('message', message => {
                     message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that the user should be their **name**, not a tag, nickname, or id.`);
                     return;
                 }
-                var username = args[0];
-                username = username.replace("%20", " ");
-                var user = message.guild.members.find(m => m.user.username.toLowerCase() === username.toLowerCase());
-                if (user == null){
+                var user = tryGetUser(message);
+                if (user == undefined){
                     message.channel.send(`User not found.`);
                 }
                 else{
@@ -898,6 +904,14 @@ bot.on('message', message => {
                     message.channel.send(`Use one of the following commands for more information:\`\`\`\n${config[id].prefix}bug list\n${config[id].prefix}bug view\n${config[id].prefix}bug submit\n${config[id].prefix}bug close\n${config[id].prefix}bug disallow [user]\n${config[id].prefix}bug allow [user]\`\`\``);
                 }
             }
+            else if (command(channel, cmd, "spoon")){
+                var msg = message.content.split(`${config[id].prefix}spoon `)[1];
+                if (msg != undefined && msg != null){
+                    var array = msg.split("");
+                    array = array.shuffle();
+                    message.channel.send(array.join(''));
+                }
+            }
             else if (cmd == "say" && isBotAdmin(message.member)){
                 if (args[0] != undefined){
                     if (channelExists(message.guild, args[0])){
@@ -967,6 +981,7 @@ bot.on('message', message => {
         args.splice(0, 1);
         var cmd = args[0];
         var setting = args[1];
+        
         console.log(`${dateNow()} ${message.author.username}: ${message.content}`);
         if (cmd == "prefix"){
             if (setting != undefined){
