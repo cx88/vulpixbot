@@ -181,6 +181,7 @@ function getRank(guild, user){
     console.log(config[guild.id].ranks[user.id]);
     console.log(sortable);
     console.log([user.id, config[guild.id].ranks[user.id]]);
+    console.log(sortable.indexOf([user.id, config[guild.id].ranks[user.id]]));
 }
 
 function channelExists(guild, channel){
