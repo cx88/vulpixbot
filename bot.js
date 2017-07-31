@@ -188,7 +188,7 @@ function userExists(guild, user){
 }
 
 function getUser(guild, user){
-    return guild.members.find(m => m.user.username.toLowerCase() === user.toLowerCase());
+    return guild.members.find(m => m.user.username.toLowerCase() === user.toLowerCase()).user;
 }
 
 function channelExists(guild, channel){
@@ -620,7 +620,6 @@ bot.on('message', message => {
                     }
                 }
                 if (user != undefined){
-                    console.log(user.constructor + ' + ' + user.username);
                     message.channel.send({embed: {
                         color: 10876925,
                         author: {
