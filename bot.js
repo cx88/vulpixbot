@@ -184,11 +184,11 @@ function getRank(guild, user){
 
 function userExists(guild, user){
     var user = getUser(guild, user);
-    return user != null && user != udnefined;
+    return user != null && user != undefined;
 }
 
 function getUser(guild, user){
-    return guild.members.find('name', user);
+    return guild.members.find(m => m.user.username.toLowerCase() === user.toLowerCase());
 }
 
 function channelExists(guild, channel){
