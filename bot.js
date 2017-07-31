@@ -630,7 +630,7 @@ bot.on('message', message => {
                         },
                         fields: [{
                             name: `**Nickname**`,
-                            value: user.nickname,
+                            value: user.username,
                             inline: true
                         },{
                             name: `**User ID**`,
