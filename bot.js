@@ -620,7 +620,7 @@ bot.on('message', message => {
                     }
                 }
                 if (user != undefined){
-                    console.log(user);
+                    console.log(user.constructor + ' + ' + user.username);
                     message.channel.send({embed: {
                         color: 10876925,
                         author: {
