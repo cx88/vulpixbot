@@ -300,7 +300,7 @@ setInterval(saveConfig, 30000);
 
 bot.on('ready', () => {
     console.log('Vulpix online');
-    bot.user.setGame("Maintenance");
+    bot.user.setGame("Type v-config");
 });
 
 bot.on('guildCreate', guild =>{
@@ -633,16 +633,7 @@ bot.on('message', message => {
                         user = getUser(guild, tmp);
                     }
                 }
-                console.log(user.username);
                 if (user != undefined && user != null){
-                    console.log(user.avatarURL);
-                    console.log(user.username);
-                    console.log(user.id);
-                    console.log(user.presence.status);
-                    console.log(user.presence.game);
-                    console.log(user.bot);
-                    console.log(user.createdAt);
-                    console.log(user.createdTimestamp);
                     message.channel.send({embed: {
                         color: 10876925,
                         author: {
@@ -681,8 +672,7 @@ bot.on('message', message => {
                             value: user.createdTimestamp,
                             inline: true
                         }]
-                    }}).catch(err => console.log(err));
-                    console.log('success');
+                    }});
                 }
             }
             else if (cmd == "say" && isBotAdmin(message.member)){
