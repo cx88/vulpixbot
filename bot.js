@@ -180,8 +180,7 @@ function getRank(guild, user){
     console.log(config[guild.id].ranks);
     console.log(config[guild.id].ranks[user.id]);
     console.log(sortable);
-    var ar = [user.id, config[guild.id].ranks[user.id];
-    console.log(ar);
+    console.log([user.id, config[guild.id].ranks[user.id]]);
 }
 
 function channelExists(guild, channel){
