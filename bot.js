@@ -172,16 +172,14 @@ function getRank(guild, user){
     for (var id in config[guild.id].ranks) {
         sortable.push([id, config[guild.id].ranks[id]]);
     }
-
     sortable.sort(function(a, b) {
         return b[1] - a[1]
     });
-
-    console.log(config[guild.id].ranks);
-    console.log(config[guild.id].ranks[user.id]);
-    console.log(sortable);
-    console.log([user.id, config[guild.id].ranks[user.id]]);
-    console.log(sortable.indexOf([user.id, config[guild.id].ranks[user.id]]));
+    for (i = 0; i < sortable.length; i++){
+        if (sortable[i][0] == user.id){
+            return i + 1;
+        }
+    }
 }
 
 function channelExists(guild, channel){
