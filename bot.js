@@ -956,6 +956,7 @@ bot.on('message', message => {
                 if (msg != undefined && msg != null){
                     var mes = "";
                     for (i = 0; i < msg.length; i++){
+                        console.log(mes);
                         console.log(msg[i]);
                         var rndm = rand(2);
                         console.log(rndm);
