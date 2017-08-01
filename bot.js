@@ -443,10 +443,10 @@ bot.on('message', message => {
                 var options = str.split('|');
                 console.log('-'+options[1][0]+'-')
                 while (options[0] == ' '){
-                    options = options.splice(0, 1);
+                    options = options.substr(1);
                 }
                 while (options[options.length - 1] == ' '){
-                    options = options.splice(options.length - 1, 1);
+                    options = options.substr(0, options.length - 1);
                 }
                 for (i = 0; i < options.length; i++){
                     console.log(`-${options[i]}-`);
