@@ -957,13 +957,14 @@ bot.on('message', message => {
                     }
                 }
                 else if (command(channel, cmd, "channel")){
-                    var channel = tryGetChannel(message);
-                    if (channel == undefined){
+                    var chnl = tryGetChannel(message);
+                    if (chnl == undefined){
                         message.channel.send(`Type \`${config[id].prefix}channel [channel]\` to see information about that channel.`)
                     }
                     else{
-                        console.log(channel);
+                        
                     }
+                    console.log(chnl);
                 }
             }
             else{
