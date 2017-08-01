@@ -9,6 +9,7 @@ var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
 var config = "";
 var main_color = 10876925;
+var commandlog = 'https://pastebin.com/wZE2rymj';
 paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
 paste.login('VulpixBot', 'Ambaer', function(success, data){
     if (!success){
@@ -326,6 +327,32 @@ function saveConfig(){
     });
 }
 
+function logMessage(message){
+    var msg;
+    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
+    paste.login('VulpixBot', 'Ambaer'), function(success, data){
+        if (!success){
+            console.log(`Failed to load command log.`);
+        }
+        paste.get(commandlog, function(success, data){
+            msg = data;
+        })
+    }
+    if (msg == undefined || msg == null){
+        console.log(`Failed to load command log.`);
+    }
+    msg += '\n' + message
+    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
+    paste.login('VulpixBot', 'Ambaer'), function(success, data){
+        if (!success){
+            console.log(`Failed to write to command log.`);
+        }
+        paste.edit(commandlog, {
+            contents: msg
+        })
+    }
+}
+
 function rand(int){
     return Math.floor(Math.random() * parseInt(int));
 }
@@ -368,7 +395,7 @@ bot.on('ready', () => {
 });
 
 bot.on('guildCreate', guild =>{
-    console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
+    logMessage('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
     guild.defaultChannel.send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
     setDefaults(guild);
 })
@@ -415,7 +442,7 @@ bot.on('message', message => {
             cmd = message.content.substr(1).split(' ')[0];
             args = message.content.split(" ");
             args.splice(0, 1);
-            console.log(dateNow() + ' ' + message.author.username + `: ` + message.content);
+            logMessage(dateNow() + ' ' + message.author.username + `: ` + message.content);
             if (command(channel, cmd, "pc")){
                 if (args[0] == undefined) return;
                 message.channel.send('https://pokecommunity.com/~'+args[0]);
@@ -487,8 +514,6 @@ bot.on('message', message => {
                 var hatchtime = `${poke.hatchtime} steps`
                 var shuffle = poke.shuffle;
                 var image = poke.url;
-                console.log(`shuffle: ${shuffle}`);
-                console.log(`image: ${image}`);
                 var evolutions = "";
                 if (poke.evolutions != undefined && poke.evolutions.length > 0){
                     evolutions = poke.evolutions.join("\n");
@@ -988,7 +1013,7 @@ bot.on('message', message => {
         args.splice(0, 1);
         var cmd = args[0];
         var setting = args[1];
-        console.log(`${dateNow()} ${message.author.username}: ${message.content}`);
+        logMessage(`${dateNow()} ${message.author.username}: ${message.content}`);
         if (cmd == "prefix"){
             if (setting != undefined){
                 if (setting == "v-"){
