@@ -960,9 +960,8 @@ bot.on('message', message => {
                     message.channel.send(`Type \`${config[id].prefix}channel [channel]\` to see information about that channel.`)
                 }
                 else{
-                    
+                    message.channel.send(chnl.name);
                 }
-                message.channel.send(chnl.name);
             }
             if (isBotAdmin(message.member)){
                 if (cmd == "say"){
