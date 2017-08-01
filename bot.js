@@ -441,15 +441,13 @@ bot.on('message', message => {
                     if (i != _args.length - 1) { str += " "; }
                 }
                 var options = str.split('|');
-                console.log('-'+options[1][0]+'-')
-                while (options[0] == ' '){
-                    options = options.substr(1);
-                }
-                while (options[options.length - 1] == ' '){
-                    options = options.substr(0, options.length - 1);
-                }
                 for (i = 0; i < options.length; i++){
-                    console.log(`-${options[i]}-`);
+                    while (options[0] == ' '){
+                        options[i] = options[i].substr(1);
+                    }
+                    while (options[options.length - 1] == ' '){
+                        options[i] = options[i].substr(0, options[i].length - 1);
+                    }
                 }
                 if (options.length == 1){
                     message.channel.send(`Don't try to trick me!`);
