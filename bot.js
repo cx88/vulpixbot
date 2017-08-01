@@ -9,7 +9,7 @@ var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
 var config = "";
 var main_color = 10876925;
-var commandlog = 'https://pastebin.com/wZE2rymj';
+var commandlog = "https://pastebin.com/wZE2rymj";
 paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
 paste.login('VulpixBot', 'Ambaer', function(success, data){
     if (!success){
