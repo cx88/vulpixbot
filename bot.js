@@ -950,7 +950,7 @@ bot.on('message', message => {
                     message.channel.send(array.join(''));
                 }
             }
-            else if (command(channel, cdm, "top")){
+            else if (command(channel, cmd, "top")){
                 var page = 0;
                 try{
                     page = parseInt(args[0]) - 1;
