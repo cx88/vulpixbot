@@ -968,8 +968,7 @@ bot.on('message', message => {
             }
             else if (command(channel, cmd, "gandalf")){
                 message.delete();
-                message.channel.sendFile('bot.js');
-                message.channel.send({files:['bot.js']});
+                message.channel.send({files:['gandalf.gif']});
             }
             else if (command(channel, cmd, "top")){
                 var page = 0;
@@ -1006,23 +1005,23 @@ bot.on('message', message => {
                 if (chnl.type == 'text'){
                     embed["embed"].description = chnl.topic;
                     embed["embed"].fields = [{
+                        name: `Channel Type`,
+                        value: chnl.type.capitalize(),
+                        inline: true
+                    },{
                         name: `NSFW`,
                         value: chnl.nsfw,
                         inline: true
+                    },{
+                        name: `Channel ID`,
+                        value: chnl.id
                     },{
                         name: `Channel Position`,
                         value: chnl.position + 1,
                         inline: true
                     },{
-                        name: `Channel Type`,
-                        value: chnl.type.capitalize()
-                    },{
                         name: `Created At`,
                         value: chnl.createdAt,
-                        inline: true
-                    },{
-                        name: `Channel ID`,
-                        value: chnl.id,
                         inline: true
                     }];
 
