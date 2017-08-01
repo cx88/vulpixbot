@@ -971,8 +971,8 @@ bot.on('message', message => {
                     title: `${guild.name}: #${chnl}`
                 }};
                 if (chnl.type == 'text'){
-                    embed["embed"]["description"] = chnl.topic;
-                    embed["embed"]["description"].fields = [{
+                    embed["embed"].description = chnl.topic;
+                    embed["embed"].fields = [{
                         name: "NSFW",
                         value: chnl.nsfw
                     },{
