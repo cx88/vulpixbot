@@ -223,7 +223,9 @@ function tryGetUser(message){
         }
         else{
             var name = args[i];
-            name = name.replace('%20', ' ');
+            while (name.contains('%20')){
+                name = name.replace('%20', ' ');
+            }
             if (userExists(message.guild, name)){
                 user = getUser(message.guild, name);
             }
