@@ -445,7 +445,7 @@ bot.on('message', message => {
                     while (options[i][0] == ' '){
                         options[i] = options[i].substr(1);
                     }
-                    while (options[i][options.length - 1] == ' '){
+                    while (options[i][options[i].length - 1] == ' '){
                         options[i] = options[i].substr(0, options[i].length - 1);
                     }
                 }
