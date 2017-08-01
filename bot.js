@@ -958,7 +958,7 @@ bot.on('message', message => {
                     var mes = "";
                     for (i = 0; i < msg.length; i++){
                         var rndm = rand(2);
-                        if (rndm == 0){
+                        if (rndm == 1){
                             mes += msg[i].toUpperCase();
                         }
                         else{
