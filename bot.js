@@ -964,7 +964,7 @@ bot.on('message', message => {
                     else{
                         
                     }
-                    console.log(chnl);
+                    message.channel.send(chnl.name);
                 }
             }
             else{
