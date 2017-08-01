@@ -770,10 +770,6 @@ bot.on('message', message => {
                             name: `**Created At**`,
                             value: user.createdAt,
                             inline: true
-                        },{
-                            name: `**Created Timestamp**`,
-                            value: user.createdTimestamp,
-                            inline: true
                         }]
                     }});
                 }
@@ -968,16 +964,26 @@ bot.on('message', message => {
                     thumbnail: {
                         url: guild.iconURL
                     },
-                    title: `${guild.name}: #${chnl}`
+                    title: `${guild.name}: #${chnl.name}`
                 }};
                 if (chnl.type == 'text'){
                     embed["embed"].description = chnl.topic;
                     embed["embed"].fields = [{
-                        name: "NSFW",
+                        name: `NSFW`,
                         value: chnl.nsfw
+                        inline: true
                     },{
-                        name: "Channel Position",
-                        value: chnl.position
+                        name: `Channel Position`,
+                        value: chnl.position + 1,
+                        inline: true
+                    },{
+                        name: `Created At`,
+                        value: chnl.createdAt,
+                        inline: true
+                    },{
+                        name: `Channel ID`,
+                        value: chnl.id,
+                        inline: true
                     }];
 
                 }
