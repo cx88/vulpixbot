@@ -967,7 +967,7 @@ bot.on('message', message => {
                     },
                     thumbnail: {
                         url: guild.iconURL
-                    }
+                    },
                     title: `${guild.name}: #${chnl}`
                 }};
                 if (chnl.type == 'text'){
