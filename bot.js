@@ -328,6 +328,8 @@ function saveConfig(){
 }
 
 function logMessage(message){
+    console.log(message);
+    return;
     var msg;
     paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
     paste.login('VulpixBot', 'Ambaer'), function(success, data){
