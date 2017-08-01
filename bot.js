@@ -957,11 +957,24 @@ bot.on('message', message => {
             else if (command(channel, cmd, "channel")){
                 var chnl = tryGetChannel(message);
                 if (chnl == undefined){
-                    message.channel.send(`Type \`${config[id].prefix}channel [channel]\` to see information about that channel.`)
+                    chnl = channel;
+                }
+                var user = guild.members.find(m => m.user.id === guild.ownerID).user;
+                var embed = {embed: {
+                    author: {
+                        name: user.tag,
+                        icon_url: user.avatarURL
+                    },
+                    title: `#${chnl.name}`
+                }};
+                if (chnl.type == 'text'){
+                    embed[embed][description] = chnl.topic;
+                    
                 }
                 else{
-                    message.channel.send(chnl.name);
+
                 }
+                message.channel.send(embed);
             }
             if (isBotAdmin(message.member)){
                 if (cmd == "say"){
