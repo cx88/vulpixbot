@@ -395,6 +395,8 @@ function getBugEmbed(title, description, username, url){
 setInterval(saveConfig, 30000);
 
 bot.on('ready', () => {
+    console.log(process.env);
+    console.log(process.env['TOKEN']);
     console.log('Vulpix online');
     bot.user.setGame("Type v-config");
 });
