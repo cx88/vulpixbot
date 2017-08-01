@@ -954,6 +954,7 @@ bot.on('message', message => {
                 var msg = message.content.split(`${config[id].prefix}mock `)[1];
                 console.log(msg);
                 if (msg != undefined && msg != null){
+                    msg = msg.toLowerCase();
                     var mes = "";
                     for (i = 0; i < msg.length; i++){
                         var rndm = rand(3);
