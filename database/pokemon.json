@@ -739,6 +739,7 @@
         "height": "1.4m",
         "weight": "62.0kg",
         "base_exp": "227",
+        "evyield": [0,3,0,0,0,0],
         "levelingrate": "Medium Slow",
         "hatchtime": "5140 - 5396",
         "genderratio": "0%",
