@@ -950,6 +950,19 @@ bot.on('message', message => {
                     message.channel.send(array.join(''));
                 }
             }
+            else if (command(channel, cmd, "mock")){
+                var msg = message.content.split(`${config[id].prefix}mock `)[1];
+                if (msg != undefined && msg != null){
+                    for (i = 0; i < msg.length; i++){
+                        if (rand(2) == 0){
+                            msg[i] = msg[i].toUpperCase();
+                        }
+                        else{
+                            msg[i] = msg[i].toLowerCase();
+                        }
+                    }
+                }
+            }
             else if (command(channel, cmd, "top")){
                 var page = 0;
                 try{
