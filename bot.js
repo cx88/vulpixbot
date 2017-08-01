@@ -441,6 +441,16 @@ bot.on('message', message => {
                     if (i != _args.length - 1) { str += " "; }
                 }
                 options = str.split('|');
+                if (options.length == 1){
+                    message.channel.send(`Don't try to trick me!`);
+                    return;
+                }
+                if (options.length == 2){
+                    if (options[0] == options[1]){
+                        message.channel.send(`Don't try to trick me!`);
+                        return;
+                    }
+                }
                 message.channel.send(options[rand(options.length)]);
             }
             else if (command(channel, cmd, "dex")){
