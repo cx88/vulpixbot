@@ -970,7 +970,7 @@ bot.on('message', message => {
                     embed["embed"].description = chnl.topic;
                     embed["embed"].fields = [{
                         name: `NSFW`,
-                        value: chnl.nsfw
+                        value: chnl.nsfw,
                         inline: true
                     },{
                         name: `Channel Position`,
