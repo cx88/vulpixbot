@@ -10,7 +10,7 @@ var eps = JSON.parse(vids);
 var config = "";
 var main_color = 10876925;
 var commandlog = 'https://pastebin.com/wZE2rymj';
-paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
+paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
 paste.login('VulpixBot', 'Ambaer', function(success, data){
     if (!success){
         console.log(`Failed (${data})`);
@@ -319,7 +319,7 @@ function setDefaults(guild){
 
 function saveConfig(){
     var str = jsonToString(config);
-    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
+    paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
     paste.login('VulpixBot', 'Ambaer', function(success, data){
         paste.edit(url, {
             contents: str
@@ -329,7 +329,7 @@ function saveConfig(){
 
 function logMessage(message){
     var msg;
-    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
+    paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
     paste.login('VulpixBot', 'Ambaer'), function(success, data){
         if (!success){
             console.log(`Failed to load command log.`);
@@ -342,7 +342,7 @@ function logMessage(message){
         console.log(`Failed to load command log.`);
     }
     msg += '\n' + message
-    paste.setDevKey('1e5ae41be39a47853b444052fdc3d6af');
+    paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
     paste.login('VulpixBot', 'Ambaer'), function(success, data){
         if (!success){
             console.log(`Failed to write to command log.`);
