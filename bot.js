@@ -968,8 +968,8 @@ bot.on('message', message => {
                     title: `#${chnl.name}`
                 }};
                 if (chnl.type == 'text'){
-                    embed[embed][description] = chnl.topic;
-                    
+                    embed["embed"]["description"] = chnl.topic;
+
                 }
                 else{
 
