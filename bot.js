@@ -977,6 +977,9 @@ bot.on('message', message => {
                         value: chnl.position + 1,
                         inline: true
                     },{
+                        name: `Channel Type`,
+                        value: chnl.type.capitalize()
+                    },{
                         name: `Created At`,
                         value: chnl.createdAt,
                         inline: true
