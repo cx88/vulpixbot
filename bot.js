@@ -580,9 +580,11 @@ bot.on('message', message => {
                 }
             }
             else if (command(channel, cmd, "lenny")){
+                message.delete();
                 message.channel.send("( ͡° ͜ʖ ͡°)");
             }
             else if (command(channel, cmd, "shrug")){
+                message.delete();
                 message.channel.send("¯\\_(ツ)_/¯");
             }
             else if (command(channel, cmd, "delet")){
