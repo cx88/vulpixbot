@@ -333,6 +333,7 @@ function logMessage(message){
     paste.login('VulpixBot', 'Ambaer'), function(success, data){
         if (!success){
             console.log(`Failed to load command log.`);
+            console.log(success);
         }
         paste.get(commandlog, function(success, data){
             msg = data;
@@ -340,12 +341,14 @@ function logMessage(message){
     }
     if (msg == undefined || msg == null){
         console.log(`Failed to load command log.`);
+        console.log(msg);
     }
     msg += '\n' + message
     paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
     paste.login('VulpixBot', 'Ambaer'), function(success, data){
         if (!success){
             console.log(`Failed to write to command log.`);
+            console.log(success);
         }
         paste.edit(commandlog, {
             contents: msg
