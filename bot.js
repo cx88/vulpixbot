@@ -441,7 +441,7 @@ bot.on('message', message => {
                     if (i != _args.length - 1) { str += " "; }
                 }
                 var options = str.split('|');
-                console.log('-'+options[1]+'-')
+                console.log('-'+options[1][0]+'-')
                 while (options[0] == ' '){
                     options = options.splice(0, 1);
                 }
