@@ -961,6 +961,7 @@ bot.on('message', message => {
                             msg[i] = msg[i].toLowerCase();
                         }
                     }
+                    message.channel.send(msg[i]);
                 }
             }
             else if (command(channel, cmd, "top")){
