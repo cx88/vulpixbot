@@ -441,11 +441,11 @@ bot.on('message', message => {
                     if (i != _args.length - 1) { str += " "; }
                 }
                 var options = str.split('|');
-                while (options[0] == ' '){
-                    options.splice(0, 1);
+                while (options.charAt(0) == ' '){
+                    options = options.splice(0, 1);
                 }
-                while (options[options.length - 1] == ' '){
-                    options.splice(options.length - 1, 1);
+                while (options.charAt(options.length - 1) == ' '){
+                    options = options.splice(options.length - 1, 1);
                 }
                 for (i = 0; i < options.length; i++){
                     console.log(`-${options[i]}-`);
