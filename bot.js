@@ -965,10 +965,20 @@ bot.on('message', message => {
                         name: user.tag,
                         icon_url: user.avatarURL
                     },
-                    title: `#${chnl.name}`
+                    thumbnail: {
+                        url: guild.iconURL
+                    }
+                    title: `${guild.name}: #${chnl}`
                 }};
                 if (chnl.type == 'text'){
                     embed["embed"]["description"] = chnl.topic;
+                    embed["embed"]["description"].fields = [{
+                        name: "NSFW",
+                        value: chnl.nsfw
+                    },{
+                        name: "Channel Position",
+                        value: chnl.position
+                    }];
 
                 }
                 else{
