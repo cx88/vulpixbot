@@ -968,7 +968,8 @@ bot.on('message', message => {
             }
             else if (command(channel, cmd, "gandalf")){
                 message.delete();
-                message.channel.sendFile('database/gandalf.gif');
+                message.channel.sendFile('gandalf.gif');
+                message.channel.send({files:['gandalf.gif']});
             }
             else if (command(channel, cmd, "top")){
                 var page = 0;
