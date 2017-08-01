@@ -629,6 +629,125 @@
         "desc": "It curls up in a ball to protect itself from enemy attacks. It also curls up to prevent heatstroke during the daytime when temperatures rise sharply."
     },
 
+    "Nidoran": {
+        "species": "029",
+        "kind": "Poison Pin",
+        "type1": "Poison",
+        "type2": "Unknown",
+        "ability1": "Poison_Point",
+        "ability2": "Rivalry",
+        "hiddenability": "Hustle",
+        "catchrate": "235",
+        "height": "0.4m",
+        "weight": "7.0kg",
+        "base_exp": "55",
+        "evyield": [1,0,0,0,0,0],
+        "levelingrate": "Medium Slow",
+        "hatchtime": "5140 - 5396",
+        "genderratio": "---",
+        "stats": [55,47,52,40,40,41],
+        "url": "cdn.bulbagarden.net/upload/8/81/029Nidoran.png",
+        "shuffle": "cdn.bulbagarden.net/upload/9/97/Shuffle029.png",
+        "desc": "Nidoran has barbs that secrete a powerful poison. They are thought to have developed as protection for this small-bodied Pokémon. When enraged, it releases a horrible toxin from its horn.",
+        "evolutions": [
+            "Nidoran > Level 16 > Nidoqueen",
+            "Nidoran > Level 16 > Nidoking"
+        ]
+    },
+
+    "Nidorina": {
+        "species": "030",
+        "kind": "Poison Pin",
+        "type1": "Poison",
+        "type2": "Unknown",
+        "ability1": "Poison_Point",
+        "ability2": "Rivalry",
+        "hiddenability": "Hustle",
+        "catchrate": "120", 
+        "height": "0.8m",
+        "weight": "20.0kg",
+        "base_exp": "128",
+        "evyield": [2,0,0,0,0,0],
+        "levelingrate": "Medium Slow",
+        "hatchtime": "5140 - 5396",
+        "genderratio": "100%",
+        "stats": [70,62,67,55,55,56],
+        "url": "cdn.bulbagarden.net/upload/c/cd/030Nidorina.png",
+        "shuffle": "https://cdn.bulbagarden.net/upload/5/5b/Shuffle030.png",
+        "desc": "When Nidorina are with their friends or family, they keep their barbs tucked away to prevent hurting each other. This Pokémon appears to become nervous if separated from the others.",
+        "evolutions": [
+            "Nidorina  > Moon Stone > Nidoqueen"
+        ]
+    },
+
+    "Nidoqueen": {
+        "species": "031",
+        "kind": "Drill",
+        "type1": "Poison",
+        "type2": "Ground",
+        "ability1": "Poison_Point",
+        "ability2": "Rivalry",
+        "hiddenability": "Sheer_Force",
+        "catchrate": "45",
+        "height": "1.3m",
+        "weight": "60.0kg",
+        "base_exp": "227",
+        "evyield": [3,0,0,0,0,0],
+        "levelingrate": "Medium Slow",
+        "hatchtime": "5140 - 5396",
+        "genderratio": "100%",
+        "stats": [90,92,87,75,85,76],
+        "url": "cdn.bulbagarden.net/upload/b/bf/031Nidoqueen.png",
+        "shuffle": "cdn.bulbagarden.net/upload/6/68/Shuffle031.png",
+        "desc": "Nidoqueen's body is encased in extremely hard scales. It is adept at sending foes flying with harsh tackles. This Pokémon is at its strongest when it is defending its young."
+    },
+
+    "Nidorino": {
+        "species": "033",
+        "kind": "Poison Pin",
+        "type1": "Poinson",
+        "type2": "Unknown",
+        "ability1": "Poison_Point",
+        "ability2": "Rivalry",
+        "hiddenability": "Hustle",
+        "catchrate": "120",
+        "height": "0.9m",
+        "weight": "19.5kg",
+        "base_exp": "128",
+        "evyield": [0,2,0,0,0,0],
+        "levelingrate": "Medium Slow",
+        "hatchtime": "5140 - 5396",
+        "genderratio": "0%",
+        "stats": [61,72,57,55,55,65],
+        "url": "cdn.bulbagarden.net/upload/9/9f/033Nidorino.png",
+        "shuffle": "cdn.bulbagarden.net/upload/7/70/Shuffle033.png",
+        "desc": "Nidorino has a horn that is harder than a diamond. If it senses a hostile presence, all the barbs on its back bristle up at once, and it challenges the foe with all its might.",
+        "evolutions": [
+            "Nidorino > Moon Stone > Nidoking"
+        ]
+    },
+
+    "Nidoking": {
+        "species": "034",
+        "kind": "Drill",
+        "type1": "Poison",
+        "type2": "Unknown",
+        "ability1": "Poison_Point",
+        "ability2": "Rivalry",
+        "hiddenability": "Sheer_Force",
+        "catchrate": "45",
+        "height": "1.4m",
+        "weight": "62.0kg",
+        "base_exp": "227",
+        "levelingrate": "Medium Slow",
+        "hatchtime": "5140 - 5396",
+        "genderratio": "0%",
+        "stats": [81,102,77,85,75,85],
+        "url": "cdn.bulbagarden.net/upload/c/c6/034Nidoking.png",
+        "shuffle": "cdn.bulbagarden.net/upload/c/c9/Shuffle034.png",
+        "desc": "Nidoking's thick tail packs enormously destructive power. With one swing, it can topple a metal transmission tower. Once this Pokémon goes on a rampage, there is no stopping it."
+    },
+
     "Clefairy": {
         "species": "035",
         "kind": "Fairy",
@@ -1733,6 +1852,28 @@
         "evolutions": [
             "Magneton > Specific Location > Magnezone"
         ]
+    },
+
+    "Farfetch'd": {
+        "species": "083",
+        "kind": "Wild Duck",
+        "type1": "Normal",
+        "type2": "Flying",
+        "ability1": "Keen_Eye",
+        "ability2": "Inner_Focus",
+        "hiddenability": "Defiant",
+        "catchrate": "45",
+        "height": "0.8m",
+        "weight": "15.0kg",
+        "base_exp": "132",
+        "evyield": [0,1,0,0,0,0],
+        "levelingrate": "Medium Fast",
+        "hatchtime": "5140 - 5396",
+        "genderratio": "50%",
+        "stats": [52,90,55,58,62,60],
+        "url": "cdn.bulbagarden.net/upload/f/f8/083Farfetch%27d.png",
+        "shuffle": "cdn.bulbagarden.net/upload/3/31/Shuffle083.png",
+        "desc": "Farfetch'd is always seen with a stalk from a plant of some sort. Apparently, there are good stalks and bad stalks. This Pokémon has been known to fight with others over stalks."
     },
 
     "Doduo": {

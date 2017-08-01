@@ -646,7 +646,7 @@ bot.on('message', message => {
             }
             else if (command(channel, cmd, "quote")){
                 if (args[0] == undefined) {
-                    message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that the user should be their **name**, not a tag, nickname, or id.`);
+                    message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that [user] should be one word if it isn't a tag. \`%20\` will be substituted with a space.`);
                     return;
                 }
                 var user = tryGetUser(message);
@@ -654,23 +654,20 @@ bot.on('message', message => {
                     message.channel.send(`User not found.`);
                 }
                 else{
-                    var msg;
-                    if (message.mentions.users.first() == undefined){
-                        msg = message.content.split(`${config[id].prefix}quote ${username} `)[1];
-                    }
-                    else{
-                        user = message.mentions.users.first();
-                        msg = message.content.split(`${config[id].prefix}quote ${user}`);
-                    }
+                    var msg = message.content.split(' ')
+                    msg.splice(0, 2);
+                    msg = msg.join(' ');
                     if (msg != "" && msg != null && msg != undefined && msg != " "){
                         if (config[id]["quotes"][user.id] == undefined){
                             config[id]["quotes"][user.id] = [
                                 msg
                             ];
+                            saveConfig();
                             message.channel.send(`Quote saved!`);
                         }
                         else{
                             config[id]["quotes"][user.id].push(msg);
+                            saveConfig();
                             message.channel.send(`Quote saved!`);
                         }
                     }
@@ -678,7 +675,7 @@ bot.on('message', message => {
                         message.channel.send(`This user doesn't have any quotes saved!`);
                     }
                     else{
-                        message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"][user.id].length)]}"\n - ${username}`);
+                        message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"][user.id].length)]}"\n - ${user.username}`);
                     }
                 }
             }
@@ -920,15 +917,21 @@ bot.on('message', message => {
                 }
             }
             else if (cmd == "clearquotes" && isBotAdmin(message.member)){
-                var username = args[0];
-                username = username.replace("%20", " ");
-                var user = message.guild.members.find(m => m.user.username.toLowerCase() === username.toLowerCase());
-                if (user == null){
+                if (args[0] == undefined){
+                    message.channel.send(`Specificy a user to clear all of their quotes.`);
+                    return;
+                }
+                var user = tryGetUser(message);
+                if (user == undefined){
                     message.channel.send(`User not found.`);
                 }
                 else{
+                    if (config[id].quotes[user.id] == undefined || config[id].quotes[user.id].length == 0){
+                        message.channel.send(`This user does not have any quotes yet.`);
+                        return;
+                    }
                     config[id]["quotes"][user.id] = [];
-                    message.channel.send(`Successfully cleared all ${username}'s quotes.`);
+                    message.channel.send(`Successfully cleared all ${user.username}'s quotes.`);
                 }
             }
             else if (cmd == "reload" && isBotAdmin(message.member)){
@@ -981,7 +984,6 @@ bot.on('message', message => {
         args.splice(0, 1);
         var cmd = args[0];
         var setting = args[1];
-        
         console.log(`${dateNow()} ${message.author.username}: ${message.content}`);
         if (cmd == "prefix"){
             if (setting != undefined){
