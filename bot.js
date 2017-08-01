@@ -85,7 +85,7 @@ const commands = [
     "pbs+", "read", "lenny", "shrug",
     "delet", "rank", "fortune", "8ball",
     "eval", "quote", "user", "bug", "spoon",
-    "mock", "channel"
+    "mock", "gandalf", "channel"
 ]
 
 /*
@@ -634,10 +634,8 @@ bot.on('message', message => {
                 message.channel.send(delet_this[rand(delet_this.length)]);
             }
             else if (command(channel, cmd, "rank")){
-                var user = message.member.user;
-                if (message.mentions.users.first() != undefined){
-                    user = message.mentions.users.first();
-                }
+                var user = tryGetUser(message);
+                if (user == undefined) user = message.member.user;
                 if (user.bot){
                     message.channel.send(`Bots do not have a rank.`);
                     return;
@@ -967,6 +965,10 @@ bot.on('message', message => {
                     }
                     message.channel.send(mes);
                 }
+            }
+            else if (command(channel, cmd, "gandalf")){
+                message.delete();
+                message.channel.send({file:""})
             }
             else if (command(channel, cmd, "top")){
                 var page = 0;
