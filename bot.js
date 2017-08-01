@@ -447,6 +447,9 @@ bot.on('message', message => {
                 while (options[options.length - 1] == ' '){
                     options.splice(options.length - 1, 1);
                 }
+                for (i = 0; i < options.length; i++){
+                    console.log(`-${options[i]}-`);
+                }
                 if (options.length == 1){
                     message.channel.send(`Don't try to trick me!`);
                     return;
