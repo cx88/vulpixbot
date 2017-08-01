@@ -442,10 +442,10 @@ bot.on('message', message => {
                 }
                 var options = str.split('|');
                 for (i = 0; i < options.length; i++){
-                    while (options[0] == ' '){
+                    while (options[i][0] == ' '){
                         options[i] = options[i].substr(1);
                     }
-                    while (options[options.length - 1] == ' '){
+                    while (options[i][options.length - 1] == ' '){
                         options[i] = options[i].substr(0, options[i].length - 1);
                     }
                 }
