@@ -967,7 +967,7 @@ bot.on('message', message => {
                 }
             }
             else if (command(channel, cmd, "gandalf")){
-                message.delete();
+//                message.delete();
                 message.channel.sendFile('gandalf.gif');
                 message.channel.send({files:['gandalf.gif']});
             }
