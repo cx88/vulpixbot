@@ -217,6 +217,23 @@ function getUser(guild, user){
     }
 }
 
+function tryGetChannel(message){
+    args = message.content.split(' ');
+    var channel;
+    for (i = 0; i < args.length; i++){
+        if (channel != null && channel != undefined) break;
+        if (message.mentions.channels.first() != undefined){
+            channel = message.mentions.channels.first();
+        }
+        else{
+            if (channelExists(message.guild, args[i])){
+                channel = getChannel(message.guild, args[1]);
+            }
+        }
+    }
+    return channel;
+}
+
 function tryGetUser(message){
     args = message.content.split(' ');
     var user;
@@ -937,6 +954,15 @@ bot.on('message', message => {
                         var array = msg.split("");
                         array = array.shuffle();
                         message.channel.send(array.join(''));
+                    }
+                }
+                else if (command(channel, cmd, "channel")){
+                    var channel = tryGetChannel(message);
+                    if (channel == undefined){
+                        message.channel.send(`Type \`${config[id].prefix}channel [channel]\` to see information about that channel.`)
+                    }
+                    else{
+                        console.log(channel);
                     }
                 }
             }
