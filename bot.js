@@ -85,7 +85,7 @@ const commands = [
     "pbs+", "read", "lenny", "shrug",
     "delet", "rank", "fortune", "8ball",
     "eval", "quote", "user", "bug", "spoon",
-    "channel"
+    "mock", "channel"
 ]
 
 /*
@@ -953,12 +953,13 @@ bot.on('message', message => {
             else if (command(channel, cmd, "mock")){
                 var msg = message.content.split(`${config[id].prefix}mock `)[1];
                 if (msg != undefined && msg != null){
+                    var mes = "";
                     for (i = 0; i < msg.length; i++){
                         if (rand(2) == 0){
-                            msg[i] = msg[i].toUpperCase();
+                            mes += msg[i].toUpperCase();
                         }
                         else{
-                            msg[i] = msg[i].toLowerCase();
+                            mes += msg[i].toLowerCase();
                         }
                     }
                     message.channel.send(msg[i]);
