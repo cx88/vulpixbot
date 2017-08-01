@@ -1,4 +1,4 @@
-{
+﻿{
     "defining": {
         "move": {
             "url": "http://pokemonessentials.wikia.com/wiki/Defining_a_move",
@@ -85,7 +85,7 @@
         "breeding": {
             "url": "http://pokemonessentials.wikia.com/wiki/Breeding",
             "keywords": [
-                "breed", "breeding"
+                "breed", "breeding", "bred
             ]
         },
         "editing": {
