@@ -395,8 +395,8 @@ function getBugEmbed(title, description, username, url){
 setInterval(saveConfig, 30000);
 
 bot.on('ready', () => {
-    console.log(process.env);
-    console.log(process.env['TOKEN']);
+    console.log(process.env.TOKEN);
+    console.log(process.env.PASTEBIN);
     console.log('Vulpix online');
     bot.user.setGame("Type v-config");
 });
@@ -1263,4 +1263,4 @@ bot.on('message', message => {
     }
 });
 
-bot.login('MzM5NzM5ODU5NTQ5NjgzNzEy.DFoW6g.LFoDAVvsDq77XIrkt0lBygFqXOw');
+bot.login(process.env.TOKEN);
