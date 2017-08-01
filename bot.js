@@ -440,7 +440,13 @@ bot.on('message', message => {
                     str += _args[i];
                     if (i != _args.length - 1) { str += " "; }
                 }
-                options = str.split('|');
+                var options = str.split('|');
+                while (options[0] == ' '){
+                    options.splice(0, 1);
+                }
+                while (options[options.length - 1] == ' '){
+                    options.splice(options.length - 1, 1);
+                }
                 if (options.length == 1){
                     message.channel.send(`Don't try to trick me!`);
                     return;
