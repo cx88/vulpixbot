@@ -10,8 +10,10 @@ var eps = JSON.parse(vids);
 var config = "";
 var main_color = 10876925;
 var commandlog = "https://pastebin.com/wZE2rymj";
+var pbuser = process.env.PASTEBIN.split('|')[0];
+var pbpass = process.env.PASTEBIN.split('|')[1];
 paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
-paste.login('VulpixBot', 'Ambaer', function(success, data){
+paste.login(pbuser, pbpass, function(success, data){
     if (!success){
         console.log(`Failed (${data})`);
     }
@@ -320,7 +322,7 @@ function setDefaults(guild){
 function saveConfig(){
     var str = jsonToString(config);
     paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
-    paste.login('VulpixBot', 'Ambaer', function(success, data){
+    paste.login(pbuser, pbpass, function(success, data){
         paste.edit(url, {
             contents: str
         });
@@ -329,33 +331,6 @@ function saveConfig(){
 
 function logMessage(message){
     console.log(message);
-    return;
-    var msg;
-    paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
-    paste.login('VulpixBot', 'Ambaer'), function(success, data){
-        if (!success){
-            console.log(`Failed to load command log.`);
-            console.log(success);
-        }
-        paste.get(commandlog, function(success, data){
-            msg = data;
-        })
-    }
-    if (msg == undefined || msg == null){
-        console.log(`Failed to load command log.`);
-        console.log(msg);
-    }
-    msg += '\n' + message
-    paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
-    paste.login('VulpixBot', 'Ambaer'), function(success, data){
-        if (!success){
-            console.log(`Failed to write to command log.`);
-            console.log(success);
-        }
-        paste.edit(commandlog, {
-            contents: msg
-        })
-    }
 }
 
 function rand(int){
@@ -395,8 +370,6 @@ function getBugEmbed(title, description, username, url){
 setInterval(saveConfig, 30000);
 
 bot.on('ready', () => {
-    console.log(process.env.TOKEN);
-    console.log(process.env.PASTEBIN);
     console.log('Vulpix online');
     bot.user.setGame("Type v-config");
 });
