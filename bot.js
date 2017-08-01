@@ -952,10 +952,14 @@ bot.on('message', message => {
             }
             else if (command(channel, cmd, "mock")){
                 var msg = message.content.split(`${config[id].prefix}mock `)[1];
+                console.log(msg);
                 if (msg != undefined && msg != null){
                     var mes = "";
                     for (i = 0; i < msg.length; i++){
-                        if (rand(2) == 0){
+                        console.log(msg[i]);
+                        var rndm = rand(2);
+                        console.log(rndm);
+                        if (rndm == 0){
                             mes += msg[i].toUpperCase();
                         }
                         else{
