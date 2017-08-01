@@ -950,6 +950,22 @@ bot.on('message', message => {
                     message.channel.send(array.join(''));
                 }
             }
+            else if (command(channel, cdm, "top")){
+                var page = 0;
+                try{
+                    page = parseInt(args[0]) - 1;
+                }
+                catch (err) {}
+                var sortable = [];
+                for (var id in config[guild.id].ranks) {
+                    sortable.push([id, config[guild.id].ranks[id]]);
+                }
+                sortable.sort(function(a, b) {
+                    return b[1] - a[1]
+                });
+                var shown = sortable.slice(0, 10);
+                console.log(shown);
+            }
             else if (command(channel, cmd, "channel")){
                 var chnl = tryGetChannel(message);
                 if (chnl == undefined){
