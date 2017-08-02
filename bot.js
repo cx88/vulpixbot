@@ -1078,8 +1078,10 @@ bot.on('message', message => {
             	}
             	else{
             		emotes = "";
-            		for (i = 0; i < guild.emojis.map(e => e).length; i++){
-            			emotes += guild.emojis.map(e => e)[i] + ' ';
+            		var emojis = guild.emojis.map(e => e).split(' ');
+            		for (i = 0; i < emojis.length; i++){
+            			console.log(emojis[i]);
+            			emotes += emojis[i] + ' ';
             			if (emotes.length > 1020){
             				tmp = emotes.split(' ');
             				tmp.splice(tmp.length - 1, 1);
