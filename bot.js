@@ -994,7 +994,7 @@ bot.on('message', message => {
                     thumbnail: {
                         url: guild.iconURL
                     },
-                    title: `${guild.name}: #${chnl.name}`,
+                    title: `${guild.name}: ${chnl.type == 'text' ? `#` : ``}${chnl.name}`,
                     fields: [{
                         name: `**Channel Type**`,
                         value: chnl.type.capitalize(),
