@@ -235,6 +235,7 @@ function tryGetChannel(message){
 }
 
 function tryGetUser(guild, str){
+	if (!str) return;
     var user;
     while (str.contains('%20')){
         str = str.replace('%20', ' ');
@@ -247,6 +248,9 @@ function tryGetUser(guild, str){
         if (name != null && name != undefined){
             user = name.user;
         }
+    }
+    if (!user){
+    	user = guild.members.get(str);
     }
     return user;
 }
@@ -683,34 +687,34 @@ bot.on('message', message => {
                     message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that [user] should be one word if it isn't a tag. \`%20\` will be substituted with a space.`);
                     return;
                 }
-                var user = tryGetUser(message);
-                if (user == undefined){
+                var user = message.mentions.users.first();
+                if (!user) user = tryGetUser(guild, args[0]);
+                if (!user){
                     message.channel.send(`User not found.`);
+                    return;
                 }
-                else{
-                    var msg = message.content.split(' ')
-                    msg.splice(0, 2);
-                    msg = msg.join(' ');
-                    if (msg != "" && msg != null && msg != undefined && msg != " "){
-                        if (config[id]["quotes"][user.id] == undefined){
-                            config[id]["quotes"][user.id] = [
-                                msg
-                            ];
-                            saveConfig();
-                            message.channel.send(`Quote saved!`);
-                        }
-                        else{
-                            config[id]["quotes"][user.id].push(msg);
-                            saveConfig();
-                            message.channel.send(`Quote saved!`);
-                        }
-                    }
-                    else if (config[id]["quotes"][user.id] == undefined || config[id]["quotes"][user.id].length == 0){
-                        message.channel.send(`This user doesn't have any quotes saved!`);
+                var msg = message.content.split(' ')
+                msg.splice(0, 2);
+                msg = msg.join(' ');
+                if (msg != "" && msg != null && msg != undefined && msg != " "){
+                    if (config[id]["quotes"][user.id] == undefined){
+                        config[id]["quotes"][user.id] = [
+                            msg
+                        ];
+                        saveConfig();
+                        message.channel.send(`Quote saved!`);
                     }
                     else{
-                        message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"][user.id].length)]}"\n - ${user.username}`);
+                        config[id]["quotes"][user.id].push(msg);
+                        saveConfig();
+                        message.channel.send(`Quote saved!`);
                     }
+                }
+                else if (config[id]["quotes"][user.id] == undefined || config[id]["quotes"][user.id].length == 0){
+                    message.channel.send(`This user doesn't have any quotes saved!`);
+                }
+                else{
+                    message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"][user.id].length)]}"\n - ${user.username}`);
                 }
             }
             else if (command(channel, cmd, "user")){
