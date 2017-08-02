@@ -1071,11 +1071,7 @@ bot.on('message', message => {
                 message.channel.send(embed);
             }
             else if (command(channel, cmd, "server")){
-            	var emojiIDs = guild.emojis.map(e => e.id)
-            	var emojis;
-            	for (i = 0; i < emojiIDs.length; i++){
-            		emojis += `<${guild.emojis[emojiIDs[i]].name}${guild.emojis[emojiIDs[i]].id}> `
-            	}
+            	var emojis = ':' + guild.emojis.map(e => e).join(': :') + ':'
             	var embed = { embed: {
             		color: main_color,
             		author: {
