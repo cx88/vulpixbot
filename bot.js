@@ -234,7 +234,7 @@ function tryGetChannel(message){
     return channel;
 }
 
-function tryGetUser(str){
+function tryGetUser(guild, str){
     var user;
     while (str.contains('%20')){
         str = str.replace('%20', ' ');
@@ -624,8 +624,9 @@ bot.on('message', message => {
                 message.channel.send(delet_this[rand(delet_this.length)]);
             }
             else if (command(channel, cmd, "rank")){
-                var user = tryGetUser(message);
-                if (user == undefined) user = message.member.user;
+                var user = message.mentions.users.first();
+                if (!user) user = tryGetUser(guild, args[0]);
+                if (!user) user = message.member.user;
                 if (user.bot){
                     message.channel.send(`Bots do not have a rank.`);
                     return;
