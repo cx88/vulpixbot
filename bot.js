@@ -869,7 +869,8 @@ bot.on('message', message => {
                 }
                 else if (args[0] == "allow"){
                     if (isBotAdmin(message.member)){
-                        var user = tryGetUser(message);
+                        var user = message.mentions.users.first();
+                        if (!user) user = tryGetUser(guild, args[1]);
                         if (user != undefined){
                             if (config[id].users == undefined){
                                 config[id].users = {};
@@ -900,7 +901,8 @@ bot.on('message', message => {
                 }
                 else if (args[0] == "disallow"){
                     if (isBotAdmin(message.member)){
-                        var user = tryGetUser(message);
+                        var user = message.mentions.users.first();
+                        if (!user) user = tryGetUser(guild, args[1]);
                         if (user != undefined){
                             if (config[id].users == undefined){
                                 config[id].users = {};
@@ -997,35 +999,41 @@ bot.on('message', message => {
                         url: guild.iconURL
                     },
                     title: `${guild.name}: #${chnl.name}`
-                }};
-                if (chnl.type == 'text'){
-                    embed["embed"].description = chnl.topic;
-                    embed["embed"].fields = [{
-                        name: `Channel Type`,
+                    fields: [{
+                        name: `**Channel Type**`,
                         value: chnl.type.capitalize(),
                         inline: true
                     },{
-                        name: `NSFW`,
-                        value: chnl.nsfw,
-                        inline: true
+                    	name: chnl.type == 'text' ? `**NSFW**` : `**Bitrate**`,
+                    	value: chnl.type == 'text' ? chnl.nsfw : chnl.bitrate,
+                    	inline: true
                     },{
-                        name: `Channel ID`,
-                        value: chnl.id
+                    	name: `**Channel ID**`,
+                    	value: chnl.id
                     },{
-                        name: `Channel Position`,
+                    	name: `**Channel Position**`,
                         value: chnl.position + 1,
                         inline: true
                     },{
-                        name: `Created At`,
+                        name: `**Created At**`,
                         value: chnl.createdAt,
                         inline: true
-                    }];
-
-                }
-                else{
-
+                    }]
+                }};
+                if (chnl.type == 'voice'){
+                	embed["embed"].fields.push({
+                		name: `**User Limit**`,
+                		value: chnl.userLimit
+                	});
+                	embed["embed"].fields.push({
+                		name: `**Members**`,
+                		value: chnl.members.map(m => m.username).join('\n')
+                	});
                 }
                 message.channel.send(embed);
+            }
+            else if (command(guild, cmd, "server")){
+
             }
             if (isBotAdmin(message.member)){
                 if (cmd == "say"){
@@ -1040,7 +1048,8 @@ bot.on('message', message => {
                         message.channel.send(`Specificy a user to clear all of their quotes.`);
                         return;
                     }
-                    var user = tryGetUser(message);
+                    var user = message.mentions.users.first();
+                    if (!user) user = tryGetUser(guild, args[0]);
                     if (user == undefined){
                         message.channel.send(`User not found.`);
                     }
