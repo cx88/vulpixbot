@@ -177,7 +177,7 @@ function dateNow(){
 function getChannelMembers(channel){
 	var total = channel.members.map(m => m).length;
 	var members;
-	if (inVoice == 0){
+	if (total == 0){
 		members = "---";
 	}
 	else if (total <= 10){
