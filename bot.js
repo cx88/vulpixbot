@@ -256,7 +256,11 @@ function channelExists(guild, channel){
 }
 
 function getChannel(guild, channel){
-    return guild.channels.find(chnl => chnl.name.toLowerCase() == channel.toLowerCase());
+	var chan = guild.channels.find(chnl => chnl.name.toLowerCase() == channel.toLowerCase());
+	if (!chan){
+		chan = guild.channels.get(channel);
+	}
+    return 
 }
 
 function isBotAdmin(member){
