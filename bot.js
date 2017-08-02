@@ -251,7 +251,7 @@ function tryGetUser(guild, str){
     }
     if (!user){
     	user = guild.members.get(str);
-    	if (user) user = user.id;
+    	if (user) user = user.user;
     }
     return user;
 }
