@@ -1128,7 +1128,7 @@ bot.on('message', message => {
             	if (guild.iconURL){
             		embed["embed"].fields.push({
             			name: `**Roles**`,
-            			value: guild.roles.map(r => r.name).join(' ')
+            			value: guild.roles.map(r => r.name).join(', ')
             		});
             	}
             	embed["embed"].fields.push({
