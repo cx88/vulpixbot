@@ -224,12 +224,11 @@ function userExists(guild, username){
 }
 
 function getUser(guild, user){
-    try{
-        return guild.members.find(m => m.user.username.toLowerCase() === user.toLowerCase()).user;
-    }
-    catch (err){
-        return null;
-    }
+	var user = guild.members.get(user);
+	if (user) user = user.user;
+	if (!user) user = guild.members.find(m => m.user.username === user);
+    if (!user) user = guild.members.find(m => m.user.username.toLowerCase() === user.toLowerCase());
+    return user;
 }
 
 function tryGetChannel(guild, str){
@@ -1005,7 +1004,7 @@ bot.on('message', message => {
                 if (!chnl){
                     chnl = channel;
                 }
-                var user = guild.members.find(m => m.user.id === guild.ownerID).user;
+                var user = tryGetUser(guild, guild.ownerID);
                 var embed = {embed: {
                     footer: {
                         text: user.tag,
@@ -1052,8 +1051,8 @@ bot.on('message', message => {
             else if (command(channel, cmd, "server")){
             	message.channel.send({embed:{
             		footer: {
-            			text: getUser(guild, guild.ownerID).tag,
-            			icon_url: getUser(guild, guild.ownerID).avatarURL
+            			text: tryGetUser(guild, guild.ownerID).tag,
+            			icon_url: tryGetUser(guild, guild.ownerID).avatarURL
             		},
             		title: guild.name,
 
