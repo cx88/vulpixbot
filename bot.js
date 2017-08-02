@@ -238,11 +238,11 @@ function userExists(guild, username){
     return user != null && user != undefined;
 }
 
-function getUser(guild, user){
-	var user = guild.members.get(user);
+function getUser(guild, _user){
+	var user = guild.members.get(_user);
 	if (user) user = user.user;
-	if (!user) user = guild.members.find(m => m.user.username === user);
-    if (!user) user = guild.members.find(m => m.user.username.toLowerCase() === user.toLowerCase());
+	if (!user) user = guild.members.find(m => m.user.username === _user);
+    if (!user) user = guild.members.find(m => m.user.username.toLowerCase() === _user.toLowerCase());
     return user;
 }
 
