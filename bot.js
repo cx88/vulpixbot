@@ -1071,7 +1071,6 @@ bot.on('message', message => {
                 message.channel.send(embed);
             }
             else if (command(channel, cmd, "server")){
-            	var emojis = ':' + guild.emojis.map(e => e).join(': :') + ':'
             	var embed = { embed: {
             		color: main_color,
             		author: {
@@ -1092,7 +1091,7 @@ bot.on('message', message => {
             			inline: true
             		},{
             			name: `**Emoji's**`,
-            			value: emojis
+            			value: guild.emojis.map(e => e).join(': :')
             		},{
             			name: `**Verification Level**`,
             			value: guild.verificationLevel,
