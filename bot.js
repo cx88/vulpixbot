@@ -1101,33 +1101,50 @@ bot.on('message', message => {
             			name: `**Guild ID**`,
             			value: guild.id,
             			inline: true
-            		},{
+            		}]
+            	}};
+            	if (guild.iconURL){
+            		embed["embed"].fields.push({
             			name: `**Icon URL**`,
             			value: guild.iconURL
-            		},{
+            		})
+            	}
+            	else{
+            		embed["embed"].fields.push({
+            			name: `**Roles**`,
+            			value: guild.roles.map(r => r.name).join(' ')
+            		})
+            	}
+            	embed["embed"].fields.push({
             			name: `**Owner Tag**`,
             			value: owner.tag,
             			inline: true
-            		},{
+            		});
+            	embed["embed"].fields.push({
             			name: `**Owner ID**`,
             			value: guild.ownerID,
             			inline: true
-            		},{
+            		});
+            	if (guild.iconURL){
+            		embed["embed"].fields.push({
             			name: `**Roles**`,
             			value: guild.roles.map(r => r.name).join(' ')
-            		},{
+            		});
+            	}
+            	embed["embed"].fields.push({
             			name: `**Created At**`,
             			value: guild.createdAt
-            		},{
+            		});
+            	embed["embed"].fields.push({
             			name: `**Members**`,
             			value: getGuildMembers(guild),
             			inline: true
-            		},{
+            		});
+            	embed["embed"].fields.push({
             			name: `**Channels**`,
             			value: guild.channels.map(c => c).length <= 10 ? guild.channels.map(c => c.name).join('\n') : guild.channels.map(c => c).length,
             			inline: true
-            		}]
-            	}};
+            		});
             	if (config[id].desc && config[id].desc != "") embed["embed"].description = config[id].desc;
             	message.channel.send(embed);
             }
