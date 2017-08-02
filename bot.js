@@ -250,7 +250,7 @@ function tryGetUser(guild, str){
         }
     }
     if (!user){
-    	user = guild.members.get(str);
+    	user = guild.members.get(str).user;
     }
     return user;
 }
