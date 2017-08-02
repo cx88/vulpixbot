@@ -1161,13 +1161,13 @@ bot.on('message', message => {
             			value: guild.createdAt
             		});
             	embed["embed"].fields.push({
-            			name: `**Members**`,
-            			value: getGuildMembers(guild),
+            			name: `**Channels**`,
+            			value: guild.channels.map(c => c).length <= 10 ? guild.channels.map(c => c.name).join('\n') : guild.channels.map(c => c).length,
             			inline: true
             		});
             	embed["embed"].fields.push({
-            			name: `**Channels**`,
-            			value: guild.channels.map(c => c).length <= 10 ? guild.channels.map(c => c.name).join('\n') : guild.channels.map(c => c).length,
+            			name: `**Members**`,
+            			value: getGuildMembers(guild),
             			inline: true
             		});
             	if (config[id].desc && config[id].desc != "") embed["embed"].description = config[id].desc;
