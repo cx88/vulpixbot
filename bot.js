@@ -174,6 +174,21 @@ function dateNow(){
     return y + '-' + m + '-' + dt + '__' + hr + ':' + mnts;
 }
 
+function getChannelMembers(channel){
+	var total = channel.members.map(m => m).length;
+	var members;
+	if (inVoice == 0){
+		members = "---";
+	}
+	else if (total <= 10){
+		members = channel.members.map(m => m.user.username).join('\n');
+	}
+	else{
+		members = total;
+	}
+	return members;
+}
+
 function getAbility(ability){
     return `[${ability.replace(`_`, ` `)}](https://bulbapedia.bulbagarden.net/wiki/${ability}_(Ability\\))`;
 }
@@ -365,8 +380,8 @@ function command(channel, arg, cmd){
 function getBugEmbed(title, description, username, url){
     return {embed: {
         color: main_color,
-        author: {
-            name: username,
+        footer: {
+            text: username,
             icon_url: url
         },
         fields: [{
@@ -658,13 +673,13 @@ bot.on('message', message => {
                     },
                     fields: [{
                         name: "**Level**",
-                        value: "  " + rank
+                        value: rank
                     },{
                         name: "**Experience**",
-                        value: exp
+                        value: exp == 'NaN' ? '0/168' : exp
                     },{
                         name: "**Rank**",
-                        value: `${getRank(guild, user)}/${guild.memberCount}`
+                        value: `${getRank(guild, user) == undefined ? guild.memberCount : getRank(guild, user)}/${guild.memberCount}`
                     }]
                 }})
             }
@@ -992,8 +1007,8 @@ bot.on('message', message => {
                 }
                 var user = guild.members.find(m => m.user.id === guild.ownerID).user;
                 var embed = {embed: {
-                    author: {
-                        name: user.tag,
+                    footer: {
+                        text: user.tag,
                         icon_url: user.avatarURL
                     },
                     thumbnail: {
@@ -1022,19 +1037,27 @@ bot.on('message', message => {
                     }]
                 }};
                 if (chnl.type == 'voice'){
+                	var members = getChannelMembers(channel);
                 	embed["embed"].fields.push({
                 		name: `**User Limit**`,
                 		value: chnl.userLimit
                 	});
                 	embed["embed"].fields.push({
                 		name: `**Members**`,
-                		value: chnl.members.map(m => m.user.username).join('\n') == "" ? "---" : chnl.members.map(m => m.user.username).join('\n')
+                		value: members
                 	});
                 }
                 message.channel.send(embed);
             }
             else if (command(channel, cmd, "server")){
+            	message.channel.send({embed:{
+            		footer: {
+            			text: getUser(guild, guild.ownerID).tag,
+            			icon_url: getUser(guild, guild.ownerID).avatarURL
+            		},
+            		title: guild.name,
 
+            	}})
             }
             if (isBotAdmin(message.member)){
                 if (cmd == "say"){
