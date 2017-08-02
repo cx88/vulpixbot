@@ -659,7 +659,7 @@ bot.on('message', message => {
             }
             else if (command(channel, cmd, "rank")){
                 var user = message.mentions.users.first();
-                if (!user) user = tryGetUser(guild, args[0]);
+                if (!user) user = tryGetUser(guild, args.join(' '));
                 if (!user) user = message.member.user;
                 if (user.bot){
                     message.channel.send(`Bots do not have a rank.`);
