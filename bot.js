@@ -234,27 +234,19 @@ function tryGetChannel(message){
     return channel;
 }
 
-function tryGetUser(message){
-    args = message.content.split(' ');
+function tryGetUser(str){
     var user;
-    for (i = 0; i < args.length; i++){
-        if (user != null && user != undefined) break;
-        if (message.mentions.users.first() != undefined){
-            user = message.mentions.users.first();
+    else{
+        while (str.contains('%20')){
+            str = str.replace('%20', ' ');
+        }
+        if (userExists(guild, str)){
+            user = getUser(guild, str);
         }
         else{
-            var name = args[i];
-            while (name.contains('%20')){
-                name = name.replace('%20', ' ');
-            }
-            if (userExists(message.guild, name)){
-                user = getUser(message.guild, name);
-            }
-            else{
-                var name = message.guild.members.find('nickname', name);
-                if (name != null && name != undefined){
-                    user = name.user;
-                }
+            var name = guild.members.find('nickname', str);
+            if (name != null && name != undefined){
+                user = name.user;
             }
         }
     }
