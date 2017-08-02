@@ -1078,7 +1078,7 @@ bot.on('message', message => {
             	}
             	else{
             		emotes = "";
-            		var emojis = guild.emojis.map(e => e).split(' ');
+            		var emojis = guild.emojis.map(e => e);
             		for (i = 0; i < emojis.length; i++){
             			console.log(emojis[i]);
             			emotes += emojis[i] + ' ';
