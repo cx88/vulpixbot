@@ -260,7 +260,7 @@ function getChannel(guild, channel){
 	if (!chan){
 		chan = guild.channels.get(channel);
 	}
-    return 
+    return chan;
 }
 
 function isBotAdmin(member){
