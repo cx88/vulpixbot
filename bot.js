@@ -256,7 +256,8 @@ function channelExists(guild, channel){
 }
 
 function getChannel(guild, channel){
-	var chan = guild.channels.find(chnl => chnl.name.toLowerCase() == channel.toLowerCase());
+	var chan = guild.channels.find(chnl => chnl.name == channl);
+	if (!chan) chan = guild.channels.find(chnl => chnl.name.toLowerCase() == channel.toLowerCase());
 	if (!chan){
 		chan = guild.channels.get(channel);
 	}
