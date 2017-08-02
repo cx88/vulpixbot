@@ -1097,6 +1097,8 @@ bot.on('message', message => {
             		roles = roles.slice(0, roles.length - 1);
             		roles = roles.join(', ') + " and more..."
             	}
+            	var text = guild.channels.filter(c => c.type == 'text').array().length
+            	var voice = guild.channels.filter(c => c.type == 'voice').array().length
             	var embed = { embed: {
             		color: main_color,
             		author: {
@@ -1162,7 +1164,7 @@ bot.on('message', message => {
             		});
             	embed["embed"].fields.push({
             			name: `**Channels**`,
-            			value: guild.channels.map(c => c).length <= 10 ? guild.channels.map(c => c.name).join('\n') : guild.channels.map(c => c).length,
+            			value: guild.channels.map(c => c).length <= 10 ? guild.channels.map(c => c.name).join('\n') : `Text: ${text}\nVoice: ${voice}`,
             			inline: true
             		});
             	embed["embed"].fields.push({
