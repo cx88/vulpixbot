@@ -1088,10 +1088,10 @@ bot.on('message', message => {
                     	var channel = message.mentions.channels.first();
                     	if (!channel) channel = tryGetChannel(guild, args.join(' '));
                     	if (!channel) channel = message.channel;
-                        message.channel.send(`ID of channel "${args.join(' ')}": ${channel.id}`);
+                        message.channel.send(`ID of channel "${channel.name}": ${channel.id}`);
                     }
                     else if (args[0] == "server"){
-                        message.channel.send(`ID of guild "${guild.name}": ${guild.id}`);
+                        message.channel.send(`ID of guild "${message.guild.name}": ${message.guild.id}`);
                     }
                     else if (args[0] == "user"){
                     	var user;
@@ -1099,7 +1099,7 @@ bot.on('message', message => {
                         var user = message.mentions.users.first();
                         if (!user) user = tryGetUser(guild, args.join(' '));
                         if (!user) user = message.member.user;
-                        message.channel.send(`ID of user "${user.username}: ${user.id}"`)
+                        message.channel.send(`ID of user "${user.username}": ${user.id}`)
                     }
                 }
             }
