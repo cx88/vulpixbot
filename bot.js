@@ -1084,26 +1084,22 @@ bot.on('message', message => {
                 }
                 else if (cmd == "id"){
                     if (args[0] == "channel"){
-                        if (args[1] == undefined){
-                            message.channel.send(message.channel.id);
-                        }
-                        else if (channelExists(guild, args[1])){
-                            message.channel.send(`ID of channel "${args[1]}": ${getChannel(guild, args[1]).id}`);
-                        }
+                    	args.splice(0, 1);
+                    	var channel = message.mentions.channels.first();
+                    	if (!channel) channel = tryGetChannel(guild, args.join(' '));
+                    	if (!channel) channel = message.channel;
+                        message.channel.send(`ID of channel "${args.join(' ')}": ${channel.id}`);
                     }
                     else if (args[0] == "server"){
-                        message.channel.send(message.guild.id);
+                        message.channel.send(`ID of guild "${guild.name}": ${guild.id}`);
                     }
                     else if (args[0] == "user"){
-                        if (message.mentions.users.first() != undefined){
-                            message.channel.send(`ID of user "${message.mentions.users.first().username}": ${message.mentions.users.first().id}`)
-                        }
-                        if (args[1] == undefined){
-                            message.channel.send(`ID of user "${message.member.user.username}": ${message.member.user.id}`);
-                        }
-                        else if (userExists(guild, args[1])){
-                            message.channel.send(`ID of user "${getUser(guild, args[1]).username}": ${getUser(guild, args[1]).id}`);
-                        }
+                    	var user;
+                        args.splice(0, 1);
+                        var user = message.mentions.users.first();
+                        if (!user) user = tryGetUser(guild, args.join(' '));
+                        if (!user) user = message.member.user;
+                        message.channel.send(`ID of user "${user.username}: ${user.id}"`)
                     }
                 }
             }
