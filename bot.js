@@ -668,14 +668,20 @@ bot.on('message', message => {
                 var rank = 0;
                 var req = 16;
                 for (i = 0; i < level_curve.length; i++){
-                    if (config[id]["ranks"][user.id] == undefined) { break; }
+                    if (config[id].ranks[user.id] == undefined) { break; }
                     if (level_curve[i] > config[id]["ranks"][user.id]){
                         rank = i - 1;
                         req = level_curve[i];
                         break;
                     }
                 }
-                var exp = config[id]["ranks"][user.id] * 7 + " / " + req * 7;
+                if (!config[id].ranks){
+                	config[id].ranks = {};
+                }
+                if (!config[id].ranks[user.id]){
+                	config[id].ranks[user.id] = 0;
+                }
+                var exp = config[id].ranks[user.id] * 7 + " / " + req * 7;
                 message.channel.send({embed:{
                     color: main_color,
                     author: {
@@ -690,7 +696,7 @@ bot.on('message', message => {
                         value: rank
                     },{
                         name: "**Experience**",
-                        value: exp == 'NaN' ? '0/168' : exp
+                        value: exp
                     },{
                         name: "**Rank**",
                         value: `${getRank(guild, user) == undefined ? guild.memberCount : getRank(guild, user)}/${guild.memberCount}`
