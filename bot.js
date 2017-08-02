@@ -1082,7 +1082,7 @@ bot.on('message', message => {
             	else{
             		emotes = guild.emojis.map(e => e).join(' ').slice(0, 1010).split(' ');
             		emotes = emotes.slice(0, emotes.length - 1);
-            		emotes.join(' ') + " and more..."
+            		emotes = emotes.join(' ') + " and more..."
             	}
             	var roles = guild.roles.map(r => r.name);
             	roles = roles.slice(1, roles.length);
@@ -1095,7 +1095,7 @@ bot.on('message', message => {
             	else{
             		roles = roles.join(', ').slice(0, 1010).split(', ');
             		roles = roles.slice(0, roles.length - 1);
-            		roles.join(', ') + " and more..."
+            		roles = roles.join(', ') + " and more..."
             	}
             	var embed = { embed: {
             		color: main_color,
