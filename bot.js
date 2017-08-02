@@ -409,9 +409,9 @@ function getBugEmbed(title, description, username, url){
     }};
 }
 
-function getQuotes(userid){
-	if (!config[userid] || !config[userid].quotes) return [];
-	return config[userid].quotes
+function getQuotes(member){
+	if (!config[member.guild.id].quotes || !config[member.guild.id].quotes[member.user.id]) return [];
+	return config[member.guild.id].quotes[member.user.id];
 }
 
 setInterval(saveConfig, 30000);
@@ -1182,7 +1182,7 @@ bot.on('message', message => {
             	message.channel.send(embed);
             }
             else if (command(channel, cmd, "quotes")){
-            	if (getQuotes(message.member.user.id).length == 0){
+            	if (getQuotes(message.member).length == 0){
             		message.channel.send(`You don't have any quotes saved!`);
             		return;
             	}
@@ -1193,10 +1193,10 @@ bot.on('message', message => {
             		},
             		fields: []
             	}};
-            	for (i = 0; i < getQuotes(message.member.user.id); i++){
+            	for (i = 0; i < getQuotes(message.member); i++){
             		embed["embed"].fields.push({
             			name: `**Quote #${i + 1}**`,
-            			value: getQuotes(message.member.user.id)[i]
+            			value: getQuotes(message.member)[i]
             		})
             	}
             	message.channel.send(embed);
