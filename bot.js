@@ -411,6 +411,7 @@ bot.on('guildMemberAdd', member =>{
 });
 
 bot.on('message', message => {
+	if (!message || !message.member) return;
     if (message.member.user.bot) return;
     var guild = message.guild;
     var id = guild.id;
