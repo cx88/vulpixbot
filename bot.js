@@ -85,7 +85,7 @@ const commands = [
     "pbs+", "read", "lenny", "shrug",
     "delet", "rank", "fortune", "8ball",
     "eval", "quote", "user", "bug", "spoon",
-    "mock", "gandalf", "channel"
+    "mock", "gandalf", "channel", "server"
 ]
 
 /*
@@ -1033,7 +1033,7 @@ bot.on('message', message => {
                 }
                 message.channel.send(embed);
             }
-            else if (command(guild, cmd, "server")){
+            else if (command(channel, cmd, "server")){
 
             }
             if (isBotAdmin(message.member)){
