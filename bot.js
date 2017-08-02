@@ -189,6 +189,21 @@ function getChannelMembers(channel){
 	return members;
 }
 
+function getGuildMembers(guild){
+	var total = guild.members.map(m => m).length;
+	var members;
+	if (total == 0){
+		members = "---";
+	}
+	else if (total <= 10){
+		members = guild.members.map(m => m.user.username).join('\n');
+	}
+	else{
+		members = total;
+	}
+	return members;
+}
+
 function getAbility(ability){
     return `[${ability.replace(`_`, ` `)}](https://bulbapedia.bulbagarden.net/wiki/${ability}_(Ability\\))`;
 }
@@ -1006,6 +1021,7 @@ bot.on('message', message => {
                 }
                 var user = tryGetUser(guild, guild.ownerID);
                 var embed = {embed: {
+                	color: main_color,
                     footer: {
                         text: user.tag,
                         icon_url: user.avatarURL
@@ -1036,7 +1052,7 @@ bot.on('message', message => {
                     }]
                 }};
                 if (chnl.type == 'voice'){
-                	var members = getChannelMembers(channel);
+                	var members = getChannelMembers(chnl);
                 	embed["embed"].fields.push({
                 		name: `**User Limit**`,
                 		value: chnl.userLimit
@@ -1049,14 +1065,28 @@ bot.on('message', message => {
                 message.channel.send(embed);
             }
             else if (command(channel, cmd, "server")){
-            	message.channel.send({embed:{
-            		footer: {
-            			text: tryGetUser(guild, guild.ownerID).tag,
+            	var embed = { embed: {
+            		color: main_color,
+            		author: {
+            			name: tryGetUser(guild, guild.ownerID).tag,
             			icon_url: tryGetUser(guild, guild.ownerID).avatarURL
             		},
             		title: guild.name,
+            		thumbnail: {
+            			url: guild.iconURL
+            		},
+            		fields: [{
+            			name: `**Region**`,
+            			value: guild.region,
+            			inline: true
+            		},{
+            			name: `**Default Channel**`,
+            			value: guild.defaultChannel.name
+            		}]
 
-            	}})
+            	}};
+            	if (config[id].desc && config[id].desc != "") embed["embed"].description = config[id].desc;
+            	message.channel.send(embed);
             }
             if (isBotAdmin(message.member)){
                 if (cmd == "say"){
@@ -1123,6 +1153,16 @@ bot.on('message', message => {
                         if (!user) user = message.member.user;
                         message.channel.send(`ID of user "${user.username}": ${user.id}`)
                     }
+                }
+                else if (cmd == "serverdesc"){
+                	if (args[0]){
+              			config[id].desc = args.join(' ');
+              			saveConfig();
+              			message.channel.send(`Set the server description to:\n${config[id].desc}`);
+                	}
+                	else{
+                		message.channel.send(`Set the description of the server as seen in \`${config[id].prefix}server\` using \`serverdesc [description]\`.`);
+                	}
                 }
             }
         }
