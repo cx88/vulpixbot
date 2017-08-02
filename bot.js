@@ -85,7 +85,8 @@ const commands = [
     "pbs+", "read", "lenny", "shrug",
     "delet", "rank", "fortune", "8ball",
     "eval", "quote", "user", "bug", "spoon",
-    "mock", "gandalf", "channel", "server"
+    "mock", "gandalf", "channel", "server",
+    "quotes"
 ]
 
 /*
@@ -406,6 +407,11 @@ function getBugEmbed(title, description, username, url){
             value: description
         }]
     }};
+}
+
+function getQuotes(userid){
+	if (!config[user.id] || !config[user.id].quotes) return [];
+	return config[userid].quotes
 }
 
 setInterval(saveConfig, 30000);
@@ -1174,6 +1180,27 @@ bot.on('message', message => {
             		});
             	if (config[id].desc && config[id].desc != "") embed["embed"].description = config[id].desc;
             	message.channel.send(embed);
+            }
+            else if (command(channel, cmd, "quotes")){
+            	if (getQuotes(message.member.user.id).length == 0){
+            		message.channel.send(`You don't have any quotes saved!`);
+            		return;
+            	}
+            	var embed = { embed: {
+            		author: {
+            			name: message.member.user.tag,
+            			icon_url: message.member.user.avatarURL
+            		},
+            		fields: []
+            	}};
+            	for (i = 0; i < getQuotes(message.member.user.id); i++){
+            		embed["embed"].fields.push({
+            			name: `**Quote #${i + 1}**`,
+            			value: getQuotes(message.member.user.id)[i]
+            		})
+            	}
+            	message.channel.send(embed);
+
             }
             if (isBotAdmin(message.member)){
                 if (cmd == "say"){
