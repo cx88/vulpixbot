@@ -1028,7 +1028,7 @@ bot.on('message', message => {
                 	});
                 	embed["embed"].fields.push({
                 		name: `**Members**`,
-                		value: chnl.members.map(m => m.username).join('\n')
+                		value: chnl.members.map(m => m.user.username).join('\n') == "" ? "---" : chnl.members.map(m => m.user.username).join('\n')
                 	});
                 }
                 message.channel.send(embed);
