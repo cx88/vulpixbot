@@ -1071,11 +1071,12 @@ bot.on('message', message => {
                 message.channel.send(embed);
             }
             else if (command(channel, cmd, "server")){
+            	var owner = tryGetUser(guild, guild.ownerID);
             	var embed = { embed: {
             		color: main_color,
             		author: {
-            			name: tryGetUser(guild, guild.ownerID).tag,
-            			icon_url: tryGetUser(guild, guild.ownerID).avatarURL
+            			name: owner.tag,
+            			icon_url: owner.avatarURL
             		},
             		title: guild.name,
             		thumbnail: {
@@ -1087,11 +1088,11 @@ bot.on('message', message => {
             			inline: true
             		},{
             			name: `**Default Channel**`,
-            			value: guild.defaultChannel.name,
+            			value: `#${guild.defaultChannel.name}`,
             			inline: true
             		},{
             			name: `**Emoji's**`,
-            			value: guild.emojis.map(e => e).join(' ')
+            			value: guild.emojis.map(e => e).length == 0 ? `---` : guild.emojis.map(e => e).join(' ')
             		},{
             			name: `**Verification Level**`,
             			value: guild.verificationLevel,
@@ -1099,6 +1100,31 @@ bot.on('message', message => {
             		},{
             			name: `**Guild ID**`,
             			value: guild.id,
+            			inline: true
+            		},{
+            			name: `**Icon URL**`,
+            			value: guild.iconURL
+            		},{
+            			name: `**Owner Tag**`,
+            			value: owner.tag,
+            			inline: true
+            		},{
+            			name: `**Owner ID**`,
+            			value: guild.ownerID,
+            			inline: true
+            		},{
+            			name: `**Roles**`,
+            			value: guild.roles.map(r => r.name).join(' ')
+            		},{
+            			name: `**Created At**`,
+            			value: guild.createdAt
+            		},{
+            			name: `**Members**`,
+            			value: getGuildMembers(guild),
+            			inline: true
+            		},{
+            			name: `**Channels**`,
+            			value: guild.channels.map(c => c).length <= 10 ? guild.channels.map(c => c.name).join('\n') : guild.channels.map(c => c).length,
             			inline: true
             		}]
             	}};
