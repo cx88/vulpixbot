@@ -1072,6 +1072,22 @@ bot.on('message', message => {
             }
             else if (command(channel, cmd, "server")){
             	var owner = tryGetUser(guild, guild.ownerID);
+            	var emotes;
+            	if (guild.emojis.map(e => e).length == 0){
+            		emotes = '---';
+            	}
+            	else{
+            		emotes = "";
+            		for (i = 0; i < guild.emojis.map(e => e).length; i++){
+            			emotes += guild.emojis.map(e => e)[i] + ' ';
+            			if (emotes.length > 1020){
+            				tmp = emotes.split(' ');
+            				tmp.splice(tmp.length - 1, 1);
+            				emotes = tmp.join(' ') + ' ...';
+            				break;
+            			}
+            		}
+            	}
             	var embed = { embed: {
             		color: main_color,
             		author: {
@@ -1092,7 +1108,7 @@ bot.on('message', message => {
             			inline: true
             		},{
             			name: `**Emoji's**`,
-            			value: guild.emojis.map(e => e).length == 0 ? `---` : guild.emojis.map(e => e).join(' ')
+            			value: emotes
             		},{
             			name: `**Verification Level**`,
             			value: guild.verificationLevel,
@@ -1110,10 +1126,17 @@ bot.on('message', message => {
             		})
             	}
             	else{
-            		embed["embed"].fields.push({
-            			name: `**Roles**`,
-            			value: guild.roles.map(r => r.name).join(' ')
-            		})
+            		try{
+	            		embed["embed"].fields.push({
+	            			name: `**Roles**`,
+	            			value: guild.roles.map(r => r.name).join(', ')
+	            		})
+	            	}
+	            	catch (err){
+	            		embed["embed"].fields.push({
+	            			name: `**Roles**`
+	            		})
+	            	}
             	}
             	embed["embed"].fields.push({
             			name: `**Owner Tag**`,
