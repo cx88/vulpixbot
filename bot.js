@@ -1091,7 +1091,7 @@ bot.on('message', message => {
             			inline: true
             		},{
             			name: `**Emoji's**`,
-            			value: guild.emojis.map(e => e).join(': :')
+            			value: guild.emojis.map(e => e).join(' ');
             		},{
             			name: `**Verification Level**`,
             			value: guild.verificationLevel,
