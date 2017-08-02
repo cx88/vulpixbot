@@ -1091,7 +1091,7 @@ bot.on('message', message => {
                         message.channel.send(`ID of channel "${channel.name}": ${channel.id}`);
                     }
                     else if (args[0] == "server"){
-                        message.channel.send(`ID of guild "${message.guild.name}": ${message.guild.id}`);
+                        message.channel.send(`ID of guild "${guild.name}": ${guild.id}`);
                     }
                     else if (args[0] == "user"){
                     	var user;
