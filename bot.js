@@ -1065,6 +1065,7 @@ bot.on('message', message => {
                 message.channel.send(embed);
             }
             else if (command(channel, cmd, "server")){
+            	var emojis = ':' + guild.emojis.map(e => e.name).join(': :') + ':'
             	var embed = { embed: {
             		color: main_color,
             		author: {
@@ -1077,13 +1078,30 @@ bot.on('message', message => {
             		},
             		fields: [{
             			name: `**Region**`,
-            			value: guild.region
+            			value: guild.region,
+            			inline: true
             		},{
             			name: `**Default Channel**`,
             			value: guild.defaultChannel.name,
             			inline: true
+            		},{
+            			name: '\u200b',
+            			value: '\u200b'
+            		},{
+            			name: `**Verification Level**`,
+            			value: guild.verificationLevel,
+            			inline: true
+            		},{
+            			name: `**Guild ID**`,
+            			value: guild.id,
+            			inline: true
+            		},{
+            			name: '\u200b',
+            			value: '\u200b'
+            		},{
+            			name: `**Emoji's**`,
+            			value: emojis
             		}]
-
             	}};
             	if (config[id].desc && config[id].desc != "") embed["embed"].description = config[id].desc;
             	message.channel.send(embed);
