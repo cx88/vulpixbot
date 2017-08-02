@@ -199,7 +199,7 @@ function getGuildMembers(guild){
 		members = guild.members.map(m => m.user.username).join('\n');
 	}
 	else{
-		members = total;
+		members = guild.memberCount;
 	}
 	return members;
 }
