@@ -236,18 +236,16 @@ function tryGetChannel(message){
 
 function tryGetUser(str){
     var user;
+    while (str.contains('%20')){
+        str = str.replace('%20', ' ');
+    }
+    if (userExists(guild, str)){
+        user = getUser(guild, str);
+    }
     else{
-        while (str.contains('%20')){
-            str = str.replace('%20', ' ');
-        }
-        if (userExists(guild, str)){
-            user = getUser(guild, str);
-        }
-        else{
-            var name = guild.members.find('nickname', str);
-            if (name != null && name != undefined){
-                user = name.user;
-            }
+        var name = guild.members.find('nickname', str);
+        if (name != null && name != undefined){
+            user = name.user;
         }
     }
     return user;
