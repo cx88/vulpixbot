@@ -217,19 +217,13 @@ function getUser(guild, user){
     }
 }
 
-function tryGetChannel(message){
-    args = message.content.split(' ');
+function tryGetChannel(guild, str){
     var channel;
-    for (i = 0; i < args.length; i++){
-        if (channel != null && channel != undefined) break;
-        if (message.mentions.channels.first() != undefined){
-            channel = message.mentions.channels.first();
-        }
-        else{
-            if (channelExists(message.guild, args[i])){
-                channel = getChannel(message.guild, args[1]);
-            }
-        }
+    while (str.contains('%20')){
+    	str = str.replace('%20', ' ');
+    }
+    if (channelExists(guild, str)){
+        channel = getChannel(guild, str);
     }
     return channel;
 }
@@ -986,8 +980,9 @@ bot.on('message', message => {
                 console.log(shown);
             }
             else if (command(channel, cmd, "channel")){
-                var chnl = tryGetChannel(message);
-                if (chnl == undefined){
+                var chnl = message.mentions.channels.first();
+                if (!chnl) chnl = tryGetChannel(guild, args.join(' '));
+                if (!chnl){
                     chnl = channel;
                 }
                 var user = guild.members.find(m => m.user.id === guild.ownerID).user;
