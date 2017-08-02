@@ -1076,19 +1076,26 @@ bot.on('message', message => {
             	if (guild.emojis.map(e => e).length == 0){
             		emotes = '---';
             	}
+            	else if (guild.emojis.map(e => e).join(' ').length < 1024){
+            		emotes = guild.emojis.map(e => e).join(' ');
+            	}
             	else{
-            		emotes = "";
-            		var emojis = guild.emojis.map(e => e);
-            		for (i = 0; i < emojis.length; i++){
-            			console.log(emojis[i]);
-            			emotes += emojis[i] + ' ';
-            			if (emotes.length > 1020){
-            				tmp = emotes.split(' ');
-            				tmp.splice(tmp.length - 1, 1);
-            				emotes = tmp.join(' ') + ' ...';
-            				break;
-            			}
-            		}
+            		emotes = guild.emojis.map(e => e).join(' ').slice(0, 1010).split(' ');
+            		emotes = emotes.slice(0, emotes.length - 1);
+            		emotes.join(' ') + " and more..."
+            	}
+            	var roles = guild.roles.map(r => r.name);
+            	roles = roles.slice(1, roles.length);
+            	if (roles.length == 0){
+            		roles = '---';
+            	}
+            	else if (roles.join(', ').length < 1024){
+            		roles = roles.join(', ');
+            	}
+            	else{
+            		roles = roles.join(', ').slice(0, 1010).split(', ');
+            		roles = roles.slice(0, roles.length - 1);
+            		roles.join(', ') + " and more..."
             	}
             	var embed = { embed: {
             		color: main_color,
@@ -1136,7 +1143,8 @@ bot.on('message', message => {
 	            	}
 	            	catch (err){
 	            		embed["embed"].fields.push({
-	            			name: `**Roles**`
+	            			name: `**Roles**`,
+	            			value: roles
 	            		})
 	            	}
             	}
@@ -1153,7 +1161,7 @@ bot.on('message', message => {
             	if (guild.iconURL){
             		embed["embed"].fields.push({
             			name: `**Roles**`,
-            			value: guild.roles.map(r => r.name).join(', ')
+            			value: roles
             		});
             	}
             	embed["embed"].fields.push({
