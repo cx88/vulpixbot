@@ -410,7 +410,7 @@ function getBugEmbed(title, description, username, url){
 }
 
 function getQuotes(userid){
-	if (!config[user.id] || !config[user.id].quotes) return [];
+	if (!config[userid] || !config[userid].quotes) return [];
 	return config[userid].quotes
 }
 
