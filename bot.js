@@ -1135,18 +1135,10 @@ bot.on('message', message => {
             		})
             	}
             	else{
-            		try{
-	            		embed["embed"].fields.push({
-	            			name: `**Roles**`,
-	            			value: guild.roles.map(r => r.name).join(', ')
-	            		})
-	            	}
-	            	catch (err){
-	            		embed["embed"].fields.push({
-	            			name: `**Roles**`,
-	            			value: roles
-	            		})
-	            	}
+            		embed["embed"].fields.push({
+            			name: `**Roles**`,
+            			value: roles
+            		})
             	}
             	embed["embed"].fields.push({
             			name: `**Owner Tag**`,
