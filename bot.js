@@ -1077,11 +1077,11 @@ bot.on('message', message => {
             		},
             		fields: [{
             			name: `**Region**`,
-            			value: guild.region,
-            			inline: true
+            			value: guild.region
             		},{
             			name: `**Default Channel**`,
-            			value: guild.defaultChannel.name
+            			value: guild.defaultChannel.name,
+            			inline: true
             		}]
 
             	}};
