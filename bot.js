@@ -240,10 +240,10 @@ function userExists(guild, username){
 
 function getUser(guild, _user){
 	var user = guild.members.get(_user);
-	if (user) user = user.user;
-	if (!user) user = guild.members.find(m => m.user.username === _user).user;
-    if (!user) user = guild.members.find(m => m.user.username.toLowerCase() === _user.toLowerCase()).user;
-    return user;
+	if (user) user = user;
+	if (!user) user = guild.members.find(m => m.user.username === _user);
+    if (!user) user = guild.members.find(m => m.user.username.toLowerCase() === _user.toLowerCase());
+    return user.user;
 }
 
 function tryGetChannel(guild, str){
