@@ -1193,7 +1193,7 @@ bot.on('message', message => {
             		},
             		fields: []
             	}};
-            	for (i = 0; i < getQuotes(message.member); i++){
+            	for (i = 0; i < getQuotes(message.member).length; i++){
             		embed["embed"].fields.push({
             			name: `**Quote #${i + 1}**`,
             			value: getQuotes(message.member)[i]
