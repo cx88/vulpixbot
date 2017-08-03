@@ -455,6 +455,42 @@ bot.on('guildMemberAdd', member =>{
     }
 });
 
+bot.on('guildMemberRemove', member => {
+    var guild = member.guild;
+    var id = guild.id;
+    var userid = member.user.id;
+    if (config[id] && config[id].ranks && config[id].ranks[userid]){
+        delete config[id].ranks[userid];
+    }
+    if (config[id] && config[id].quotes && config[id].quotes[userid]){
+        delete config[id].quotes[userid];
+    }
+});
+
+bot.on('channelDelete', channel => {
+    var guild = channel.guild;
+    var id = guild.id;
+    var channelid = channel.id;
+    if (config[id] && config[id].channels && config[id].channels[channelid]){
+        delete config[id].channels[channelid];
+    }
+});
+
+bot.on('guildDelete', guild => {
+    var id = guild.id;
+    if (config[id]){
+        delete config[id];
+    }
+})
+
+bot.on('disconnect', event => {
+    console.log('Disconnecting...');
+})
+
+bot.on('reconnecting', function(){
+    console.log('Reconnecting...');
+});
+
 bot.on('message', message => {
 	if (!message || !message.member) return;
     if (message.member.user.bot) return;
