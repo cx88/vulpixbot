@@ -1189,6 +1189,7 @@ bot.on('message', message => {
                     if (!user) user = tryGetUser(args[0]);
                     if (!user) user = message.member.user;
                     if (user){
+                        message.channel.send(user.username);
                         member = guild.members.get(user.id);
                         redirect = true;
                     }
