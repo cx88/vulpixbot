@@ -414,7 +414,13 @@ function getQuotes(member){
 	return config[member.guild.id].quotes[member.user.id];
 }
 
+function changeAvatar(){
+    var avatars = JSON.parse(fs.readFileSync('database/avatars.json')).avatars;
+    bot.setAvatar(avatars[rand(avatars.length)]);
+}
+
 setInterval(saveConfig, 30000);
+setInterval(changeAvatar, 30000)
 
 bot.on('ready', () => {
     console.log('Vulpix online');
@@ -1024,6 +1030,10 @@ bot.on('message', message => {
                 });
                 var top = sortable.slice(0, 10);
                 var embed = {embed: {
+                    author: {
+                        name: bot.user.username,
+                        icon_url: bot.user.avatarURL
+                    }
                     color: main_color,
                     title: `The top members on this server are the following:`,
                     fields: []

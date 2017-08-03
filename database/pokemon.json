@@ -17856,5 +17856,52 @@
         "url": "cdn.bulbagarden.net/upload/thumb/8/89/802Marshadow.png/250px-802Marshadow.png",
         "shuffle": "",
         "desc": "Able to conceal itself in shadows, it never appears before human, so its very existence was the stuff of myth."
+    },
+
+    "Alolan_Rattata": {
+        "species": "019",
+        "kind": "Mouse",
+        "type1": "Dark",
+        "type2": "Normal",
+        "ability1": "Gluttony",
+        "ability2": "Hustle",
+        "hiddenability": "Thick_Fat",
+        "catchrate": "255",
+        "height": "0.3m",
+        "weight": "3.8kg",
+        "base_exp": "51",
+        "evyield": [0,0,0,0,0,1],
+        "levelingrate": "Medium Fast",
+        "hatchtime": "3855 - 4111",
+        "genderratio": "50%",
+        "stats": [30,56,35,25,35,72],
+        "url": "cdn.bulbagarden.net/upload/9/91/019Rattata-Alola.png",
+        "shuffle": "cdn.bulbagarden.net/upload/0/08/Shuffle019A.png",
+        "desc": "When the sun goes down, it becomes active. It runs around town on a chase for good food for the boss of its nest—Raticate.",
+        "evolution": {
+            "Alolan Rattata > Level 20 at night > Alolan Raticate"
+        }
+    },
+
+    "Alolan_Raticate": {
+        "species": "020",
+        "kind": "Mouse",
+        "type1": "Dark",
+        "type2": "Normal",
+        "ability1": "Gluttony",
+        "ability2": "Hustle",
+        "hiddenability": "Thick_Fat",
+        "catchrate": "127",
+        "height": "0.7m",
+        "weight": "25.5kg",
+        "base_exp": "145",
+        "evyield": [0,0,0,0,0,2],
+        "levelingrate": "Medium Fast",
+        "hatchtime": "3855 - 4111",
+        "genderratio": "50%",
+        "stats": [75,71,70,40,80,77],
+        "url": "cdn.bulbagarden.net/upload/7/71/020Raticate-Alola.png",
+        "shuffle": "cdn.bulbagarden.net/upload/2/2a/Shuffle020A.png",
+        "desc": "This gourmet Pokémon is particular about the taste and freshness of its food. Restaurants where Raticate live have a good reputation."
     }
 }
