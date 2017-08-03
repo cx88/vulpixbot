@@ -1051,7 +1051,7 @@ bot.on('message', message => {
                     }
                     embed["embed"].fields.push({
                         name: `**Rank #${i + 1}**`,
-                        value: `${user.username}\nLevel ${level}\n${top[i][1] * 7} Exp.\n${top[i][1]} Messages`
+                        value: `${user.username}\nLevel ${level} (${top[i][1] * 7})\n${top[i][1]} Messages`
                     })
                 }
                 message.channel.send(embed);
