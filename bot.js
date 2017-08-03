@@ -1193,7 +1193,7 @@ bot.on('message', message => {
                         redirect = true;
                     }
                 }
-                if (getQuotes(message.member).length == 0){
+                if (getQuotes(member).length == 0){
                     message.channel.send(`${redirect ? `This user doesn't` : `You don't`} have any quotes saved!`);
                     return;
                 }
