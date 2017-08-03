@@ -307,11 +307,6 @@ function setDefaults(guild){
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {
         "prefix": "?",
-        "ignored_channels": [
-        ],
-        "disabled_commands": [
-
-        ],
         "ranks": {
 
         },
@@ -333,6 +328,10 @@ function setDefaults(guild){
                 "status": "on",
                 "role": "Muted",
                 "channel": "general"
+            },
+            "levelup": {
+                "msg": "(user) leveled up to level (level)!",
+                "status": "on"
             }
         },
         "quotes": {
@@ -512,974 +511,971 @@ bot.on('message', message => {
             }
         }
     }
-    if (!config[id]["ignored_channels"].contains(message.channel.name)){
-        if (message.content.startsWith(config[id]["prefix"])){
-            cmd = message.content.substr(1).split(' ')[0];
-            args = message.content.split(" ");
-            args.splice(0, 1);
-            logMessage(dateNow() + ' ' + message.author.username + `: ` + message.content);
-            if (command(channel, cmd, "pc")){
-                if (args[0] == undefined) return;
-                message.channel.send('https://pokecommunity.com/~'+args[0]);
+    if (message.content.startsWith(config[id]["prefix"])){
+        cmd = message.content.substr(1).split(' ')[0];
+        args = message.content.split(" ");
+        args.splice(0, 1);
+        logMessage(dateNow() + ' ' + message.author.username + `: ` + message.content);
+        if (command(channel, cmd, "pc")){
+            if (args[0] == undefined) return;
+            message.channel.send('https://pokecommunity.com/~'+args[0]);
+        }
+        else if (command(channel, cmd, "soon")){
+            message.channel.send(`Soon:tm:`);
+        }
+        else if (command(channel, cmd, "rand")){
+            message.channel.send(rand(args[0]));
+        }
+        else if (command(channel, cmd, "choose")){
+            _args = message.content.split(' ');
+            var str = "";
+            for (i = 1; i < _args.length; i++){
+                str += _args[i];
+                if (i != _args.length - 1) { str += " "; }
             }
-            else if (command(channel, cmd, "soon")){
-                message.channel.send(`Soon:tm:`);
-            }
-            else if (command(channel, cmd, "rand")){
-                message.channel.send(rand(args[0]));
-            }
-            else if (command(channel, cmd, "choose")){
-                _args = message.content.split(' ');
-                var str = "";
-                for (i = 1; i < _args.length; i++){
-                    str += _args[i];
-                    if (i != _args.length - 1) { str += " "; }
+            var options = str.split('|');
+            for (i = 0; i < options.length; i++){
+                while (options[i][0] == ' '){
+                    options[i] = options[i].substr(1);
                 }
-                var options = str.split('|');
-                for (i = 0; i < options.length; i++){
-                    while (options[i][0] == ' '){
-                        options[i] = options[i].substr(1);
-                    }
-                    while (options[i][options[i].length - 1] == ' '){
-                        options[i] = options[i].substr(0, options[i].length - 1);
-                    }
+                while (options[i][options[i].length - 1] == ' '){
+                    options[i] = options[i].substr(0, options[i].length - 1);
                 }
-                if (options.length == 1){
+            }
+            if (options.length == 1){
+                message.channel.send(`Don't try to trick me!`);
+                return;
+            }
+            if (options.length == 2){
+                if (options[0] == options[1]){
                     message.channel.send(`Don't try to trick me!`);
                     return;
                 }
-                if (options.length == 2){
-                    if (options[0] == options[1]){
-                        message.channel.send(`Don't try to trick me!`);
-                        return;
-                    }
-                }
-                message.channel.send(options[rand(options.length)]);
             }
-            else if (command(channel, cmd, "dex")){
-                if (args[0] == undefined){
-                    message.channel.send(`If you want to see the data on a Pokémon, use \`${config[id].prefix}dex [pokemon]\`.`);
-                    return;
+            message.channel.send(options[rand(options.length)]);
+        }
+        else if (command(channel, cmd, "dex")){
+            if (args[0] == undefined){
+                message.channel.send(`If you want to see the data on a Pokémon, use \`${config[id].prefix}dex [pokemon]\`.`);
+                return;
+            }
+            var file = fs.readFileSync('database/pokemon.json');
+            var dat = JSON.parse(file);
+            var mon;
+            if (message.content.toLowerCase().contains('type') || message.content.toLowerCase().contains('null')){
+                poke = dat["Type: Null"];
+            }
+            else{
+                poke = dat[args[0].capitalize()];
+            }
+            if (poke == undefined || poke == null) return;
+            var tmp = fs.readFileSync('database/colors.json');
+            var colors = JSON.parse(tmp);
+            var color = colors[poke.type1.toLowerCase()];
+            var types = `**Types:** ${poke.type1} ${poke.type2 != "Unknown" && poke.type2 != undefined ? `| ${poke.type2}` : ""}`;
+            var s = poke.stats
+            var stats = `**Base Stats**: ${s[0]} | ${s[1]} | ${s[2]} | ${s[3]} | ${s[4]} | ${s[5]}`;
+            var abilities = `Normal: ${getAbility(poke.ability1)} ${poke.ability2 != undefined ? "| " + getAbility(poke.ability2) : ""}`;
+            var height = `**Height**: ${poke.height}`;
+            var weight = `**Weight**: ${poke.weight}`;
+            var genderratio = `**Gender Ratio**: `
+            if (poke.genderratio == "Genderless"){
+                genderratio += `Genderless`;
+            }
+            else{
+                var female = parseFloat(poke.genderratio.split('%')[0]);
+                var male = parseFloat(parseFloat(100) - female);
+                genderratio += `\nMale: ${male}%\nFemale: ${female}%`
+            }
+            var growthrate = `**Growth Rate**: ${poke.levelingrate}`;
+            var exp = `**Base EXP**: ${poke.base_exp}`;
+            var catchrate = `**Catch Rate**: ${poke.catchrate}`;
+            var evyield = `**EV Yield**: `;
+            var evs = [];
+            var _stats = [`HP`, `Atk`, `Def`, `SpAtk`, `SpDef`, `Speed`]
+            for (i = 0; i < poke.evyield.length; i++){
+                if (poke.evyield[i] > 0){
+                    evs.push(`${poke.evyield[i]} ${_stats[i]}`);
                 }
-                var file = fs.readFileSync('database/pokemon.json');
-                var dat = JSON.parse(file);
-                var mon;
-                if (message.content.toLowerCase().contains('type') || message.content.toLowerCase().contains('null')){
-                    poke = dat["Type: Null"];
-                }
-                else{
-                    poke = dat[args[0].capitalize()];
-                }
-                if (poke == undefined || poke == null) return;
-                var tmp = fs.readFileSync('database/colors.json');
-                var colors = JSON.parse(tmp);
-                var color = colors[poke.type1.toLowerCase()];
-                var types = `**Types:** ${poke.type1} ${poke.type2 != "Unknown" && poke.type2 != undefined ? `| ${poke.type2}` : ""}`;
-                var s = poke.stats
-                var stats = `**Base Stats**: ${s[0]} | ${s[1]} | ${s[2]} | ${s[3]} | ${s[4]} | ${s[5]}`;
-                var abilities = `Normal: ${getAbility(poke.ability1)} ${poke.ability2 != undefined ? "| " + getAbility(poke.ability2) : ""}`;
-                var height = `**Height**: ${poke.height}`;
-                var weight = `**Weight**: ${poke.weight}`;
-                var genderratio = `**Gender Ratio**: `
-                if (poke.genderratio == "Genderless"){
-                    genderratio += `Genderless`;
-                }
-                else{
-                    var female = parseFloat(poke.genderratio.split('%')[0]);
-                    var male = parseFloat(parseFloat(100) - female);
-                    genderratio += `\nMale: ${male}%\nFemale: ${female}%`
-                }
-                var growthrate = `**Growth Rate**: ${poke.levelingrate}`;
-                var exp = `**Base EXP**: ${poke.base_exp}`;
-                var catchrate = `**Catch Rate**: ${poke.catchrate}`;
-                var evyield = `**EV Yield**: `;
-                var evs = [];
-                var _stats = [`HP`, `Atk`, `Def`, `SpAtk`, `SpDef`, `Speed`]
-                for (i = 0; i < poke.evyield.length; i++){
-                    if (poke.evyield[i] > 0){
-                        evs.push(`${poke.evyield[i]} ${_stats[i]}`);
+            }
+            evyield += evs.join(', ');
+            evyield.split(',')
+                .splice(-1, 1)
+                .join(',');
+            var hatchtime = `${poke.hatchtime} steps`
+            var shuffle = poke.shuffle;
+            var image = poke.url;
+            var evolutions = "";
+            if (poke.evolutions != undefined && poke.evolutions.length > 0){
+                evolutions = poke.evolutions.join("\n");
+                evolutions += "\n";
+            }
+            var kind = `${args[0].capitalize() == "Type:" ? "Type: Null" : args[0].capitalize()}, the ${poke.kind} Pokémon.`;
+            var desc = poke.desc;
+            var embed = {
+                embed: {
+                    color: color,
+                    title: `🡒${poke.species}: ${args[0].capitalize()}`,
+                    url: `https://bulbapedia.bulbagarden.net/wiki/${args[0].capitalize()}_(Pok%C3%A9mon)`,
+                    description: `${types}\n${stats}\n**Abilities:**\n${abilities}${poke.hiddenability != undefined ? `\nHidden: ${getAbility(poke.hiddenability)}` : ""}\n${height}\n${weight}\n${genderratio}\n${growthrate}\n${exp}\n${catchrate}\n${evyield}\n${hatchtime}\n**Evolutions:**\n${evolutions}\n${kind}\n${desc}`,
+                    image: {
+                        "url": `https://`+image
                     }
                 }
-                evyield += evs.join(', ');
-                evyield.split(',')
-                    .splice(-1, 1)
-                    .join(',');
-                var hatchtime = `${poke.hatchtime} steps`
-                var shuffle = poke.shuffle;
-                var image = poke.url;
-                var evolutions = "";
-                if (poke.evolutions != undefined && poke.evolutions.length > 0){
-                    evolutions = poke.evolutions.join("\n");
-                    evolutions += "\n";
+            }
+            if (shuffle != undefined && shuffle != null && shuffle != ""){
+                embed["embed"]["thumbnail"] = {
+                    "url": `https://`+shuffle
                 }
-                var kind = `${args[0].capitalize() == "Type:" ? "Type: Null" : args[0].capitalize()}, the ${poke.kind} Pokémon.`;
-                var desc = poke.desc;
-                var embed = {
-                    embed: {
-                        color: color,
-                        title: `🡒${poke.species}: ${args[0].capitalize()}`,
-                        url: `https://bulbapedia.bulbagarden.net/wiki/${args[0].capitalize()}_(Pok%C3%A9mon)`,
-                        description: `${types}\n${stats}\n**Abilities:**\n${abilities}${poke.hiddenability != undefined ? `\nHidden: ${getAbility(poke.hiddenability)}` : ""}\n${height}\n${weight}\n${genderratio}\n${growthrate}\n${exp}\n${catchrate}\n${evyield}\n${hatchtime}\n**Evolutions:**\n${evolutions}\n${kind}\n${desc}`,
-                        image: {
-                            "url": `https://`+image
-                        }
-                    }
-                }
-                if (shuffle != undefined && shuffle != null && shuffle != ""){
-                    embed["embed"]["thumbnail"] = {
-                        "url": `https://`+shuffle
-                    }
-                }
+            }
 
-                message.channel.send(embed);
+            message.channel.send(embed);
+        }
+        else if (command(channel, cmd, "thundaga")){
+            if (args[0] == undefined){
+                message.channel.send("https://www.youtube.com/channel/UCS9280oK413_XO8abzQa8ig");
             }
-            else if (command(channel, cmd, "thundaga")){
-                if (args[0] == undefined){
-                    message.channel.send("https://www.youtube.com/channel/UCS9280oK413_XO8abzQa8ig");
-                }
-                else{
-                    var str = message.content;
-                    str.replace(" a ", " ");
-                    str.replace(" an ", " ");
-                    ar = Object.keys(eps);
-                    var sent = false;
-                    var words = str.split(' ');
-                    for (i = 0; i < ar.length; i++){
-                        if (sent) { break; }
-                        for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
-                            if (str.contains(eps[ar[i]]["keywords"][j])){
-                                var skip = false;
-                                if (eps[ar[i]].blacklist != undefined){
-                                    for (k = 0; k < eps[ar[i]].blacklist.length; k++){
-                                        if (str.contains(eps[ar[i]].blacklist[k])){
-                                            skip = true;
-                                            break;
-                                        }
+            else{
+                var str = message.content;
+                str.replace(" a ", " ");
+                str.replace(" an ", " ");
+                ar = Object.keys(eps);
+                var sent = false;
+                var words = str.split(' ');
+                for (i = 0; i < ar.length; i++){
+                    if (sent) { break; }
+                    for (j = 0; j < eps[ar[i]]["keywords"].length; j++){
+                        if (str.contains(eps[ar[i]]["keywords"][j])){
+                            var skip = false;
+                            if (eps[ar[i]].blacklist != undefined){
+                                for (k = 0; k < eps[ar[i]].blacklist.length; k++){
+                                    if (str.contains(eps[ar[i]].blacklist[k])){
+                                        skip = true;
+                                        break;
                                     }
                                 }
-                                if (!skip){
-                                    message.channel.send(eps[ar[i]]["url"]);
-                                    sent = true;
-                                    break;
-                                }
+                            }
+                            if (!skip){
+                                message.channel.send(eps[ar[i]]["url"]);
+                                sent = true;
+                                break;
                             }
                         }
                     }
                 }
             }
-            else if (command(channel, cmd, "wikia")){
-                message.channel.send('Command under construction.');
+        }
+        else if (command(channel, cmd, "wikia")){
+            message.channel.send('Command under construction.');
+        }
+        else if (command(channel, cmd, "ebs")){
+            message.channel.send("http://sj-web.byethost18.com/");
+        }
+        else if (command(channel, cmd, "pbs+")){
+            message.channel.send("https://www.pokecommunity.com/showthread.php?t=393347");
+        }
+        else if (command(channel, cmd, "read")){
+            if (args[0] == undefined){
+                message.channel.send('Hello. I am Vulpix. I represent the annoyance of ' + message.author.username + '. You have failed to read one or more of their messages.\nInstead of being snarky and saying "Read the fucking messages, please!", they desperately used this command to have me talk for them. I hope you can appreciate their choice and read for once.');
             }
-            else if (command(channel, cmd, "ebs")){
-                message.channel.send("http://sj-web.byethost18.com/");
+            else if (args[0] == "wiki" || args[0] == "wikia"){
+                message.channel.send('Hello. I see you have failed to look up the wikia. Shame on you. It wasn\'t made for decoration purposes. People put time into making that and providing you with information. You should respect that and read the wikia. If you end up not finding what you need, try again and state that you did in fact read the wikia.');
             }
-            else if (command(channel, cmd, "pbs+")){
-                message.channel.send("https://www.pokecommunity.com/showthread.php?t=393347");
+            else if (args[0] == "instructions" || args[0] == "instr" || args[0] == "instruction"){
+                message.channel.send('Hey there. It\'s seriously annoying if you don\'t read provided instructions. People will get snarky if you don\'t. So please, look for instructions wherever you downloaded or saw something. Read them and then follow them.');
             }
-            else if (command(channel, cmd, "read")){
-                if (args[0] == undefined){
-                    message.channel.send('Hello. I am Vulpix. I represent the annoyance of ' + message.author.username + '. You have failed to read one or more of their messages.\nInstead of being snarky and saying "Read the fucking messages, please!", they desperately used this command to have me talk for them. I hope you can appreciate their choice and read for once.');
-                }
-                else if (args[0] == "wiki" || args[0] == "wikia"){
-                    message.channel.send('Hello. I see you have failed to look up the wikia. Shame on you. It wasn\'t made for decoration purposes. People put time into making that and providing you with information. You should respect that and read the wikia. If you end up not finding what you need, try again and state that you did in fact read the wikia.');
-                }
-                else if (args[0] == "instructions" || args[0] == "instr" || args[0] == "instruction"){
-                    message.channel.send('Hey there. It\'s seriously annoying if you don\'t read provided instructions. People will get snarky if you don\'t. So please, look for instructions wherever you downloaded or saw something. Read them and then follow them.');
-                }
-                else if (args[0] == "docu" || args[0] == "doc" || args[0] == "documentation" || args[0] == "docs"){
-                    message.channel.send('Hi. Read the documentation. It\'s there to help you. It will take away most questions you have. If you do have questions, **always** read provided documentation before you end up asking stupid questions.');
-                }
-                else if (args[0] == "faq"){
-                    message.channel.send('If only there was such a thing as **"FREQUENTLY ASKED QUESTIONS"**... Hmmm... Whether it\'s a website, resource or Discord server, they are likely to have a FAQ channel or document. For all that is holy, read that.');
-                }
-                else if (args[0] == "rules"){
-                    message.channel.send('Yo. If you don\'t read the rules, you\'ll get in trouble soon enough. Rules are there for very good reasons; organization, past experiences, and so on. Read them so you\'re sure that you comply with them.');
-                }
-                else if (args[0] == "error"){
-                    message.channel.send('Ey. Error messages are often very English and easy to understand. Please, before you ask for help... read the error message. They\'re so self-explanatory most of the times...');
+            else if (args[0] == "docu" || args[0] == "doc" || args[0] == "documentation" || args[0] == "docs"){
+                message.channel.send('Hi. Read the documentation. It\'s there to help you. It will take away most questions you have. If you do have questions, **always** read provided documentation before you end up asking stupid questions.');
+            }
+            else if (args[0] == "faq"){
+                message.channel.send('If only there was such a thing as **"FREQUENTLY ASKED QUESTIONS"**... Hmmm... Whether it\'s a website, resource or Discord server, they are likely to have a FAQ channel or document. For all that is holy, read that.');
+            }
+            else if (args[0] == "rules"){
+                message.channel.send('Yo. If you don\'t read the rules, you\'ll get in trouble soon enough. Rules are there for very good reasons; organization, past experiences, and so on. Read them so you\'re sure that you comply with them.');
+            }
+            else if (args[0] == "error"){
+                message.channel.send('Ey. Error messages are often very English and easy to understand. Please, before you ask for help... read the error message. They\'re so self-explanatory most of the times...');
+            }
+        }
+        else if (command(channel, cmd, "lenny")){
+            message.delete();
+            message.channel.send("( ͡° ͜ʖ ͡°)");
+        }
+        else if (command(channel, cmd, "shrug")){
+            message.delete();
+            message.channel.send("¯\\_(ツ)_/¯");
+        }
+        else if (command(channel, cmd, "delet")){
+            message.channel.send(delet_this[rand(delet_this.length)]);
+        }
+        else if (command(channel, cmd, "rank")){
+            var user = message.mentions.users.first();
+            if (!user) user = tryGetUser(guild, args.join(' '));
+            if (!user) user = message.member.user;
+            if (user.bot){
+                message.channel.send(`Bots do not have a rank.`);
+                return;
+            }
+            var rank = 0;
+            var req = 16;
+            for (i = 0; i < level_curve.length; i++){
+                if (config[id].ranks[user.id] == undefined) { break; }
+                if (level_curve[i] > config[id]["ranks"][user.id]){
+                    rank = i - 1;
+                    req = level_curve[i];
+                    break;
                 }
             }
-            else if (command(channel, cmd, "lenny")){
-                message.delete();
-                message.channel.send("( ͡° ͜ʖ ͡°)");
+            if (!config[id].ranks){
+            	config[id].ranks = {};
             }
-            else if (command(channel, cmd, "shrug")){
-                message.delete();
-                message.channel.send("¯\\_(ツ)_/¯");
+            if (!config[id].ranks[user.id]){
+            	config[id].ranks[user.id] = 0;
             }
-            else if (command(channel, cmd, "delet")){
-                message.channel.send(delet_this[rand(delet_this.length)]);
-            }
-            else if (command(channel, cmd, "rank")){
-                var user = message.mentions.users.first();
-                if (!user) user = tryGetUser(guild, args.join(' '));
-                if (!user) user = message.member.user;
-                if (user.bot){
-                    message.channel.send(`Bots do not have a rank.`);
+            var exp = config[id].ranks[user.id] * 7 + " / " + req * 7;
+            message.channel.send({embed:{
+                color: main_color,
+                author: {
+                    name: user.username,
+                    icon_url: user.avatarURL
+                },
+                thumbnail: {
+                    "url": user.avatarURL
+                },
+                fields: [{
+                    name: "**Level**",
+                    value: rank
+                },{
+                    name: "**Experience**",
+                    value: exp
+                },{
+                    name: "**Rank**",
+                    value: `${getRank(guild, user) == undefined ? guild.memberCount : getRank(guild, user)}/${guild.memberCount}`
+                }]
+            }})
+        }
+        else if (command(channel, cmd, "fortune")){
+            message.channel.send(fortune[rand(fortune.length)]);
+        }
+        else if (command(channel, cmd, "8ball")){
+            message.channel.send(magic8ball[rand(magic8ball.length)]);
+        }
+        else if (command(channel, cmd, "eval")){
+            var str = message.content.split(`${config[id].prefix}eval `)[1];
+            if (!isBotAdmin(message.member)){
+                if (str.contains('config') || str.contains('Config') || str.contains('abort') || str.contains('exit') || str.contains('close') || 
+                    str.contains('user') || str.contains('User') || str.contains('channel') || str.contains('Channel') || str.contains('guild') ||
+                    str.contains('Guild') || str.contains('message') || str.contains('member') || str.contains('end') || str.contains('while') || 
+                    str.contains('process') || str.contains('kill') || str.contains('env') || str.contains('bot')){
                     return;
                 }
-                var rank = 0;
-                var req = 16;
-                for (i = 0; i < level_curve.length; i++){
-                    if (config[id].ranks[user.id] == undefined) { break; }
-                    if (level_curve[i] > config[id]["ranks"][user.id]){
-                        rank = i - 1;
-                        req = level_curve[i];
-                        break;
-                    }
+            }
+            try{
+               message.channel.send(eval(str));
+            }
+            catch (err){
+                message.channel.send(`Failed to evaluate expression.`);
+            }
+        }
+        else if (command(channel, cmd, "quote")){
+            if (args[0] == undefined) {
+                message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that [user] should be one word if it isn't a tag. \`%20\` will be substituted with a space.`);
+                return;
+            }
+            var user = message.mentions.users.first();
+            if (!user) user = tryGetUser(guild, args[0]);
+            if (!user){
+                message.channel.send(`User not found.`);
+                return;
+            }
+            var msg = message.content.split(' ')
+            msg.splice(0, 2);
+            msg = msg.join(' ');
+            if (msg != "" && msg != null && msg != undefined && msg != " "){
+                if (config[id]["quotes"][user.id] == undefined){
+                    config[id]["quotes"][user.id] = [
+                        msg
+                    ];
+                    saveConfig();
+                    message.channel.send(`Quote saved!`);
                 }
-                if (!config[id].ranks){
-                	config[id].ranks = {};
+                else{
+                    config[id]["quotes"][user.id].push(msg);
+                    saveConfig();
+                    message.channel.send(`Quote saved!`);
                 }
-                if (!config[id].ranks[user.id]){
-                	config[id].ranks[user.id] = 0;
+            }
+            else if (config[id]["quotes"][user.id] == undefined || config[id]["quotes"][user.id].length == 0){
+                message.channel.send(`This user doesn't have any quotes saved!`);
+            }
+            else{
+                message.channel.send(`"${config[id].quotes[user.id][rand(config[id].quotes[user.id].length)]}"\n - ${user.username}`);
+            }
+        }
+        else if (command(channel, cmd, "user")){
+            if (args[0] == undefined) return;
+            var user;
+            if (message.mentions.users.first() != undefined){
+                user = message.mentions.users.first();
+            }
+            else if (args[0] != undefined){
+                var tmp = message.content.split(`${config[id].prefix}user `)[1];
+                if (userExists(guild, tmp)){
+                    user = getUser(guild, tmp);
                 }
-                var exp = config[id].ranks[user.id] * 7 + " / " + req * 7;
-                message.channel.send({embed:{
+            }
+            if (user != undefined && user != null){
+                message.channel.send({embed: {
                     color: main_color,
                     author: {
                         name: user.username,
                         icon_url: user.avatarURL
                     },
+                    title: user.tag,
                     thumbnail: {
-                        "url": user.avatarURL
+                        url: user.avatarURL
                     },
                     fields: [{
-                        name: "**Level**",
-                        value: rank
+                        name: `**Nickname**`,
+                        value: user.username,
+                        inline: true
                     },{
-                        name: "**Experience**",
-                        value: exp
+                        name: `**User ID**`,
+                        value: user.id,
+                        inline: true
                     },{
-                        name: "**Rank**",
-                        value: `${getRank(guild, user) == undefined ? guild.memberCount : getRank(guild, user)}/${guild.memberCount}`
+                        name: `**Status**`,
+                        value: user.presence.status,
+                        inline: true
+                    },{
+                        name: `**Game**`,
+                        value: user.presence.game ? user.presence.game.name : "---",
+                        inline: true
+                    },{
+                        name: `**Bot**`,
+                        value: user.bot
+                    },{
+                        name: `**Created At**`,
+                        value: user.createdAt,
+                        inline: true
                     }]
-                }})
+                }});
             }
-            else if (command(channel, cmd, "fortune")){
-                message.channel.send(fortune[rand(fortune.length)]);
+        }
+        else if (command(channel, cmd, "bug")){
+            if (config[id].bugs == undefined){
+                config[id].bugs = {};
+                saveConfig();
             }
-            else if (command(channel, cmd, "8ball")){
-                message.channel.send(magic8ball[rand(magic8ball.length)]);
+            if (args[0] == "list"){
+                var bug_titles = Object.keys(config[id].bugs);
+                message.channel.send(`Known bugs:\`\`\`\n${bug_titles.length == 0 ? `---` : bug_titles.join('\n')}\`\`\``)
             }
-            else if (command(channel, cmd, "eval")){
-                var str = message.content.split(`${config[id].prefix}eval `)[1];
-                if (!isBotAdmin(message.member)){
-                    if (str.contains('config') || str.contains('Config') || str.contains('abort') || str.contains('exit') || str.contains('close') || 
-                        str.contains('user') || str.contains('User') || str.contains('channel') || str.contains('Channel') || str.contains('guild') ||
-                        str.contains('Guild') || str.contains('message') || str.contains('member') || str.contains('end') || str.contains('while') || 
-                        str.contains('process') || str.contains('kill') || str.contains('env')){
-                        console.log('uh oh');
-                        return;
+            else if (args[0] == "submit"){
+                if (config[id].users != undefined){
+                    if (config[id].users[message.member.user.id] != undefined){
+                        if (!config[id].users[message.member.user.id].can_submit_bugs){
+                            message.channel.send(`You are not authorized to submit bugs.`);
+                            return;
+                        }
                     }
                 }
-                try{
-                   message.channel.send(eval(str));
-                }
-                catch (err){
-                    message.channel.send(`Failed to evaluate expression.`);
-                }
-            }
-            else if (command(channel, cmd, "quote")){
-                if (args[0] == undefined) {
-                    message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that [user] should be one word if it isn't a tag. \`%20\` will be substituted with a space.`);
-                    return;
-                }
-                var user = message.mentions.users.first();
-                if (!user) user = tryGetUser(guild, args[0]);
-                if (!user){
-                    message.channel.send(`User not found.`);
-                    return;
-                }
-                var msg = message.content.split(' ')
-                msg.splice(0, 2);
-                msg = msg.join(' ');
-                if (msg != "" && msg != null && msg != undefined && msg != " "){
-                    if (config[id]["quotes"][user.id] == undefined){
-                        config[id]["quotes"][user.id] = [
-                            msg
-                        ];
-                        saveConfig();
-                        message.channel.send(`Quote saved!`);
-                    }
-                    else{
-                        config[id]["quotes"][user.id].push(msg);
-                        saveConfig();
-                        message.channel.send(`Quote saved!`);
-                    }
-                }
-                else if (config[id]["quotes"][user.id] == undefined || config[id]["quotes"][user.id].length == 0){
-                    message.channel.send(`This user doesn't have any quotes saved!`);
+                if (args[1] == undefined){
+                    message.channel.send(`Submit a bug using the following command: \`\`\`\n${config[id].prefix}bug submit name:"Bug title"; description:"A descriptive description of the bug. Give as much relevant information as possible."\`\`\`Note that you cannot use the \`"\` character in the title or description themselves, as they are used to surround them.`);
                 }
                 else{
-                    message.channel.send(`"${config[id].quotes[user.id][rand(config[id].quotes[user.id].length)]}"\n - ${user.username}`);
-                }
-            }
-            else if (command(channel, cmd, "user")){
-                if (args[0] == undefined) return;
-                var user;
-                if (message.mentions.users.first() != undefined){
-                    user = message.mentions.users.first();
-                }
-                else if (args[0] != undefined){
-                    var tmp = message.content.split(`${config[id].prefix}user `)[1];
-                    if (userExists(guild, tmp)){
-                        user = getUser(guild, tmp);
-                    }
-                }
-                if (user != undefined && user != null){
-                    message.channel.send({embed: {
-                        color: main_color,
-                        author: {
-                            name: user.username,
-                            icon_url: user.avatarURL
-                        },
-                        title: user.tag,
-                        thumbnail: {
-                            url: user.avatarURL
-                        },
-                        fields: [{
-                            name: `**Nickname**`,
-                            value: user.username,
-                            inline: true
-                        },{
-                            name: `**User ID**`,
-                            value: user.id,
-                            inline: true
-                        },{
-                            name: `**Status**`,
-                            value: user.presence.status,
-                            inline: true
-                        },{
-                            name: `**Game**`,
-                            value: user.presence.game ? user.presence.game.name : "---",
-                            inline: true
-                        },{
-                            name: `**Bot**`,
-                            value: user.bot
-                        },{
-                            name: `**Created At**`,
-                            value: user.createdAt,
-                            inline: true
-                        }]
-                    }});
-                }
-            }
-            else if (command(channel, cmd, "bug")){
-                if (config[id].bugs == undefined){
-                    config[id].bugs = {};
-                    saveConfig();
-                }
-                if (args[0] == "list"){
-                    var bug_titles = Object.keys(config[id].bugs);
-                    message.channel.send(`Known bugs:\`\`\`\n${bug_titles.length == 0 ? `---` : bug_titles.join('\n')}\`\`\``)
-                }
-                else if (args[0] == "submit"){
-                    if (config[id].users != undefined){
-                        if (config[id].users[message.member.user.id] != undefined){
-                            if (!config[id].users[message.member.user.id].can_submit_bugs){
-                                message.channel.send(`You are not authorized to submit bugs.`);
-                                return;
-                            }
+                    var msg = message.content.split(`${config[id].prefix}bug submit `)[1];
+                    try{
+                        if (msg.match(/"/g).length != 4){
+                            message.channel.send(`Invalid bug submission format.`);
+                            return;
                         }
                     }
-                    if (args[1] == undefined){
-                        message.channel.send(`Submit a bug using the following command: \`\`\`\n${config[id].prefix}bug submit name:"Bug title"; description:"A descriptive description of the bug. Give as much relevant information as possible."\`\`\`Note that you cannot use the \`"\` character in the title or description themselves, as they are used to surround them.`);
+                    catch (err){
+                        message.channel.send(`Invalid bug submission format.`);
+                        return;
+                    }
+                    var name;
+                    var desc;
+                    if (msg.contains('name:')){
+                        name = msg.split('name:')[1].split('"')[1].split('"')[0];
                     }
                     else{
-                        var msg = message.content.split(`${config[id].prefix}bug submit `)[1];
-                        try{
-                            if (msg.match(/"/g).length != 4){
-                                message.channel.send(`Invalid bug submission format.`);
-                                return;
-                            }
-                        }
-                        catch (err){
-                            message.channel.send(`Invalid bug submission format.`);
-                            return;
-                        }
-                        var name;
-                        var desc;
-                        if (msg.contains('name:')){
-                            name = msg.split('name:')[1].split('"')[1].split('"')[0];
-                        }
-                        else{
-                            message.channel.send(`Invalid bug submission format.`);
-                            return;
-                        }
-                        if (msg.contains('description:')){
-                            desc = msg.split('description:')[1].split('"')[1].split('"')[0];
-                        }
-                        else{
-                            message.channel.send(`Invalid bug submission format.`);
-                            return;
-                        }
-                        name = name.toUpperCase();
+                        message.channel.send(`Invalid bug submission format.`);
+                        return;
+                    }
+                    if (msg.contains('description:')){
                         desc = msg.split('description:')[1].split('"')[1].split('"')[0];
-                        if (config[id].bugs[name] != undefined){
-                            message.channel.send(`There is already a bug with that title.`);
-                            return;
-                        }
-                        name = name.toUpperCase();
-                        config[id].bugs[name] = {};
-                        config[id].bugs[name].desc = desc;
-                        config[id].bugs[name].username = message.member.user.tag;
-                        config[id].bugs[name].url = message.member.user.avatarURL;
-                        saveConfig();
-                        message.channel.send(`Successfully submitted a new bug:`);
+                    }
+                    else{
+                        message.channel.send(`Invalid bug submission format.`);
+                        return;
+                    }
+                    name = name.toUpperCase();
+                    desc = msg.split('description:')[1].split('"')[1].split('"')[0];
+                    if (config[id].bugs[name] != undefined){
+                        message.channel.send(`There is already a bug with that title.`);
+                        return;
+                    }
+                    name = name.toUpperCase();
+                    config[id].bugs[name] = {};
+                    config[id].bugs[name].desc = desc;
+                    config[id].bugs[name].username = message.member.user.tag;
+                    config[id].bugs[name].url = message.member.user.avatarURL;
+                    saveConfig();
+                    message.channel.send(`Successfully submitted a new bug:`);
+                    message.channel.send(getBugEmbed(name, config[id].bugs[name].desc, config[id].bugs[name].username, config[id].bugs[name].url));
+                }
+            }
+            else if (args[0] == "view"){
+                if (args[1] != undefined){
+                    var name = message.content.split(`${config[id].prefix}bug view `)[1];
+                    name = name.toUpperCase();
+                    if (config[id].bugs[name] != undefined){
                         message.channel.send(getBugEmbed(name, config[id].bugs[name].desc, config[id].bugs[name].username, config[id].bugs[name].url));
                     }
+                    else{
+                        message.channel.send(`There is no bug with such a title.`);
+                    }
                 }
-                else if (args[0] == "view"){
+                else{
+                    message.channel.send(`To view a bug with its description, use \`${config[id].prefix}bug view [bug title]\`.`);
+                }
+            }
+            else if (args[0] == "close"){
+                if (isBotAdmin(message.member)){
                     if (args[1] != undefined){
-                        var name = message.content.split(`${config[id].prefix}bug view `)[1];
+                        var name = message.content.split(`${config[id].prefix}bug close `)[1];
                         name = name.toUpperCase();
                         if (config[id].bugs[name] != undefined){
-                            message.channel.send(getBugEmbed(name, config[id].bugs[name].desc, config[id].bugs[name].username, config[id].bugs[name].url));
+                            delete config[id].bugs[name];
+                            saveConfig();
+                            message.channel.send(`Succefully closed bug "${name}".`);
                         }
                         else{
                             message.channel.send(`There is no bug with such a title.`);
                         }
                     }
                     else{
-                        message.channel.send(`To view a bug with its description, use \`${config[id].prefix}bug view [bug title]\`.`);
+                        message.channel.send(`To close a bug submission, use \`${config[id].prefix}bug close [bug title]\``);
                     }
                 }
-                else if (args[0] == "close"){
-                    if (isBotAdmin(message.member)){
-                        if (args[1] != undefined){
-                            var name = message.content.split(`${config[id].prefix}bug close `)[1];
-                            name = name.toUpperCase();
-                            if (config[id].bugs[name] != undefined){
-                                delete config[id].bugs[name];
-                                saveConfig();
-                                message.channel.send(`Succefully closed bug "${name}".`);
-                            }
-                            else{
-                                message.channel.send(`There is no bug with such a title.`);
-                            }
-                        }
-                        else{
-                            message.channel.send(`To close a bug submission, use \`${config[id].prefix}bug close [bug title]\``);
-                        }
-                    }
-                }
-                else if (args[0] == "allow"){
-                    if (isBotAdmin(message.member)){
-                        var user = message.mentions.users.first();
-                        if (!user) user = tryGetUser(guild, args[1]);
-                        if (user != undefined){
-                            if (config[id].users == undefined){
-                                config[id].users = {};
-                                saveConfig();
-                                message.channel.send(`This user is already able to submit bugs.`);
-                                return;
-                            }
-                            if (config[id].users[user.id] == undefined){
-                                config[id].users[user.id] = {};
-                                saveConfig();
-                                message.channel.send(`This user is already able to submit bugs.`);
-                                return;
-                            }
-                            if (config[id].users[user.id].can_submit_bugs){
-                                message.channel.send(`This user is already able to submit bugs.`);
-                                return;
-                            }
-                            else{
-                                config[id].users[user.id].can_submit_bugs = true;
-                                saveConfig();
-                                message.channel.send(`This user can now submit bugs.`);
-                            }
-                        }
-                        else{
-                            message.channel.send(`User couldn't be found.`);
-                        }
-                    }
-                }
-                else if (args[0] == "disallow"){
-                    if (isBotAdmin(message.member)){
-                        var user = message.mentions.users.first();
-                        if (!user) user = tryGetUser(guild, args[1]);
-                        if (user != undefined){
-                            if (config[id].users == undefined){
-                                config[id].users = {};
-                                config[id].users[user.id] = {};
-                                config[id].users[user.id].can_submit_bugs = false;
-                                saveConfig();
-                                message.channel.send(`This user is no longer able to submit bugs.`);
-                                return;
-                            }
-                            if (config[id].users[user.id] == undefined){
-                                config[id].users[user.id] = {};
-                                config[id].users[user.id].can_submit_bugs = false;
-                                saveConfig();
-                                message.channel.send(`This user is no longer able to submit bugs.`);
-                                return;
-                            }
-                            if (!config[id].users[user.id].can_submit_bugs){
-                                message.channel.send(`This user is already unable to submit bugs.`);
-                                return;
-                            }
-                            else{
-                                config[id].users[user.id].can_submit_bugs = false;
-                                saveConfig();
-                                message.channel.send(`This user can no longer submit bugs.`);
-                            }
-                        }
-                        else{
-                            message.channel.send(`User couldn't be found.`);
-                        }
-                    }
-                }
-                else{
-                    message.channel.send(`Use one of the following commands for more information:\`\`\`\n${config[id].prefix}bug list\n${config[id].prefix}bug view\n${config[id].prefix}bug submit\n${config[id].prefix}bug close\n${config[id].prefix}bug disallow [user]\n${config[id].prefix}bug allow [user]\`\`\``);
-                }
             }
-            else if (command(channel, cmd, "spoon")){
-                var msg = message.content.split(`${config[id].prefix}spoon `)[1];
-                if (msg != undefined && msg != null){
-                    var array = msg.split("");
-                    array = array.shuffle();
-                    message.channel.send(array.join(''));
-                }
-            }
-            else if (command(channel, cmd, "mock")){
-                var msg = message.content.split(`${config[id].prefix}mock `)[1];
-                console.log(msg);
-                if (msg != undefined && msg != null){
-                    msg = msg.toLowerCase();
-                    var mes = "";
-                    for (i = 0; i < msg.length; i++){
-                        var rndm = rand(2);
-                        if (rndm == 1){
-                            mes += msg[i].toUpperCase();
-                        }
-                        else{
-                            mes += msg[i].toLowerCase();
-                        }
-                    }
-                    message.channel.send(mes);
-                }
-            }
-            else if (command(channel, cmd, "gandalf")){
-                message.delete();
-                message.channel.send({files:['database/gandalf.gif']});
-            }
-            else if (command(channel, cmd, "top")){
-                var page = 1;
-                try{
-                    page = parseInt(args[0]);
-                }
-                catch (err) {}
-                var sortable = [];
-                for (var id in config[guild.id].ranks) {
-                    sortable.push([id, config[guild.id].ranks[id]]);
-                }
-                sortable.sort(function(a, b) {
-                    return b[1] - a[1]
-                });
-                page -= 1;
-                var top = sortable.slice(10 * page, 10 * (page + 1));
-                var embed = {embed: {
-                    author: {
-                        name: bot.user.username,
-                        icon_url: bot.user.avatarURL
-                    },
-                    color: main_color,
-                    title: `The top members on this server are the following:`,
-                    fields: []
-                }};
-                var desc = "";
-                console.log(top);
-                for (i = 0; i < top.length; i++){
-                    console.log(`${i+1}: ${top[i]}`);
-                    if (!guild.members.get(top[i][0])) continue;
-                    var user = guild.members.get(top[i][0]).user;
-                    var level;
-                    for (j = 0; j < level_curve.length; j++){
-                        if (config[guild.id].ranks[user.id] == undefined) { break; }
-                        if (level_curve[j] > config[guild.id].ranks[user.id]){
-                            level = j - 1;
-                            break;
-                        }
-                    }
-                    embed["embed"].fields.push({
-                        name: `**Rank #${i + 1}**`,
-                        value: `${user.username}\nLevel ${level} (${top[i][1] * 7})\n${top[i][1]} Messages`
-                    })
-                }
-                message.channel.send(embed);
-            }
-            else if (command(channel, cmd, "channel")){
-                var chnl = message.mentions.channels.first();
-                if (!chnl) chnl = tryGetChannel(guild, args.join(' '));
-                if (!chnl){
-                    chnl = channel;
-                }
-                var user = tryGetUser(guild, guild.ownerID);
-                var embed = {embed: {
-                	color: main_color,
-                    footer: {
-                        text: user.tag,
-                        icon_url: user.avatarURL
-                    },
-                    thumbnail: {
-                        url: guild.iconURL
-                    },
-                    title: `${guild.name}: ${chnl.type == 'text' ? `#` : ``}${chnl.name}`,
-                    fields: [{
-                        name: `**Channel Type**`,
-                        value: chnl.type.capitalize(),
-                        inline: true
-                    },{
-                    	name: chnl.type == 'text' ? `**NSFW**` : `**Bitrate**`,
-                    	value: chnl.type == 'text' ? chnl.nsfw : chnl.bitrate,
-                    	inline: true
-                    },{
-                    	name: `**Channel ID**`,
-                    	value: chnl.id
-                    },{
-                    	name: `**Channel Position**`,
-                        value: chnl.position + 1,
-                        inline: true
-                    },{
-                        name: `**Created At**`,
-                        value: chnl.createdAt,
-                        inline: true
-                    }]
-                }};
-                if (chnl.type == 'voice'){
-                	var members = getChannelMembers(chnl);
-                	embed["embed"].fields.push({
-                		name: `**User Limit**`,
-                		value: chnl.userLimit
-                	});
-                	embed["embed"].fields.push({
-                		name: `**Members**`,
-                		value: members
-                	});
-                }
-                message.channel.send(embed);
-            }
-            else if (command(channel, cmd, "server")){
-            	var owner = tryGetUser(guild, guild.ownerID);
-            	var emotes;
-            	if (guild.emojis.map(e => e).length == 0){
-            		emotes = '---';
-            	}
-            	else if (guild.emojis.map(e => e).join(' ').length < 1024){
-            		emotes = guild.emojis.map(e => e).join(' ');
-            	}
-            	else{
-            		emotes = guild.emojis.map(e => e).join(' ').slice(0, 1010).split(' ');
-            		emotes = emotes.slice(0, emotes.length - 1);
-            		emotes = emotes.join(' ') + " and more..."
-            	}
-            	var roles = guild.roles.map(r => r.name);
-            	roles = roles.slice(1, roles.length);
-            	if (roles.length == 0){
-            		roles = '---';
-            	}
-            	else if (roles.join(', ').length < 1024){
-            		roles = roles.join(', ');
-            	}
-            	else{
-            		roles = roles.join(', ').slice(0, 1010).split(', ');
-            		roles = roles.slice(0, roles.length - 1);
-            		roles = roles.join(', ') + " and more..."
-            	}
-            	var text = guild.channels.filter(c => c.type == 'text').array().length
-            	var voice = guild.channels.filter(c => c.type == 'voice').array().length
-            	var embed = { embed: {
-            		color: main_color,
-            		author: {
-            			name: owner.tag,
-            			icon_url: owner.avatarURL
-            		},
-            		title: guild.name,
-            		thumbnail: {
-            			url: guild.iconURL
-            		},
-            		fields: [{
-            			name: `**Region**`,
-            			value: guild.region,
-            			inline: true
-            		},{
-            			name: `**Default Channel**`,
-            			value: `#${guild.defaultChannel.name}`,
-            			inline: true
-            		},{
-            			name: `**Emoji's**`,
-            			value: emotes
-            		},{
-            			name: `**Verification Level**`,
-            			value: guild.verificationLevel,
-            			inline: true
-            		},{
-            			name: `**Guild ID**`,
-            			value: guild.id,
-            			inline: true
-            		}]
-            	}};
-            	if (guild.iconURL){
-            		embed["embed"].fields.push({
-            			name: `**Icon URL**`,
-            			value: guild.iconURL
-            		})
-            	}
-            	else{
-            		embed["embed"].fields.push({
-            			name: `**Roles**`,
-            			value: roles
-            		})
-            	}
-            	embed["embed"].fields.push({
-            			name: `**Owner Tag**`,
-            			value: owner.tag,
-            			inline: true
-            		});
-            	embed["embed"].fields.push({
-            			name: `**Owner ID**`,
-            			value: guild.ownerID,
-            			inline: true
-            		});
-            	if (guild.iconURL){
-            		embed["embed"].fields.push({
-            			name: `**Roles**`,
-            			value: roles
-            		});
-            	}
-            	embed["embed"].fields.push({
-            			name: `**Created At**`,
-            			value: guild.createdAt
-            		});
-            	embed["embed"].fields.push({
-            			name: `**Channels**`,
-            			value: guild.channels.map(c => c).length <= 10 ? guild.channels.map(c => c.name).join('\n') : `Text: ${text}\nVoice: ${voice}`,
-            			inline: true
-            		});
-            	embed["embed"].fields.push({
-            			name: `**Members**`,
-            			value: getGuildMembers(guild),
-            			inline: true
-            		});
-            	if (config[id].desc && config[id].desc != "") embed["embed"].description = config[id].desc;
-            	message.channel.send(embed);
-            }
-            else if (command(channel, cmd, "quotes")){
-                var member = message.member;
-                var redirect = false;
+            else if (args[0] == "allow"){
                 if (isBotAdmin(message.member)){
                     var user = message.mentions.users.first();
-                    if (!user) user = tryGetUser(guild, args[0]);
-                    if (!user) user = message.member.user;
-                    if (user){
-                        message.channel.send(user.username);
-                        member = guild.members.get(user.id);
-                        redirect = true;
+                    if (!user) user = tryGetUser(guild, args[1]);
+                    if (user != undefined){
+                        if (config[id].users == undefined){
+                            config[id].users = {};
+                            saveConfig();
+                            message.channel.send(`This user is already able to submit bugs.`);
+                            return;
+                        }
+                        if (config[id].users[user.id] == undefined){
+                            config[id].users[user.id] = {};
+                            saveConfig();
+                            message.channel.send(`This user is already able to submit bugs.`);
+                            return;
+                        }
+                        if (config[id].users[user.id].can_submit_bugs){
+                            message.channel.send(`This user is already able to submit bugs.`);
+                            return;
+                        }
+                        else{
+                            config[id].users[user.id].can_submit_bugs = true;
+                            saveConfig();
+                            message.channel.send(`This user can now submit bugs.`);
+                        }
+                    }
+                    else{
+                        message.channel.send(`User couldn't be found.`);
                     }
                 }
-                if (getQuotes(member).length == 0){
-                    message.channel.send(`${redirect ? `This user doesn't` : `You don't`} have any quotes saved!`);
+            }
+            else if (args[0] == "disallow"){
+                if (isBotAdmin(message.member)){
+                    var user = message.mentions.users.first();
+                    if (!user) user = tryGetUser(guild, args[1]);
+                    if (user != undefined){
+                        if (config[id].users == undefined){
+                            config[id].users = {};
+                            config[id].users[user.id] = {};
+                            config[id].users[user.id].can_submit_bugs = false;
+                            saveConfig();
+                            message.channel.send(`This user is no longer able to submit bugs.`);
+                            return;
+                        }
+                        if (config[id].users[user.id] == undefined){
+                            config[id].users[user.id] = {};
+                            config[id].users[user.id].can_submit_bugs = false;
+                            saveConfig();
+                            message.channel.send(`This user is no longer able to submit bugs.`);
+                            return;
+                        }
+                        if (!config[id].users[user.id].can_submit_bugs){
+                            message.channel.send(`This user is already unable to submit bugs.`);
+                            return;
+                        }
+                        else{
+                            config[id].users[user.id].can_submit_bugs = false;
+                            saveConfig();
+                            message.channel.send(`This user can no longer submit bugs.`);
+                        }
+                    }
+                    else{
+                        message.channel.send(`User couldn't be found.`);
+                    }
+                }
+            }
+            else{
+                message.channel.send(`Use one of the following commands for more information:\`\`\`\n${config[id].prefix}bug list\n${config[id].prefix}bug view\n${config[id].prefix}bug submit\n${config[id].prefix}bug close\n${config[id].prefix}bug disallow [user]\n${config[id].prefix}bug allow [user]\`\`\``);
+            }
+        }
+        else if (command(channel, cmd, "spoon")){
+            var msg = message.content.split(`${config[id].prefix}spoon `)[1];
+            if (msg != undefined && msg != null){
+                var array = msg.split("");
+                array = array.shuffle();
+                message.channel.send(array.join(''));
+            }
+        }
+        else if (command(channel, cmd, "mock")){
+            var msg = message.content.split(`${config[id].prefix}mock `)[1];
+            console.log(msg);
+            if (msg != undefined && msg != null){
+                msg = msg.toLowerCase();
+                var mes = "";
+                for (i = 0; i < msg.length; i++){
+                    var rndm = rand(2);
+                    if (rndm == 1){
+                        mes += msg[i].toUpperCase();
+                    }
+                    else{
+                        mes += msg[i].toLowerCase();
+                    }
+                }
+                message.channel.send(mes);
+            }
+        }
+        else if (command(channel, cmd, "gandalf")){
+            message.delete();
+            message.channel.send({files:['database/gandalf.gif']});
+        }
+        else if (command(channel, cmd, "top")){
+            var page = 1;
+            try{
+                page = parseInt(args[0]);
+            }
+            catch (err) {}
+            var sortable = [];
+            for (var id in config[guild.id].ranks) {
+                sortable.push([id, config[guild.id].ranks[id]]);
+            }
+            sortable.sort(function(a, b) {
+                return b[1] - a[1]
+            });
+            page -= 1;
+            var top = sortable.slice(10 * page, 10 * (page + 1));
+            var embed = {embed: {
+                author: {
+                    name: bot.user.username,
+                    icon_url: bot.user.avatarURL
+                },
+                color: main_color,
+                title: `The top members on this server are the following:`,
+                fields: []
+            }};
+            var desc = "";
+            console.log(top);
+            for (i = 0; i < top.length; i++){
+                console.log(`${i+1}: ${top[i]}`);
+                if (!guild.members.get(top[i][0])) continue;
+                var user = guild.members.get(top[i][0]).user;
+                var level;
+                for (j = 0; j < level_curve.length; j++){
+                    if (config[guild.id].ranks[user.id] == undefined) { break; }
+                    if (level_curve[j] > config[guild.id].ranks[user.id]){
+                        level = j - 1;
+                        break;
+                    }
+                }
+                embed["embed"].fields.push({
+                    name: `**Rank #${i + 1}**`,
+                    value: `${user.username}\nLevel ${level} (${top[i][1] * 7})\n${top[i][1]} Messages`
+                })
+            }
+            message.channel.send(embed);
+        }
+        else if (command(channel, cmd, "channel")){
+            var chnl = message.mentions.channels.first();
+            if (!chnl) chnl = tryGetChannel(guild, args.join(' '));
+            if (!chnl){
+                chnl = channel;
+            }
+            var user = tryGetUser(guild, guild.ownerID);
+            var embed = {embed: {
+            	color: main_color,
+                footer: {
+                    text: user.tag,
+                    icon_url: user.avatarURL
+                },
+                thumbnail: {
+                    url: guild.iconURL
+                },
+                title: `${guild.name}: ${chnl.type == 'text' ? `#` : ``}${chnl.name}`,
+                fields: [{
+                    name: `**Channel Type**`,
+                    value: chnl.type.capitalize(),
+                    inline: true
+                },{
+                	name: chnl.type == 'text' ? `**NSFW**` : `**Bitrate**`,
+                	value: chnl.type == 'text' ? chnl.nsfw : chnl.bitrate,
+                	inline: true
+                },{
+                	name: `**Channel ID**`,
+                	value: chnl.id
+                },{
+                	name: `**Channel Position**`,
+                    value: chnl.position + 1,
+                    inline: true
+                },{
+                    name: `**Created At**`,
+                    value: chnl.createdAt,
+                    inline: true
+                }]
+            }};
+            if (chnl.type == 'voice'){
+            	var members = getChannelMembers(chnl);
+            	embed["embed"].fields.push({
+            		name: `**User Limit**`,
+            		value: chnl.userLimit
+            	});
+            	embed["embed"].fields.push({
+            		name: `**Members**`,
+            		value: members
+            	});
+            }
+            message.channel.send(embed);
+        }
+        else if (command(channel, cmd, "server")){
+        	var owner = tryGetUser(guild, guild.ownerID);
+        	var emotes;
+        	if (guild.emojis.map(e => e).length == 0){
+        		emotes = '---';
+        	}
+        	else if (guild.emojis.map(e => e).join(' ').length < 1024){
+        		emotes = guild.emojis.map(e => e).join(' ');
+        	}
+        	else{
+        		emotes = guild.emojis.map(e => e).join(' ').slice(0, 1010).split(' ');
+        		emotes = emotes.slice(0, emotes.length - 1);
+        		emotes = emotes.join(' ') + " and more..."
+        	}
+        	var roles = guild.roles.map(r => r.name);
+        	roles = roles.slice(1, roles.length);
+        	if (roles.length == 0){
+        		roles = '---';
+        	}
+        	else if (roles.join(', ').length < 1024){
+        		roles = roles.join(', ');
+        	}
+        	else{
+        		roles = roles.join(', ').slice(0, 1010).split(', ');
+        		roles = roles.slice(0, roles.length - 1);
+        		roles = roles.join(', ') + " and more..."
+        	}
+        	var text = guild.channels.filter(c => c.type == 'text').array().length
+        	var voice = guild.channels.filter(c => c.type == 'voice').array().length
+        	var embed = { embed: {
+        		color: main_color,
+        		author: {
+        			name: owner.tag,
+        			icon_url: owner.avatarURL
+        		},
+        		title: guild.name,
+        		thumbnail: {
+        			url: guild.iconURL
+        		},
+        		fields: [{
+        			name: `**Region**`,
+        			value: guild.region,
+        			inline: true
+        		},{
+        			name: `**Default Channel**`,
+        			value: `#${guild.defaultChannel.name}`,
+        			inline: true
+        		},{
+        			name: `**Emoji's**`,
+        			value: emotes
+        		},{
+        			name: `**Verification Level**`,
+        			value: guild.verificationLevel,
+        			inline: true
+        		},{
+        			name: `**Guild ID**`,
+        			value: guild.id,
+        			inline: true
+        		}]
+        	}};
+        	if (guild.iconURL){
+        		embed["embed"].fields.push({
+        			name: `**Icon URL**`,
+        			value: guild.iconURL
+        		})
+        	}
+        	else{
+        		embed["embed"].fields.push({
+        			name: `**Roles**`,
+        			value: roles
+        		})
+        	}
+        	embed["embed"].fields.push({
+        			name: `**Owner Tag**`,
+        			value: owner.tag,
+        			inline: true
+        		});
+        	embed["embed"].fields.push({
+        			name: `**Owner ID**`,
+        			value: guild.ownerID,
+        			inline: true
+        		});
+        	if (guild.iconURL){
+        		embed["embed"].fields.push({
+        			name: `**Roles**`,
+        			value: roles
+        		});
+        	}
+        	embed["embed"].fields.push({
+        			name: `**Created At**`,
+        			value: guild.createdAt
+        		});
+        	embed["embed"].fields.push({
+        			name: `**Channels**`,
+        			value: guild.channels.map(c => c).length <= 10 ? guild.channels.map(c => c.name).join('\n') : `Text: ${text}\nVoice: ${voice}`,
+        			inline: true
+        		});
+        	embed["embed"].fields.push({
+        			name: `**Members**`,
+        			value: getGuildMembers(guild),
+        			inline: true
+        		});
+        	if (config[id].desc && config[id].desc != "") embed["embed"].description = config[id].desc;
+        	message.channel.send(embed);
+        }
+        else if (command(channel, cmd, "quotes")){
+            var member = message.member;
+            var redirect = false;
+            if (isBotAdmin(message.member)){
+                var user = message.mentions.users.first();
+                if (!user) user = tryGetUser(guild, args[0]);
+                if (!user) user = message.member.user;
+                if (user){
+                    message.channel.send(user.username);
+                    member = guild.members.get(user.id);
+                    redirect = true;
+                }
+            }
+            if (getQuotes(member).length == 0){
+                message.channel.send(`${redirect ? `This user doesn't` : `You don't`} have any quotes saved!`);
+                return;
+            }
+        	var embed = { embed: {
+                color: main_color,
+        		author: {
+        			name: member.user.tag,
+        			icon_url: member.user.avatarURL
+        		},
+        		fields: []
+        	}};
+        	for (i = 0; i < getQuotes(member).length; i++){
+        		embed["embed"].fields.push({
+        			name: `**Quote #${i + 1}**`,
+        			value: getQuotes(member)[i]
+        		})
+        	}
+        	message.channel.send(embed);
+
+        }
+        else if (command(channel, cmd, "add")){
+
+        }
+        else if (command(channel, cmd, "remove")){
+            var member = message.member;
+            if (args[0] == "quote"){
+                if (args[1] == undefined){
+                    message.channel.send(`Please enter the index of the quote you'd like to remove. You can see your quotes with ?quotes.`);
                     return;
                 }
-            	var embed = { embed: {
-                    color: main_color,
-            		author: {
-            			name: member.user.tag,
-            			icon_url: member.user.avatarURL
-            		},
-            		fields: []
-            	}};
-            	for (i = 0; i < getQuotes(member).length; i++){
-            		embed["embed"].fields.push({
-            			name: `**Quote #${i + 1}**`,
-            			value: getQuotes(member)[i]
-            		})
-            	}
-            	message.channel.send(embed);
-
+                var index;
+                index = parseInt(args[1]) - 1;
+                if (isNaN(index)){
+                    message.channel.send(`Please enter the index of the quote you'd like to remove. You can see your quotes with ?quotes.`);
+                    return;
+                }
+                if (getQuotes(member).length == 0){
+                    message.channel.send(`You don't have any quotes saved.`);
+                    return;
+                }
+                if (index >= getQuotes(member).length){
+                    var length = getQuotes(member).length;
+                    message.channel.send(`You have only ${length} quote${length == 1 ? `` : `s`}. Pick a smaller index.`);
+                    return;
+                }
+                else if (index < 0){
+                    message.channel.send(`You cannot pick an index lower than 1.`);
+                    return;
+                }
+                else{
+                    config[id].quotes[member.user.id].splice(index, 1);
+                    saveConfig();
+                    message.channel.send(`Successfully removed quote #${index + 1}.`);
+                }
             }
-            else if (command(channel, cmd, "add")){
-
-            }
-            else if (command(channel, cmd, "remove")){
-                var member = message.member;
-                if (args[0] == "quote"){
-                    if (args[1] == undefined){
-                        message.channel.send(`Please enter the index of the quote you'd like to remove. You can see your quotes with ?quotes.`);
-                        return;
-                    }
-                    var index;
-                    index = parseInt(args[1]) - 1;
-                    if (isNaN(index)){
-                        message.channel.send(`Please enter the index of the quote you'd like to remove. You can see your quotes with ?quotes.`);
-                        return;
-                    }
-                    if (getQuotes(member).length == 0){
-                        message.channel.send(`You don't have any quotes saved.`);
-                        return;
-                    }
-                    if (index >= getQuotes(member).length){
-                        var length = getQuotes(member).length;
-                        message.channel.send(`You have only ${length} quote${length == 1 ? `` : `s`}. Pick a smaller index.`);
-                        return;
-                    }
-                    else if (index < 0){
-                        message.channel.send(`You cannot pick an index lower than 1.`);
-                        return;
-                    }
-                    else{
-                        config[id].quotes[member.user.id].splice(index, 1);
-                        saveConfig();
-                        message.channel.send(`Successfully removed quote #${index + 1}.`);
+        }
+        if (isBotAdmin(message.member)){
+            if (cmd == "say"){
+                if (args[0] != undefined){
+                    if (channelExists(message.guild, args[0])){
+                        getChannel(message.guild, args[0]).send(message.content.split(`${config[id].prefix}say ${args[0]} `)[1]);
                     }
                 }
             }
-            if (isBotAdmin(message.member)){
-                if (cmd == "say"){
-                    if (args[0] != undefined){
-                        if (channelExists(message.guild, args[0])){
-                            getChannel(message.guild, args[0]).send(message.content.split(`${config[id].prefix}say ${args[0]} `)[1]);
-                        }
-                    }
+            else if (cmd == "clearquotes"){
+                if (args[0] == undefined){
+                    message.channel.send(`Specificy a user to clear all of their quotes.`);
+                    return;
                 }
-                else if (cmd == "clearquotes"){
-                    if (args[0] == undefined){
-                        message.channel.send(`Specificy a user to clear all of their quotes.`);
+                var user = message.mentions.users.first();
+                if (!user) user = tryGetUser(guild, args[0]);
+                if (user == undefined){
+                    message.channel.send(`User not found.`);
+                }
+                else{
+                    if (config[id].quotes[user.id] == undefined || config[id].quotes[user.id].length == 0){
+                        message.channel.send(`This user does not have any quotes yet.`);
                         return;
                     }
+                    config[id]["quotes"][user.id] = [];
+                    message.channel.send(`Successfully cleared all ${user.username}'s quotes.`);
+                }
+            }
+            else if (cmd == "reload"){
+                if (args[0] == undefined){
+                    dlt = fs.readFileSync('database/delet_this.json');
+                    delet_this = JSON.parse(dlt)["memes"];
+                    vids = fs.readFileSync('database/thundaga.json');
+                    eps = JSON.parse(vids);
+                    message.channel.send('Successfully reloaded `memes` and `thundaga`.');
+                }
+                else if (args[0] == "memes"){
+                    dlt = fs.readFileSync('database/delet_this.json');
+                    delet_this = JSON.parse(dlt)["memes"];
+                    message.channel.send('Successfully reloaded `memes`.');
+                }
+                else if (args[0] == "thundaga"){
+                    vids = fs.readFileSync('database/thundaga.json');
+                    eps = JSON.parse(vids);
+                    message.channel.send('Successfully reloaded `thundaga`.');
+                }
+            }
+            else if (cmd == "id"){
+                if (args[0] == "channel"){
+                	args.splice(0, 1);
+                	var channel = message.mentions.channels.first();
+                	if (!channel) channel = tryGetChannel(guild, args.join(' '));
+                	if (!channel) channel = message.channel;
+                    message.channel.send(`ID of channel "${channel.name}": ${channel.id}`);
+                }
+                else if (args[0] == "server"){
+                    message.channel.send(`ID of guild "${guild.name}": ${guild.id}`);
+                }
+                else if (args[0] == "user"){
+                	var user;
+                    args.splice(0, 1);
                     var user = message.mentions.users.first();
-                    if (!user) user = tryGetUser(guild, args[0]);
-                    if (user == undefined){
+                    if (!user) user = tryGetUser(guild, args.join(' '));
+                    if (!user) user = message.member.user;
+                    message.channel.send(`ID of user "${user.username}": ${user.id}`)
+                }
+            }
+            else if (cmd == "serverdesc"){
+            	if (args[0]){
+          			config[id].desc = args.join(' ');
+          			saveConfig();
+          			message.channel.send(`Set the server description to:\n${config[id].desc}`);
+            	}
+            	else{
+            		message.channel.send(`Set the description of the server as seen in \`${config[id].prefix}server\` using \`serverdesc [description]\`.`);
+            	}
+            }
+            else if (cmd == "exp"){
+                if (args[0] == "add"){
+                    var user = message.mentions.users.first();
+                    if (!user) user = tryGetUser(guild, args[1]);
+                    if (!user){
                         message.channel.send(`User not found.`);
+                        return;
                     }
-                    else{
-                        if (config[id].quotes[user.id] == undefined || config[id].quotes[user.id].length == 0){
-                            message.channel.send(`This user does not have any quotes yet.`);
-                            return;
-                        }
-                        config[id]["quotes"][user.id] = [];
-                        message.channel.send(`Successfully cleared all ${user.username}'s quotes.`);
+                    if (isNaN(args[2])){
+                        message.channel.send(`Invalid amount of experience to add.`);
+                        return;
                     }
+                    var exp = parseInt(args[2]);
+                    if (!config[id].ranks) config[id].ranks = {};
+                    if (!config[id].ranks[user.id]) config[id].ranks[user.id] = 0;
+                    if (exp % 7 != 0){
+                        message.channel.send(`Cannot add experience that is not divisible by 7.`);
+                        return;
+                    }
+                    config[id].ranks[user.id] += exp / 7;
+                    saveConfig();
+                    message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
                 }
-                else if (cmd == "reload"){
-                    if (args[0] == undefined){
-                        dlt = fs.readFileSync('database/delet_this.json');
-                        delet_this = JSON.parse(dlt)["memes"];
-                        vids = fs.readFileSync('database/thundaga.json');
-                        eps = JSON.parse(vids);
-                        message.channel.send('Successfully reloaded `memes` and `thundaga`.');
+                else if (args[0] == "remove"){
+                    var user = message.mentions.users.first();
+                    if (!user) user = tryGetUser(guild, args[1]);
+                    if (!user){
+                        message.channel.send(`User not found.`);
+                        return;
                     }
-                    else if (args[0] == "memes"){
-                        dlt = fs.readFileSync('database/delet_this.json');
-                        delet_this = JSON.parse(dlt)["memes"];
-                        message.channel.send('Successfully reloaded `memes`.');
+                    if (isNaN(args[2])){
+                        message.channel.send(`Invalid amount of experience to remove.`);
+                        return;
                     }
-                    else if (args[0] == "thundaga"){
-                        vids = fs.readFileSync('database/thundaga.json');
-                        eps = JSON.parse(vids);
-                        message.channel.send('Successfully reloaded `thundaga`.');
+                    var exp = parseInt(args[2]);
+                    if (!config[id].ranks) config[id].ranks = {};
+                    if (!config[id].ranks[user.id]) config[id].ranks[user.id] = 0;
+                    if (exp % 7 != 0){
+                        message.channel.send(`Cannot remove experience that is not divisible by 7.`);
+                        return;
                     }
+                    config[id].ranks[user.id] -= exp / 7;
+                    if (config[id].ranks[user.id] < 0) config[id].ranks[user.id] = 0;
+                    saveConfig();
+                    message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
                 }
-                else if (cmd == "id"){
-                    if (args[0] == "channel"){
-                    	args.splice(0, 1);
-                    	var channel = message.mentions.channels.first();
-                    	if (!channel) channel = tryGetChannel(guild, args.join(' '));
-                    	if (!channel) channel = message.channel;
-                        message.channel.send(`ID of channel "${channel.name}": ${channel.id}`);
+                else if (args[0] == "set"){
+                    var user = message.mentions.users.first();
+                    if (!user) user = tryGetUser(guild, args[1]);
+                    if (!user){
+                        message.channel.send(`User not found.`);
+                        return;
                     }
-                    else if (args[0] == "server"){
-                        message.channel.send(`ID of guild "${guild.name}": ${guild.id}`);
+                    if (isNaN(args[2])){
+                        message.channel.send(`Invalid amount of experience to set to.`);
+                        return;
                     }
-                    else if (args[0] == "user"){
-                    	var user;
-                        args.splice(0, 1);
-                        var user = message.mentions.users.first();
-                        if (!user) user = tryGetUser(guild, args.join(' '));
-                        if (!user) user = message.member.user;
-                        message.channel.send(`ID of user "${user.username}": ${user.id}`)
+                    var exp = parseInt(args[2]);
+                    if (!config[id].ranks) config[id].ranks = {};
+                    if (!config[id].ranks[user.id]) config[id].ranks[user.id] = 0;
+                    if (exp % 7 != 0){
+                        message.channel.send(`Cannot set experience that is not divisible by 7.`);
+                        return;
                     }
-                }
-                else if (cmd == "serverdesc"){
-                	if (args[0]){
-              			config[id].desc = args.join(' ');
-              			saveConfig();
-              			message.channel.send(`Set the server description to:\n${config[id].desc}`);
-                	}
-                	else{
-                		message.channel.send(`Set the description of the server as seen in \`${config[id].prefix}server\` using \`serverdesc [description]\`.`);
-                	}
-                }
-                else if (cmd == "exp"){
-                    if (args[0] == "add"){
-                        var user = message.mentions.users.first();
-                        if (!user) user = tryGetUser(guild, args[1]);
-                        if (!user){
-                            message.channel.send(`User not found.`);
-                            return;
-                        }
-                        if (isNaN(args[2])){
-                            message.channel.send(`Invalid amount of experience to add.`);
-                            return;
-                        }
-                        var exp = parseInt(args[2]);
-                        if (!config[id].ranks) config[id].ranks = {};
-                        if (!config[id].ranks[user.id]) config[id].ranks[user.id] = 0;
-                        if (exp % 7 != 0){
-                            message.channel.send(`Cannot add experience that is not divisible by 7.`);
-                            return;
-                        }
-                        config[id].ranks[user.id] += exp / 7;
-                        saveConfig();
-                        message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
-                    }
-                    else if (args[0] == "remove"){
-                        var user = message.mentions.users.first();
-                        if (!user) user = tryGetUser(guild, args[1]);
-                        if (!user){
-                            message.channel.send(`User not found.`);
-                            return;
-                        }
-                        if (isNaN(args[2])){
-                            message.channel.send(`Invalid amount of experience to remove.`);
-                            return;
-                        }
-                        var exp = parseInt(args[2]);
-                        if (!config[id].ranks) config[id].ranks = {};
-                        if (!config[id].ranks[user.id]) config[id].ranks[user.id] = 0;
-                        if (exp % 7 != 0){
-                            message.channel.send(`Cannot remove experience that is not divisible by 7.`);
-                            return;
-                        }
-                        config[id].ranks[user.id] -= exp / 7;
-                        if (config[id].ranks[user.id] < 0) config[id].ranks[user.id] = 0;
-                        saveConfig();
-                        message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
-                    }
-                    else if (args[0] == "set"){
-                        var user = message.mentions.users.first();
-                        if (!user) user = tryGetUser(guild, args[1]);
-                        if (!user){
-                            message.channel.send(`User not found.`);
-                            return;
-                        }
-                        if (isNaN(args[2])){
-                            message.channel.send(`Invalid amount of experience to set to.`);
-                            return;
-                        }
-                        var exp = parseInt(args[2]);
-                        if (!config[id].ranks) config[id].ranks = {};
-                        if (!config[id].ranks[user.id]) config[id].ranks[user.id] = 0;
-                        if (exp % 7 != 0){
-                            message.channel.send(`Cannot set experience that is not divisible by 7.`);
-                            return;
-                        }
-                        config[id].ranks[user.id] = exp / 7;
-                        saveConfig();
-                        message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
-                    }
+                    config[id].ranks[user.id] = exp / 7;
+                    saveConfig();
+                    message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
                 }
             }
         }
@@ -1564,52 +1560,6 @@ bot.on('message', message => {
         }
         else if (cmd == "autorole"){
             message.channel.send('When a new user joins, you can choose for the bot to give them a role.```Role given: '+config[id]["autorole"]+'\r\nStatus: '+config[id]["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
-        }
-        else if (cmd == "ignored_channels"){
-            if (args[1] == "add"){
-                if (args[2] == undefined){
-                    message.channel.send(`Use \`v-config ignored_channels add [channelname]\` to disable Vulpix commands in a channel (other than v-config). Note that "channelname" should be JUST the name of the channel; not the id or tag.`);
-                }
-                else{
-                    var index = config[id].ignored_channels.indexOf(args[2]);
-                    if (index != -1){
-                        message.channel.send(`Vulpix commands are already disabled in that channel or it doesn't exist.`);
-                    }
-                    else{
-                        config[id].ignored_channels.push(args[2]);
-                        saveConfig();
-                        message.channel.send(`Vulpix commands are now disabled in channel "${args[2]}".`);
-                    }
-                }
-            }
-            else if (args[1] == "remove"){
-                if (args[2] == undefined){
-                    message.channel.send(`Use \`v-config ignored_channels remove [channelname]\` to enable Vulpix commands in a channel. Note that "channelname" should be just the name of the channel; not the id or tag.`);
-                }
-                else{
-                    var index = config[id].ignored_channels.indexOf(args[2]);
-                    if (index == -1){
-                        message.channel.send(`Vulpix commands are already enabled in that channel or it doesn't exist.`);
-                    }
-                    else{
-                        config[id].ignored_channels.splice(index, 1);
-                        saveConfig();
-                        message.channel.send(`Vulpix commands are now enabled in channel "${args[2]}".`);
-                    }
-                }
-            }
-            else{
-                var msg = 'If a command other than v-config is executed in any of the following channels, it will be ignored:```\n';
-                if (config[id]["ignored_channels"].length == 0) { msg += "---"; }
-                else{
-                    for (i = 0; i < config[id]["ignored_channels"].length; i++){
-                        msg += config[id]["ignored_channels"][i];
-                        if (i != config[id]["ignored_channels"].length - 1) { msg += '\n'; }
-                    }
-                }
-                msg += '``` Add or remove a channel with one of the following commands:```v-config ignored_channels add [channelname]\nv-config ignored_channels remove [channelname]```Channelname is the actual name of the channel, not a hyperlink or id.';
-                message.channel.send(msg);
-            }
         }
         else if (cmd == "channels"){
             if (config[id].channels == undefined){
@@ -1699,8 +1649,8 @@ bot.on('message', message => {
             if (args[1] == "prefix"){
                 msg = config[id].prefix;
             }
-            else if (args[1] == "ignored_channels"){
-                msg = jsonToString(config[id].ignored_channels);
+            else if (args[1] == "all"){
+                msg = jsonToString(config[id]);
             }
             else if (args[1] == "messages"){
                 msg = jsonToString(config[id].messages);
@@ -1721,13 +1671,13 @@ bot.on('message', message => {
                 msg = jsonToString(config[id].users);
             }
             else{
-                message.channel.send(`Use one of the following values to show: \`\`\`v-config show prefix\nv-config show ignored_channels\nv-config show messages\nv-config show quotes\nv-config show ranks\nv-config show channels\nv-config show bugs\nv-config show users\`\`\``);
+                message.channel.send(`Use one of the following values to show: \`\`\`v-config show prefix\nv-config show messages\nv-config show quotes\nv-config show ranks\nv-config show channels\nv-config show bugs\nv-config show users\`\`\``);
                 return;
             }
             message.channel.send('```JavaScript\n'+msg+'```');
         }
         else{
-            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config ignored_channels\nv-config default\nv-config channels\nv-config show```')
+            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config default\nv-config channels\nv-config show```')
         }
     }
 });
