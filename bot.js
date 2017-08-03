@@ -420,7 +420,7 @@ function changeAvatar(){
 }
 
 setInterval(saveConfig, 30000);
-setInterval(changeAvatar, 30000)
+setInterval(changeAvatar, 720000)
 
 bot.on('ready', () => {
     console.log('Vulpix online');
