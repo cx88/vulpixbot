@@ -1196,6 +1196,7 @@ bot.on('message', message => {
                     }
                 }
             	var embed = { embed: {
+                    color: main_color,
             		author: {
             			name: member.user.tag,
             			icon_url: member.user.avatarURL
