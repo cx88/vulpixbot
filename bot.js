@@ -1218,13 +1218,13 @@ bot.on('message', message => {
                 var member = message.member;
                 if (args[0] == "quote"){
                     if (args[1] == undefined){
-                        message.channel.send(`Please enter the number of the quote you'd like to remove. You can see your quotes with ?quotes.`);
+                        message.channel.send(`Please enter the index of the quote you'd like to remove. You can see your quotes with ?quotes.`);
                         return;
                     }
                     var index;
                     index = parseInt(args[1]) - 1;
                     if (isNaN(index)){
-                        message.channel.send(`Please enter the number of the quote you'd like to remove. You can see your quotes with ?quotes.`);
+                        message.channel.send(`Please enter the index of the quote you'd like to remove. You can see your quotes with ?quotes.`);
                         return;
                     }
                     if (getQuotes(member).length == 0){
@@ -1233,10 +1233,17 @@ bot.on('message', message => {
                     }
                     if (index >= getQuotes(member).length){
                         var length = getQuotes(member).length;
-                        message.channel.send(`You have only ${length} quote${length == 1 ? `` : `s`}. Pick a smaller number.`);
+                        message.channel.send(`You have only ${length} quote${length == 1 ? `` : `s`}. Pick a smaller index.`);
+                        return;
+                    }
+                    else if (index == 0){
+                        message.channel.send(`0 is not a valid quote index.`);
+                        return;
                     }
                     else{
-                        message.channel.send(`Successfully removed quote #${index}.`);
+                        config[id].quotes.splice(config[id].quotes[member.user.id][index], 1);
+                        saveConfig();
+                        message.channel.send(`Successfully removed quote #${index + 1}.`);
                     }
                 }
             }
