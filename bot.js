@@ -765,9 +765,9 @@ bot.on('message', message => {
             else if (command(channel, cmd, "eval")){
                 var str = message.content.split(`${config[id].prefix}eval `)[1];
                 if (!isBotAdmin(message.member)){
-                    if (str.contains('config') || str.contains('abort') || str.contains('exit') || str.contains('close') || str.contains('end') || 
+                    if (str.contains('config') || str.contains('Config') || str.contains('abort') || str.contains('exit') || str.contains('close') || 
                         str.contains('user') || str.contains('User') || str.contains('channel') || str.contains('Channel') || str.contains('guild') ||
-                        str.contains('Guild') || str.contains('message') || str.contains('member')){
+                        str.contains('Guild') || str.contains('message') || str.contains('member') || str.contains('end')){
                         return;
                     }
                 }
