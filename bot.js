@@ -416,7 +416,7 @@ function getQuotes(member){
 
 function changeAvatar(){
     var avatars = JSON.parse(fs.readFileSync('database/avatars.json')).avatars;
-    bot.setAvatar(avatars[rand(avatars.length)]);
+    bot.user.setAvatar(avatars[rand(avatars.length)]);
 }
 
 setInterval(saveConfig, 30000);
