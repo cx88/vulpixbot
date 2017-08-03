@@ -1241,7 +1241,7 @@ bot.on('message', message => {
                         return;
                     }
                     else{
-                        config[id].quotes[member.user.id].splice(config[id].quotes[member.user.id][index], 1);
+                        config[id].quotes[member.user.id].splice(index, 1);
                         saveConfig();
                         message.channel.send(`Successfully removed quote #${index + 1}.`);
                     }
