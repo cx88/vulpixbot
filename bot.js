@@ -1418,13 +1418,36 @@ bot.on('message', message => {
                         var exp = parseInt(args[2]);
                         if (!config[id].ranks) config[id].ranks = {};
                         if (!config[id].ranks[user.id]) config[id].ranks[user.id] = 0;
+                        if (exp % 7 != 0){
+                            message.channel.send(`Cannot add experience that is not divisible by 7.`);
+                            return;
+                        }
                         config[id].ranks[user.id] += exp;
+                        message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user].id}.`);
                     }
                     else if (args[0] == "remove"){
 
                     }
                     else if (args[0] == "set"){
-
+                        var user = message.mentions.users.first();
+                        if (!user) user = tryGetUser(guild, args[1]);
+                        if (!user){
+                            message.channel.send(`User not found.`);
+                            return;
+                        }
+                        if (isNaN(args[2])){
+                            message.channel.send(`Invalid amount of experience to set to.`);
+                            return;
+                        }
+                        var exp = parseInt(args[2]);
+                        if (!config[id].ranks) config[id].ranks = {};
+                        if (!config[id].ranks[user.id]) config[id].ranks[user.id] = 0;
+                        if (exp % 7 != 0){
+                            message.channel.send(`Cannot set experience that is not divisible by 7.`);
+                            return;
+                        }
+                        config[id].ranks[user.id] = exp;
+                        message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user].id}.`);
                     }
                 }
             }
