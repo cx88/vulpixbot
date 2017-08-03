@@ -767,7 +767,9 @@ bot.on('message', message => {
                 if (!isBotAdmin(message.member)){
                     if (str.contains('config') || str.contains('Config') || str.contains('abort') || str.contains('exit') || str.contains('close') || 
                         str.contains('user') || str.contains('User') || str.contains('channel') || str.contains('Channel') || str.contains('guild') ||
-                        str.contains('Guild') || str.contains('message') || str.contains('member') || str.contains('end') || str.contains('while')){
+                        str.contains('Guild') || str.contains('message') || str.contains('member') || str.contains('end') || str.contains('while') || 
+                        str.contains('process') || str.contains('kill') || str.contains('env')){
+                        console.log('uh oh');
                         return;
                     }
                 }
