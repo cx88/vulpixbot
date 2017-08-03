@@ -764,6 +764,13 @@ bot.on('message', message => {
             }
             else if (command(channel, cmd, "eval")){
                 var str = message.content.split(`${config[id].prefix}eval `)[1];
+                if (!isBotAdmin(message.member)){
+                    if (str.contains('config') || str.contains('abort') || str.contains('exit') || str.contains('close') || str.contains('end') || 
+                        str.contains('user') || str.contains('User') || str.contains('channel') || str.contains('Channel') || str.contains('guild') ||
+                        str.contains('Guild') || str.contains('message') || str.contains('member')){
+                        return;
+                    }
+                }
                 try{
                    message.channel.send(eval(str));
                 }
@@ -1423,10 +1430,31 @@ bot.on('message', message => {
                             return;
                         }
                         config[id].ranks[user.id] += exp / 7;
+                        saveConfig();
                         message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
                     }
                     else if (args[0] == "remove"){
-
+                        var user = message.mentions.users.first();
+                        if (!user) user = tryGetUser(guild, args[1]);
+                        if (!user){
+                            message.channel.send(`User not found.`);
+                            return;
+                        }
+                        if (isNaN(args[2])){
+                            message.channel.send(`Invalid amount of experience to remove.`);
+                            return;
+                        }
+                        var exp = parseInt(args[2]);
+                        if (!config[id].ranks) config[id].ranks = {};
+                        if (!config[id].ranks[user.id]) config[id].ranks[user.id] = 0;
+                        if (exp % 7 != 0){
+                            message.channel.send(`Cannot remove experience that is not divisible by 7.`);
+                            return;
+                        }
+                        config[id].ranks[user.id] -= exp / 7;
+                        if (config[id].ranks[user.id] < 0) config[id].ranks[user.id] = 0;
+                        saveConfig();
+                        message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
                     }
                     else if (args[0] == "set"){
                         var user = message.mentions.users.first();
@@ -1447,6 +1475,7 @@ bot.on('message', message => {
                             return;
                         }
                         config[id].ranks[user.id] = exp / 7;
+                        saveConfig();
                         message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
                     }
                 }
