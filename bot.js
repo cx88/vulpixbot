@@ -1033,6 +1033,7 @@ bot.on('message', message => {
                     desc += `**${i + 1}.)** ${guild.members.get(top[i][0])} at level ${getRank(guild, guild.members.get(top[i][0]))} (${top[i][1]})\n`;
                 }
                 embed["embed"].description = desc;
+                message.channel.send(embed);
             }
             else if (command(channel, cmd, "channel")){
                 var chnl = message.mentions.channels.first();
