@@ -1030,9 +1030,12 @@ bot.on('message', message => {
                 }};
                 var desc = "";
                 for (i = 0; i < top.length; i++){
-                    desc += `**${i + 1}.)** ${guild.members.get(top[i][0])} at level ${getRank(guild, guild.members.get(top[i][0]))} (${top[i][1]})\n`;
+                    var user = guild.members.get(top[i][0]).user;
+                    embed["embed"].fields.push({
+                        name: `**Rank #${i + 1}**`,
+                        value: `Level ${level} (${top[i][1]}): ${user.username}`
+                    })
                 }
-                embed["embed"].description = desc;
                 message.channel.send(embed);
             }
             else if (command(channel, cmd, "channel")){
