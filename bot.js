@@ -459,6 +459,10 @@ bot.on('guildMemberRemove', member => {
     var guild = member.guild;
     var id = guild.id;
     var userid = member.user.id;
+    console.log(id);
+    console.log(userid);
+    console.log(config[id].ranks);
+    console.log(config[id].ranks[userid]);
     if (config[id] && config[id].ranks && config[id].ranks[userid]){
         delete config[id].ranks[userid];
     }
