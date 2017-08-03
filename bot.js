@@ -1016,9 +1016,9 @@ bot.on('message', message => {
                 message.channel.send({files:['database/gandalf.gif']});
             }
             else if (command(channel, cmd, "top")){
-                var page = 0;
+                var page = 1;
                 try{
-                    page = parseInt(args[0]) - 1;
+                    page = parseInt(args[0]);
                 }
                 catch (err) {}
                 var sortable = [];
@@ -1028,6 +1028,7 @@ bot.on('message', message => {
                 sortable.sort(function(a, b) {
                     return b[1] - a[1]
                 });
+                page -= 1;
                 var top = sortable.slice(10 * page, 10 * (page + 1));
                 var embed = {embed: {
                     author: {
@@ -1040,6 +1041,7 @@ bot.on('message', message => {
                 }};
                 var desc = "";
                 for (i = 0; i < top.length; i++){
+                    if (!guild.members.get(top[i][0])) continue;
                     var user = guild.members.get(top[i][0]).user;
                     var level;
                     for (j = 0; j < level_curve.length; j++){
