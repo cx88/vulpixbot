@@ -1229,11 +1229,16 @@ bot.on('message', message => {
                         message.channel.send(`Please enter the number of the quote you'd like to remove. You can see your quotes with ?quotes.`);
                         return;
                     }
+                    if (getQuotes(member).length == 0){
+                        message.channel.send(`You don't have any quotes saved.`);
+                        return;
+                    }
                     if (index >= getQuotes(member).length){
-                        message.channel.send(`You have ${getQuotes(member).length == 0 ? `` : `only`} ${getQuotes(member).length} quotes. ` + getQuotes(member).length == 0 ? `Add a quote with ${getPrefix}quote [user] [message].` : `Pick a smaller number.`);
+                        var length = getQuotes(member).length;
+                        message.channel.send(`You have only ${length} quote${length == 1 ? `` : `s`}. Pick a smaller number.`);
                     }
                     else{
-
+                        message.channel.send(`Successfully removed quote #${index}.`);
                     }
                 }
             }
