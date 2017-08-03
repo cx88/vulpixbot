@@ -459,10 +459,6 @@ bot.on('guildMemberRemove', member => {
     var guild = member.guild;
     var id = guild.id;
     var userid = member.user.id;
-    console.log(id);
-    console.log(userid);
-    console.log(config[id].ranks);
-    console.log(config[id].ranks[userid]);
     if (config[id] && config[id].ranks && config[id].ranks[userid]){
         delete config[id].ranks[userid];
     }
@@ -1406,6 +1402,30 @@ bot.on('message', message => {
                 	else{
                 		message.channel.send(`Set the description of the server as seen in \`${config[id].prefix}server\` using \`serverdesc [description]\`.`);
                 	}
+                }
+                else if (cmd == "exp"){
+                    if (args[0] == "add"){
+                        var user = message.mentions.users.first();
+                        if (!user) user = tryGetUser(guild, args[1]);
+                        if (!user){
+                            message.channel.send(`User not found.`);
+                            return;
+                        }
+                        if (isNaN(args[2])){
+                            message.channel.send(`Invalid amount of experience to add.`);
+                            return;
+                        }
+                        var exp = parseInt(args[2]);
+                        if (!config[id].ranks) config[id].ranks = {};
+                        if (!config[id].ranks[user.id]) config[id].ranks[user.id] = 0;
+                        config[id].ranks[user.id] += exp;
+                    }
+                    else if (args[0] == "remove"){
+
+                    }
+                    else if (args[0] == "set"){
+
+                    }
                 }
             }
         }
