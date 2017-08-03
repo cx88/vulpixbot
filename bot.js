@@ -1222,10 +1222,8 @@ bot.on('message', message => {
                         return;
                     }
                     var index;
-                    try{
-                        index = parseInt(args[1]) - 1;
-                    }
-                    catch (err){
+                    index = parseInt(args[1]) - 1;
+                    if (isNaN(index)){
                         message.channel.send(`Please enter the number of the quote you'd like to remove. You can see your quotes with ?quotes.`);
                         return;
                     }
