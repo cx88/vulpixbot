@@ -1422,7 +1422,7 @@ bot.on('message', message => {
                             message.channel.send(`Cannot add experience that is not divisible by 7.`);
                             return;
                         }
-                        config[id].ranks[user.id] += exp;
+                        config[id].ranks[user.id] += exp / 7;
                         message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id]}.`);
                     }
                     else if (args[0] == "remove"){
@@ -1446,7 +1446,7 @@ bot.on('message', message => {
                             message.channel.send(`Cannot set experience that is not divisible by 7.`);
                             return;
                         }
-                        config[id].ranks[user.id] = exp;
+                        config[id].ranks[user.id] = exp / 7;
                         message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id]}.`);
                     }
                 }
