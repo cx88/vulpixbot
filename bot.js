@@ -86,7 +86,7 @@ const commands = [
     "delet", "rank", "fortune", "8ball",
     "eval", "quote", "user", "bug", "spoon",
     "mock", "gandalf", "channel", "server",
-    "quotes"
+    "quotes", "add", "remove"
 ]
 
 /*
@@ -1182,25 +1182,60 @@ bot.on('message', message => {
             	message.channel.send(embed);
             }
             else if (command(channel, cmd, "quotes")){
+                var member = message.member;
             	if (getQuotes(message.member).length == 0){
             		message.channel.send(`You don't have any quotes saved!`);
             		return;
             	}
+                if (isBotAdmin(message.member)){
+                    var user = message.mentions.users.first();
+                    if (!user) user = tryGetUser(args[0]);
+                    if (!user) user = message.member.user;
+                    if (user){
+                        member = guild.members.get(user.id);
+                    }
+                }
             	var embed = { embed: {
             		author: {
-            			name: message.member.user.tag,
-            			icon_url: message.member.user.avatarURL
+            			name: member.user.tag,
+            			icon_url: member.user.avatarURL
             		},
             		fields: []
             	}};
-            	for (i = 0; i < getQuotes(message.member).length; i++){
+            	for (i = 0; i < getQuotes(member).length; i++){
             		embed["embed"].fields.push({
             			name: `**Quote #${i + 1}**`,
-            			value: getQuotes(message.member)[i]
+            			value: getQuotes(member)[i]
             		})
             	}
             	message.channel.send(embed);
 
+            }
+            else if (command(channel, cmd, "add")){
+
+            }
+            else if (command(channel, cmd, "remove")){
+                var member = message.member;
+                if (args[0] == "quote"){
+                    if (args[1] == undefined){
+                        message.channel.send(`Please enter the number of the quote you'd like to remove. You can see your quotes with ?quotes.`);
+                        return;
+                    }
+                    var index;
+                    try{
+                        index = parseInt(args[1]) - 1;
+                    }
+                    catch (err){
+                        message.channel.send(`Please enter the number of the quote you'd like to remove. You can see your quotes with ?quotes.`);
+                        return;
+                    }
+                    if (index >= getQuotes(member).length){
+                        message.channel.send(`You have ${getQuotes(member).length == 0 ? `` : `only`} ${getQuotes(member).length} quotes. ` + getQuotes(member).length == 0 ? `Add a quote with ${getPrefix}quote [user] [message].` : `Pick a smaller number.`);
+                    }
+                    else{
+
+                    }
+                }
             }
             if (isBotAdmin(message.member)){
                 if (cmd == "say"){
