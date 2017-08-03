@@ -17878,9 +17878,9 @@
         "url": "cdn.bulbagarden.net/upload/9/91/019Rattata-Alola.png",
         "shuffle": "cdn.bulbagarden.net/upload/0/08/Shuffle019A.png",
         "desc": "When the sun goes down, it becomes active. It runs around town on a chase for good food for the boss of its nest—Raticate.",
-        "evolution": {
+        "evolution": [
             "Alolan Rattata > Level 20 at night > Alolan Raticate"
-        }
+        ]
     },
 
     "Alolan_Raticate": {
