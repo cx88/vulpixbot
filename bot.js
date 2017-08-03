@@ -756,7 +756,7 @@ bot.on('message', message => {
                     message.channel.send(`This user doesn't have any quotes saved!`);
                 }
                 else{
-                    message.channel.send(`"${config[id]["quotes"][user.id][rand(config[id]["quotes"][user.id].length)]}"\n - ${user.username}`);
+                    message.channel.send(`"${config[id].quotes[user.id][rand(config[id].quotes[user.id].length)]}"\n - ${user.username}`);
                 }
             }
             else if (command(channel, cmd, "user")){
@@ -1183,17 +1183,19 @@ bot.on('message', message => {
             }
             else if (command(channel, cmd, "quotes")){
                 var member = message.member;
-            	if (getQuotes(message.member).length == 0){
-            		message.channel.send(`You don't have any quotes saved!`);
-            		return;
-            	}
+                var redirect = false;
                 if (isBotAdmin(message.member)){
                     var user = message.mentions.users.first();
                     if (!user) user = tryGetUser(args[0]);
                     if (!user) user = message.member.user;
                     if (user){
                         member = guild.members.get(user.id);
+                        redirect = true;
                     }
+                }
+                if (getQuotes(message.member).length == 0){
+                    message.channel.send(`${redirect ? `This user doesn't` : `You don't`} have any quotes saved!`);
+                    return;
                 }
             	var embed = { embed: {
                     color: main_color,
