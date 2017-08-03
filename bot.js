@@ -244,7 +244,12 @@ function getUser(guild, _user){
 	if (user) user = user;
 	if (!user) user = guild.members.find(m => m.user.username === _user);
     if (!user) user = guild.members.find(m => m.user.username.toLowerCase() === _user.toLowerCase());
-    return user.user;
+    try{
+        return user.user;
+    }
+    catch (err){
+        return undefined;
+    }
 }
 
 function tryGetChannel(guild, str){
@@ -1040,8 +1045,10 @@ bot.on('message', message => {
                     fields: []
                 }};
                 var desc = "";
+                console.log(top);
                 for (i = 0; i < top.length; i++){
                     console.log(`${i+1}: ${top[i]}`);
+                    if (!guild.members.get(top[i][0])) continue;
                     var user = guild.members.get(top[i][0]).user;
                     var level;
                     for (j = 0; j < level_curve.length; j++){
