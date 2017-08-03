@@ -1423,7 +1423,7 @@ bot.on('message', message => {
                             return;
                         }
                         config[id].ranks[user.id] += exp;
-                        message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user].id}.`);
+                        message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id]}.`);
                     }
                     else if (args[0] == "remove"){
 
@@ -1447,7 +1447,7 @@ bot.on('message', message => {
                             return;
                         }
                         config[id].ranks[user.id] = exp;
-                        message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user].id}.`);
+                        message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id]}.`);
                     }
                 }
             }
