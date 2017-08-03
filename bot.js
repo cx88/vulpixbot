@@ -1236,8 +1236,8 @@ bot.on('message', message => {
                         message.channel.send(`You have only ${length} quote${length == 1 ? `` : `s`}. Pick a smaller index.`);
                         return;
                     }
-                    else if (index == 0){
-                        message.channel.send(`0 is not a valid quote index.`);
+                    else if (index < 0){
+                        message.channel.send(`You cannot pick an index lower than 1.`);
                         return;
                     }
                     else{
