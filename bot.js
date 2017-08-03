@@ -1041,7 +1041,7 @@ bot.on('message', message => {
                 }};
                 var desc = "";
                 for (i = 0; i < top.length; i++){
-                    if (!guild.members.get(top[i][0])) continue;
+                    console.log(`${i+1}: ${top[i]}`);
                     var user = guild.members.get(top[i][0]).user;
                     var level;
                     for (j = 0; j < level_curve.length; j++){
