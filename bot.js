@@ -1028,7 +1028,7 @@ bot.on('message', message => {
                 sortable.sort(function(a, b) {
                     return b[1] - a[1]
                 });
-                var top = sortable.slice(0, 10);
+                var top = sortable.slice(10 * page, 10 * (page + 1));
                 var embed = {embed: {
                     author: {
                         name: bot.user.username,
