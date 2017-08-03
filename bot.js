@@ -828,7 +828,7 @@ bot.on('message', message => {
                         }
                     }
                     if (args[1] == undefined){
-                        message.channel.send(`Submit a bug using the following command: \`\`\`\n${config[id].prefix}bug submit name:"Bug title"; description:"A descriptive description of the bug. Give as much relevant information as possible."\`\`\`Note that you cannot use the \`"\` character in the title or description.`);
+                        message.channel.send(`Submit a bug using the following command: \`\`\`\n${config[id].prefix}bug submit name:"Bug title"; description:"A descriptive description of the bug. Give as much relevant information as possible."\`\`\`Note that you cannot use the \`"\` character in the title or description themselves, as they are used to surround them.`);
                     }
                     else{
                         var msg = message.content.split(`${config[id].prefix}bug submit `)[1];
@@ -1022,8 +1022,17 @@ bot.on('message', message => {
                 sortable.sort(function(a, b) {
                     return b[1] - a[1]
                 });
-                var shown = sortable.slice(0, 10);
-                console.log(shown);
+                var top = sortable.slice(0, 10);
+                var embed = {embed: {
+                    color: main_color,
+                    title: `The top members on this server are the following:`,
+                    fields: []
+                }};
+                var desc = "";
+                for (i = 0; i < top.length; i++){
+                    desc += `**${i + 1}.)** ${guild.members.get(top[i][0])} at level ${getRank(guild, guild.members.get(top[i][0]))} (${top[i][1]})\n`;
+                }
+                embed["embed"].description = desc;
             }
             else if (command(channel, cmd, "channel")){
                 var chnl = message.mentions.channels.first();
