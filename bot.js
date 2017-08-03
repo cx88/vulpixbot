@@ -1032,10 +1032,10 @@ bot.on('message', message => {
                 for (i = 0; i < top.length; i++){
                     var user = guild.members.get(top[i][0]).user;
                     var level;
-                    for (i = 0; i < level_curve.length; i++){
+                    for (j = 0; j < level_curve.length; j++){
                         if (config[id].ranks[user.id] == undefined) { break; }
-                        if (level_curve[i] > config[id]["ranks"][user.id]){
-                            level = i - 1;
+                        if (level_curve[j] > config[id]["ranks"][user.id]){
+                            level = j - 1;
                             break;
                         }
                     }
