@@ -1186,7 +1186,7 @@ bot.on('message', message => {
                 var redirect = false;
                 if (isBotAdmin(message.member)){
                     var user = message.mentions.users.first();
-                    if (!user) user = tryGetUser(args[0]);
+                    if (!user) user = tryGetUser(guild, args[0]);
                     if (!user) user = message.member.user;
                     if (user){
                         message.channel.send(user.username);
