@@ -1031,6 +1031,14 @@ bot.on('message', message => {
                 var desc = "";
                 for (i = 0; i < top.length; i++){
                     var user = guild.members.get(top[i][0]).user;
+                    var level;
+                    for (i = 0; i < level_curve.length; i++){
+                        if (config[id].ranks[user.id] == undefined) { break; }
+                        if (level_curve[i] > config[id]["ranks"][user.id]){
+                            level = i - 1;
+                            break;
+                        }
+                    }
                     embed["embed"].fields.push({
                         name: `**Rank #${i + 1}**`,
                         value: `Level ${level} (${top[i][1]}): ${user.username}`
