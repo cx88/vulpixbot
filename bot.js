@@ -1033,7 +1033,7 @@ bot.on('message', message => {
                     author: {
                         name: bot.user.username,
                         icon_url: bot.user.avatarURL
-                    }
+                    },
                     color: main_color,
                     title: `The top members on this server are the following:`,
                     fields: []
