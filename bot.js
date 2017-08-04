@@ -1566,6 +1566,7 @@ bot.on('message', message => {
                 else if (setting == "on"){
                     if (config[id].messages["levelup"].status){
                         message.channel.send(`The message when a user levels up is already enabled.`);
+                        return;
                     }
                     config[id].messages["levelup"].status = "on";
                     saveConfig();
@@ -1574,6 +1575,7 @@ bot.on('message', message => {
                 else if (setting == "off"){
                     if (!config[id].messages["levelup"].status){
                         message.channel.send(`The message when a user levels up is already disabled.`);
+                        return;
                     }
                     config[id].messages["levelup"].status = "off";
                     saveConfig();
