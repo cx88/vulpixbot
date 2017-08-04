@@ -1569,7 +1569,7 @@ bot.on('message', message => {
                     }
                     config[id].messages["levelup"].status = "on";
                     saveConfig();
-                    message.chanenl.send(`The message when a user levels up has been enabled.`);
+                    message.channel.send(`The message when a user levels up has been enabled.`);
                 }
                 else if (setting == "off"){
                     if (!config[id].messages["levelup"].status){
@@ -1577,7 +1577,7 @@ bot.on('message', message => {
                     }
                     config[id].messages["levelup"].status = "off";
                     saveConfig();
-                    message.chanenl.send(`The message when a user levels up has been disabled.`);
+                    message.channel.send(`The message when a user levels up has been disabled.`);
                 }
                 else{
                     message.channel.send(`When someone levels up, Vulpix will send a message. You can configure that using one of the following commands:\n\`\`\`v-config messages levelup msg\nv-config messages levelup on\nv-config messages levelup off\`\`\``);
