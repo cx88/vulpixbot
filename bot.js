@@ -1083,6 +1083,7 @@ bot.on('message', message => {
                 fields: []
             }};
             var desc = "";
+            console.log(top);
             for (i = 0; i < top.length; i++){
                 if (!guild.members.get(top[i][0])) continue;
                 var user = guild.members.get(top[i][0]).user;
