@@ -307,7 +307,7 @@ function setDefaults(guild){
                 "channel": "general"
             },
             "levelup": {
-                "msg": "(@user) leveled up to level (level)!",
+                "msg": "Congrats, (@user)! You leveled up to level (level)!",
                 "status": "on"
             }
         },
@@ -485,6 +485,12 @@ bot.on('message', message => {
         else{
            config[id]["ranks"][message.member.user.id]++;
             if (level_curve.contains(config[id].ranks[message.member.user.id])){
+                if (!config[id].messages["levelup"]){
+                    config[id].messages["levelup"] = {
+                        "msg": "Congrats, (@user)! You leveled up to level (level)!",
+                        "status": "on"
+                    }
+                }
                 if (config[id].messages["levelup"].status == "on"){
                     var str = config[id].messages["levelup"].msg;
                     while (str.contains('(user)')){
@@ -1542,6 +1548,12 @@ bot.on('message', message => {
                 message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+config[id].messages["mute"].msg+'\r\nStatus: '+config[id].messages["mute"].status+'```');
             }
             else if (arg == "levelup"){
+                if (!config[id].messages["levelup"]){
+                    config[id].messages["levelup"] = {
+                        "msg": "Congrats, (@user)! You leveled up to level (level)!",
+                        "status": "on"
+                    }
+                }
                 if (setting == "msg"){
                     if (args[3] == undefined){
                         message.channel.send(`You can change the levelup message by typing \`v-config messages levelup msg [message]\`.\nIn the message, (user) will become the user's name, (@user) will tag the person, and (level) will become the new level.`);
@@ -1568,11 +1580,11 @@ bot.on('message', message => {
                     message.chanenl.send(`The message when a user levels up has been disabled.`);
                 }
                 else{
-                    message.channel.send(`When someone levels up, Vulpix will send a message. You can configure that using one of the following commands:\n\`\`\`v-config messages levelup msg\nv-config message levelup on\nv-config messages levelup off\`\`\``);
+                    message.channel.send(`When someone levels up, Vulpix will send a message. You can configure that using one of the following commands:\n\`\`\`v-config messages levelup msg\nv-config messages levelup on\nv-config messages levelup off\`\`\``);
                 }
             }
             else{
-                message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off, change the messages, and choose in which channel they should be sent. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute```');
+                message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off, change the messages, and choose in which channel they should be sent. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute\nv-config messages levelup```');
             }
         }
         else if (cmd == "roles"){
