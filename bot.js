@@ -307,7 +307,7 @@ function setDefaults(guild){
                 "channel": "general"
             },
             "levelup": {
-                "msg": "(user) leveled up to level (level)!",
+                "msg": "(@user) leveled up to level (level)!",
                 "status": "on"
             }
         },
@@ -485,7 +485,19 @@ bot.on('message', message => {
         else{
            config[id]["ranks"][message.member.user.id]++;
             if (level_curve.contains(config[id].ranks[message.member.user.id])){
-                message.channel.send(`${message.member.user} leveled up to level ${level_curve.indexOf(config[id].ranks[message.member.user.id])}!`);
+                if (config[id].messages["levelup"].status == "on"){
+                    var str = config[id].messages["levelup"].msg;
+                    while (str.contains('(user)')){
+                        str.replace('(user)', message.member.user.username);
+                    }
+                    while (str.contains('(@user)')){
+                        str.replace('(@user)', message.member.user)
+                    }
+                    while (str.contains('(level)')){
+                        str.replace('(level)', level_curve.indexOf(config[id].ranks[message.member.user.id]));
+                    }
+                    message.channel.send(str);
+                }
             }
         }
     }
