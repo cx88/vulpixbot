@@ -493,14 +493,14 @@ bot.on('message', message => {
                 }
                 if (config[id].messages["levelup"].status == "on"){
                     var str = config[id].messages["levelup"].msg;
-                    if (str.contains('(user)')){
-                        str.replace('(user)', message.member.user.username);
+                    while (str.contains('(user)')){
+                        str = str.replace('(user)', message.member.user.username);
                     }
-                    if (str.contains('(@user)')){
-                        str.replace('(@user)', message.member.user)
+                    while (str.contains('(@user)')){
+                        str = str.replace('(@user)', message.member.user)
                     }
-                    if (str.contains('(level)')){
-                        str.replace('(level)', level_curve.indexOf(config[id].ranks[message.member.user.id]));
+                    while (str.contains('(level)')){
+                        str = str.replace('(level)', level_curve.indexOf(config[id].ranks[message.member.user.id]));
                     }
                     message.channel.send(str);
                 }
