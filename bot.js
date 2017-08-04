@@ -1083,7 +1083,10 @@ bot.on('message', message => {
                 fields: []
             }};
             var desc = "";
-            console.log(top);
+            if (page >= top.length){
+                message.channel.send(`There are no users on this page.`);
+                return;
+            }
             for (i = 0; i < top.length; i++){
                 if (!guild.members.get(top[i][0])) continue;
                 var user = guild.members.get(top[i][0]).user;
