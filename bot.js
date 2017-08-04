@@ -1,18 +1,17 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 var paste = require('better-pastebin');
-var url = "https://pastebin.com/4cAUChCC";
+var url = process.env.URL;
 var fs = require('fs');
 var dlt = fs.readFileSync('database/delet_this.json');
-var delet_this = JSON.parse(dlt)["memes"];
+var delet_this = JSON.parse(dlt).memes;
 var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
 var config = "";
 var main_color = 10876925;
-var commandlog = "https://pastebin.com/wZE2rymj";
 var pbuser = process.env.PASTEBIN.split('|')[0];
 var pbpass = process.env.PASTEBIN.split('|')[1];
-paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
+paste.setDevKey(process.env.DEVKEY);
 paste.login(pbuser, pbpass, function(success, data){
     if (!success){
         console.log(`Failed (${data})`);
@@ -31,29 +30,7 @@ const level_curve = [ 0,
   2181,  2436,  2742,  3159,  3576,  // 21 - 25
   4155,  4788,  5589,  6435,  7452,  // 26 - 30
   8643,  9999,  11676, 13734, 15597, // 31 - 35
-  17898, 20496, 23163, 26721, 30000  // 35 - 40
-]
-
-const fortune = [
-    "Most certainly.",
-    "I dare say so.",
-    "I can say that that is so.",
-    "Naturally.",
-    "Without a doubt.",
-    "Obviously.",
-    "Destined to be.",
-    "Yes.",
-    "Of course.",
-
-    "Not a chance.",
-    "Never.",
-    "I estimate your chance at circa 0.1%.",
-    "No.",
-    "How could you even think so.",
-    "I have yet to see something this ridiculous.",
-    "The sun is rather to burn out this era.",
-    "You would have lost a lot of money if you bet.",
-    "Four eagles. That means no."
+  17898, 20496, 23163, 26721, 30000  // 36 - 40
 ]
 
 const magic8ball = [
@@ -83,10 +60,10 @@ const commands = [
     "pc", "soon", "rand", "choose",
     "dex", "thundaga", "wikia", "ebs",
     "pbs+", "read", "lenny", "shrug",
-    "delet", "rank", "fortune", "8ball",
+    "delet", "rank", "8ball",
     "eval", "quote", "user", "bug", "spoon",
     "mock", "gandalf", "channel", "server",
-    "quotes", "add", "remove"
+    "quotes", "add", "remove", "top"
 ]
 
 /*
@@ -367,7 +344,7 @@ function setDefaults(guild){
 
 function saveConfig(){
     var str = jsonToString(config);
-    paste.setDevKey('14924a0dad25e921a08ff536acfabc88');
+    paste.setDevKey(process.env.DEVKEY);
     paste.login(pbuser, pbpass, function(success, data){
         paste.edit(url, {
             contents: str
@@ -496,6 +473,7 @@ bot.on('message', message => {
     var guild = message.guild;
     var id = guild.id;
     var channel = message.channel;
+    var prefix = config[id].prefix;
     if (config[id] == undefined) return;
     if (!message.content.startsWith(config[id].prefix) && !message.content.startsWith("v-")){
         if (config[id]["ranks"] == undefined){
@@ -506,12 +484,12 @@ bot.on('message', message => {
         }
         else{
            config[id]["ranks"][message.member.user.id]++;
-            if (level_curve.contains(config[id]["ranks"][message.member.user.id])){
-                message.channel.send(`${message.member.user} leveled up to level ${level_curve.indexOf(config[id]["ranks"][message.member.user.id])}!`);
+            if (level_curve.contains(config[id].ranks[message.member.user.id])){
+                message.channel.send(`${message.member.user} leveled up to level ${level_curve.indexOf(config[id].ranks[message.member.user.id])}!`);
             }
         }
     }
-    if (message.content.startsWith(config[id]["prefix"])){
+    if (message.content.startsWith(config[id].prefix)){
         cmd = message.content.substr(1).split(' ')[0];
         args = message.content.split(" ");
         args.splice(0, 1);
@@ -706,6 +684,7 @@ bot.on('message', message => {
             message.channel.send("¯\\_(ツ)_/¯");
         }
         else if (command(channel, cmd, "delet")){
+            message.delete();
             message.channel.send(delet_this[rand(delet_this.length)]);
         }
         else if (command(channel, cmd, "rank")){
@@ -753,9 +732,6 @@ bot.on('message', message => {
                     value: `${getRank(guild, user) == undefined ? guild.memberCount : getRank(guild, user)}/${guild.memberCount}`
                 }]
             }})
-        }
-        else if (command(channel, cmd, "fortune")){
-            message.channel.send(fortune[rand(fortune.length)]);
         }
         else if (command(channel, cmd, "8ball")){
             message.channel.send(magic8ball[rand(magic8ball.length)]);
@@ -1041,6 +1017,7 @@ bot.on('message', message => {
             }
         }
         else if (command(channel, cmd, "mock")){
+            message.delete();
             var msg = message.content.split(`${config[id].prefix}mock `)[1];
             console.log(msg);
             if (msg != undefined && msg != null){
@@ -1537,27 +1514,57 @@ bot.on('message', message => {
                 }
                 else if (setting == "channel"){
                     if (args[3] != undefined){
-                        config[id]["messages"]["welcome"]["channel"] = args[3];
+                        config[id].messages["welcome"].channel = args[3];
                         saveConfig();
-                        message.channel.send('The welcome message will now be sent in `' + config[id]["messages"]["welcome"]["channel"] + '`.');
+                        message.channel.send('The welcome message will now be sent in `' + config[id].messages["welcome"].channel + '`.');
                     }
                     else{
-                        message.channel.send('The channel the welcome message will be sent in. Currently set to ```' + config[id]["messages"]["welcome"]["channel"] + '```Use the following command to change it: ```v-config messages welcome channel [channelname]```Note that it should be the channel **name**, not a hyperlink or id.');
+                        message.channel.send('The channel the welcome message will be sent in. Currently set to ```' + config[id].messages["welcome"].channel + '```Use the following command to change it: ```v-config messages welcome channel [channelname]```Note that it should be the channel **name**, not a hyperlink or id.');
                     }
                 }
                 else{
-                    message.channel.send('The message that is sent whenever a new user joins.```Message: '+config[id]["messages"]["welcome"]["msg"]+'\nStatus: '+config[id]["messages"]["welcome"]["status"]+'\nChannel: '+config[id]["messages"]["welcome"]["channel"]+'```\nUse one of the following commands to change the settings:```v-config messages welcome msg [message]\nv-config messages welcome on\nv-config messages welcome off\nv-config messages welcome channel [channelname]```In the welcome message, `(user)` will be replaced with the username.');
+                    message.channel.send('The message that is sent whenever a new user joins.```Message: '+config[id].messages["welcome"].msg+'\nStatus: '+config[id].messages["welcome"].status+'\nChannel: '+config[id]["messages"]["welcome"]["channel"]+'```\nUse one of the following commands to change the settings:```v-config messages welcome msg [message]\nv-config messages welcome on\nv-config messages welcome off\nv-config messages welcome channel [channelname]```In the welcome message, `(user)` will be replaced with the username.');
                 }
             }
             else if (arg == "mute"){
-                message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+config[id]["messages"]["mute"]["msg"]+'\r\nStatus: '+config[id]["messages"]["mute"]["status"]+'```');
+                message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+config[id].messages["mute"].msg+'\r\nStatus: '+config[id]messages["mute"].status+'```');
+            }
+            else if (arg == "levelup"){
+                if (setting == "msg"){
+                    if (args[3] == undefined){
+                        message.channel.send(`You can change the levelup message by typing \`v-config messages levelup msg [message]\`.\nIn the message, (user) will become the user's name, (@user) will tag the person, and (level) will become the new level.`);
+                        return;
+                    }
+                    config[id].messages["levelup"].msg = message.content.split(`v-config messages levelup msg `)[1];
+                    saveConfig();
+                    message.channel.send(`The message when a user levels up has been set to\`\`\`\n${config[id].messages["levelup"].msg}\`\`\``);
+                }
+                else if (setting == "on"){
+                    if (config[id].messages["levelup"].status){
+                        message.channel.send(`The message when a user levels up is already enabled.`);
+                    }
+                    config[id].messages["levelup"].status = "on";
+                    saveConfig();
+                    message.chanenl.send(`The message when a user levels up has been enabled.`);
+                }
+                else if (setting == "off"){
+                    if (!config[id].messages["levelup"].status){
+                        message.channel.send(`The message when a user levels up is already disabled.`);
+                    }
+                    config[id].messages["levelup"].status = "off";
+                    saveConfig();
+                    message.chanenl.send(`The message when a user levels up has been disabled.`);
+                }
+                else{
+                    message.channel.send(`When someone levels up, Vulpix will send a message. You can configure that using one of the following commands:\n\`\`\`v-config messages levelup msg\nv-config message levelup on\nv-config messages levelup off\`\`\``);
+                }
             }
             else{
                 message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off, change the messages, and choose in which channel they should be sent. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute```');
             }
         }
-        else if (cmd == "autorole"){
-            message.channel.send('When a new user joins, you can choose for the bot to give them a role.```Role given: '+config[id]["autorole"]+'\r\nStatus: '+config[id]["autorole"]+'```Use one of the following commands to change the settings:```v-config autorole on\nv-config autorole off\nv-config autorole set (rolename)```');
+        else if (cmd == "roles"){
+            
         }
         else if (cmd == "channels"){
             if (config[id].channels == undefined){
@@ -1675,7 +1682,7 @@ bot.on('message', message => {
             message.channel.send('```JavaScript\n'+msg+'```');
         }
         else{
-            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config autorole\nv-config default\nv-config channels\nv-config show```')
+            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config roles\nv-config default\nv-config channels\nv-config show```')
         }
     }
 });
