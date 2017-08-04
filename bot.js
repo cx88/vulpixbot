@@ -1063,11 +1063,8 @@ bot.on('message', message => {
             message.channel.send({files:['database/gandalf.gif']});
         }
         else if (command(channel, cmd, "top")){
-            var page = 1;
-            try{
-                page = parseInt(args[0]);
-            }
-            catch (err) {}
+            var page = parseInt(args[0]);
+            if (isNaN(page)) page = 1;
             var sortable = [];
             for (var id in config[guild.id].ranks) {
                 sortable.push([id, config[guild.id].ranks[id]]);
@@ -1083,13 +1080,10 @@ bot.on('message', message => {
                     icon_url: bot.user.avatarURL
                 },
                 color: main_color,
-                title: `The top members on this server are the following:`,
                 fields: []
             }};
             var desc = "";
-            console.log(top);
             for (i = 0; i < top.length; i++){
-                console.log(`${i+1}: ${top[i]}`);
                 if (!guild.members.get(top[i][0])) continue;
                 var user = guild.members.get(top[i][0]).user;
                 var level;
@@ -1101,7 +1095,7 @@ bot.on('message', message => {
                     }
                 }
                 embed["embed"].fields.push({
-                    name: `**Rank #${i + 1}**`,
+                    name: `**Rank #${i + 1} * page**`,
                     value: `${user.username}\nLevel ${level} (${top[i][1] * 7})\n${top[i][1]} Messages`
                 })
             }
