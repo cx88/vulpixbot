@@ -1527,7 +1527,7 @@ bot.on('message', message => {
                 }
             }
             else if (arg == "mute"){
-                message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+config[id].messages["mute"].msg+'\r\nStatus: '+config[id]messages["mute"].status+'```');
+                message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+config[id].messages["mute"].msg+'\r\nStatus: '+config[id].messages["mute"].status+'```');
             }
             else if (arg == "levelup"){
                 if (setting == "msg"){
