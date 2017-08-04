@@ -1471,6 +1471,28 @@ bot.on('message', message => {
                     message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
                 }
             }
+            else if (cmd == "nick"){
+                if (args[0] == undefined){
+                    message.channel.send(`Specificy a user to change their nickname.`);
+                    return;
+                }
+                var user = message.mentions.users.first();
+                if (!user) user = tryGetUser(guild, args[0]);
+                if (!user){
+                    message.channel.send(`Specificy a valid user to change their nickname.`);
+                    return;
+                }
+                var member = guild.members.get(user.id);
+                if (args[1] == undefined){
+                    member.setNickname('');
+                    message.channel.send(`User "${member.user.username}"'s nickname has been reset.`);
+                }
+                else{
+                    args.splice(0, 1);
+                    member.setNickname(args.join(' '));
+                    message.channel.send(`User "${member.user.username}"'s nickname has been set to "${args.join(' ')}".`);   
+                }
+            }
         }
     }
     if (message.content.startsWith("v-config") && isBotAdmin(message.member)){ // Configuration of the bot for the server.
