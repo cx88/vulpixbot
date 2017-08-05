@@ -1681,29 +1681,29 @@ bot.on('message', message => {
                 if (args[2] == "msg"){
                     var msg = message.content.split('v-config messages goodbye msg ')[1];
                     if (!msg){
-                        message.channel.send(`The current message sent whenever a member leaves the server is:\`\`\`\n${config[id].messages.goodbye.msg}\`\`\`Type \`v-config messages goodbye msg [message]\` to change it.`)
+                        message.channel.send(`The current goodbye message is:\`\`\`\n${config[id].messages.goodbye.msg}\`\`\`Type \`v-config messages goodbye msg [message]\` to change it.`)
                     }
                     config[id].messages.goodbye.msg = msg;
                     saveConfig();
-                    message.channel.send(`The message sent whenever a member leaves the server has been set to:\`\`\`\n${config[id].messages.goodbye.msg}\`\`\``);
+                    message.channel.send(`The goodbye message has been set to:\`\`\`\n${config[id].messages.goodbye.msg}\`\`\``);
                 }
                 else if (args[2] == "on"){
                     if (config[id].messages.goodbye.status == "on"){
-                        message.channel.send(`The message sent whenever a member leaves the server is already enabled.`);
+                        message.channel.send(`The goodbye message is already enabled.`);
                         return;
                     }
                     config[id].messages.goodbye.status = "on";
                     saveConfig();
-                    message.channel.send(`The message sent whenever a member leaves the server has been enabled.`);
+                    message.channel.send(`The goodbye message has been enabled.`);
                 }
                 else if (args[2] == "off"){
                     if (config[id].messages.goodbye.status == "off"){
-                        message.channel.send(`The message sent whenever a member leaves the server is already disabled.`);
+                        message.channel.send(`The goodbye message is already disabled.`);
                         return;
                     }
                     config[id].messages.goodbye.status = "off";
                     saveConfig();
-                    message.channel.send(`The message sent whenever a member leaves the server has been disabled.`);
+                    message.channel.send(`The goodbye message has been disabled.`);
                 }
                 else if (args[2] == "channel"){
                     if (!args[3]){
@@ -1722,11 +1722,11 @@ bot.on('message', message => {
                     message.channel.send(`The goodbye message will now be sent in \`${config[id].messages.goodbye.channel}\`.`);
                 }
                 else{
-
+                    message.channel.send(`These are the current configurations for the goodbye messages:\`\`\`Message: ${config[id].messages.goodbye.msg}\nStatus: ${config[id].messages.goodbye.status}\nChannel: ${config[id].messages.goodbye.channel}\`\`\`Change the configurations with one of the following commands: \`\`\`\nv-config messages goodbye msg\nv-config messages goodbye on\nv-config messages goodbye off\nv-config messages goodbye channel\`\`\``)
                 }
             }
             else{
-                message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off, change the messages, and choose in which channel they should be sent. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute\nv-config messages levelup```');
+                message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off, change the messages, and choose in which channel they should be sent. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute\nv-config messages levelup\nv-config messages goodbye```');
             }
         }
         else if (cmd == "roles"){
