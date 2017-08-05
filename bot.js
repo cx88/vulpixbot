@@ -1304,7 +1304,7 @@ bot.on('message', message => {
             var user;
             if (args[0]){
                 user = message.mentions.users.first();
-                if (!user) user = tryGetUser(guild, args[0]);
+                if (!user) user = tryGetUser(guild, args.join(' '));
                 if (!user){
                     message.channel.send(`User not found.`);
                     return;
@@ -1316,7 +1316,7 @@ bot.on('message', message => {
             var member = message.member;
             member = guild.members.get(user.id);
             if (getQuotes(member).length == 0){
-                message.channel.send(`This user doesn't have any quotes saved!`);
+                message.channel.send(`${user == message.author ? `You don't` : `This user doesn't`} have any quotes saved!`);
                 return;
             }
         	var embed = { embed: {
