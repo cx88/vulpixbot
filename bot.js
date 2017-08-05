@@ -796,62 +796,52 @@ bot.on('message', message => {
             }
         }
         else if (command(channel, cmd, "user")){
-            if (args[0] == undefined) return;
-            var user;
-            if (message.mentions.users.first() != undefined){
-                user = message.mentions.users.first();
+            var user = message.mentions.users.first();
+            if (!user) user = tryGetUser(guild, args.join(' '));
+            if (!user) user = message.member.user;
+            var embed = { embed: {
+                color: main_color,
+                author: {
+                    name: user.username,
+                    icon_url: user.avatarURL
+                },
+                title: user.tag,
+                thumbnail: {
+                    url: user.avatarURL
+                },
+                fields: [{
+                    name: `**Nickname**`,
+                    value: user.username,
+                    inline: true
+                },{
+                    name: `**User ID**`,
+                    value: user.id,
+                    inline: true
+                },{
+                    name: `**Status**`,
+                    value: user.presence.status,
+                    inline: true
+                },{
+                    name: `**Game**`,
+                    value: user.presence.game ? user.presence.game.name : "---",
+                    inline: true
+                },{
+                    name: `**Bot**`,
+                    value: user.bot
+                },{
+                    name: `**Created At**`,
+                    value: user.createdAt,
+                    inline: true
+                }]
+            }};
+            if (config[id].users[user.id]){
+                embed.embed.fields.push({
+                    name: `User number`,
+                    value: config[id].users[user.id],
+                    inline: true
+                })
             }
-            else if (args[0] != undefined){
-                var tmp = message.content.split(`${config[id].prefix}user `)[1];
-                if (userExists(guild, tmp)){
-                    user = getUser(guild, tmp);
-                }
-            }
-            if (user != undefined && user != null){
-                var embed = { embed: {
-                    color: main_color,
-                    author: {
-                        name: user.username,
-                        icon_url: user.avatarURL
-                    },
-                    title: user.tag,
-                    thumbnail: {
-                        url: user.avatarURL
-                    },
-                    fields: [{
-                        name: `**Nickname**`,
-                        value: user.username,
-                        inline: true
-                    },{
-                        name: `**User ID**`,
-                        value: user.id,
-                        inline: true
-                    },{
-                        name: `**Status**`,
-                        value: user.presence.status,
-                        inline: true
-                    },{
-                        name: `**Game**`,
-                        value: user.presence.game ? user.presence.game.name : "---",
-                        inline: true
-                    },{
-                        name: `**Bot**`,
-                        value: user.bot
-                    },{
-                        name: `**Created At**`,
-                        value: user.createdAt,
-                        inline: true
-                    }]
-                }};
-                if (config[id].users[user.id]){
-                    embed.embed.fields.push({
-                        name: `User number`,
-                        value: config[id].users[user.id],
-                        inline: true
-                    })
-                }
-                message.channel.send(embed);
-            }
+            message.channel.send(embed);
         }
         else if (command(channel, cmd, "bug")){
             if (config[id].bugs == undefined){
