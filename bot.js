@@ -420,7 +420,8 @@ bot.on('guildMemberAdd', member =>{
         }
     }
     if (!config[member.guild.id].users) config[member.guild.id].users = {};
-    config[member.guild.id].users[member.user.id] = member.guild.memberCount
+    if (!config[member.guild.id].users[member.user.id]) config[member.guild.id].users[member.user.id] = {};
+    config[member.guild.id].users[member.user.id].number = member.guild.memberCount
     saveConfig();
 });
 
@@ -834,10 +835,10 @@ bot.on('message', message => {
                     inline: true
                 }]
             }};
-            if (config[id].users[user.id]){
+            if (config[id].users && config[id].users[user.id] && config[id].users[user.id].number){
                 embed.embed.fields.push({
                     name: `User number`,
-                    value: config[id].users[user.id],
+                    value: config[id].users[user.id].number,
                     inline: true
                 })
             }
