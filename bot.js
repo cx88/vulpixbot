@@ -3,8 +3,7 @@ const bot = new Discord.Client();
 var paste = require('better-pastebin');
 var url = process.env.URL;
 var fs = require('fs');
-var dlt = fs.readFileSync('database/delet_this.json');
-var delet_this = JSON.parse(dlt).memes;
+var delet_this = JSON.parse(fs.readFileSync('database/delet_this.json')).memes;
 var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
 var config = "";
@@ -16,25 +15,6 @@ admin.initializeApp({
   databaseURL: process.env.DATABASE
 });
 var ref = admin.database().ref();
-//ref.once('value', function(data){
-//    config = data.val();
-//    started = true;
-//}, function(err){
-//    console.log(err)
-//});
-//var pbuser = process.env.PASTEBIN.split('|')[0];
-//var pbpass = process.env.PASTEBIN.split('|')[1];
-//paste.setDevKey(process.env.DEVKEY);
-//paste.login(pbuser, pbpass, function(success, data){
-//    if (!success){
-//        console.log(`Failed (${data})`);
-//    }
-//    paste.get(url, function(success, data){
-//        if (success){
-//            config = JSON.parse(data);
-//        }
-//    });
-//});
 const level_curve = [ 0,
   24,    54,    93,    135,   183,   // 1  - 5
   234,   288,   351,   420,   495,   // 6  - 10
@@ -357,13 +337,6 @@ function setDefaults(guild){
 
 function saveConfig(){
     ref.update(config);
-    /*var str = jsonToString(config);
-    paste.setDevKey(process.env.DEVKEY);
-    paste.login(pbuser, pbpass, function(success, data){
-        paste.edit(url, {
-            contents: str
-        });
-    });*/
 }
 
 function logMessage(message){
@@ -435,9 +408,9 @@ bot.on('guildMemberAdd', member =>{
     if (config[member.guild.id.toString()] == undefined){
         setDefaults(member.guild);
     }
-    if (config[member.guild.id.toString()]["messages"]["welcome"]["status"] == "on"){
-        var channel = config[member.guild.id.toString()]["messages"]["welcome"]["channel"];
-        var msg = config[member.guild.id.toString()]["messages"]["welcome"]["msg"];
+    if (config[member.guild.id.toString()].messages.welcome.status == "on"){
+        var channel = config[member.guild.id.toString()].messages.welcome.channel;
+        var msg = config[member.guild.id.toString()].messages.welcome.msg;
         msg = msg.replace('(user)', member.user);
         if (channelExists(member.guild, channel)){
             getChannel(member.guild, channel).send(msg);
@@ -446,6 +419,9 @@ bot.on('guildMemberAdd', member =>{
             member.guild.defaultChannel.send(`Channel '${channel}' does not exist as referred to in \`v-config messages welcome channel\`. Welcome either way, ` + member.user + `!`);
         }
     }
+    if (!config[member.guild.id].users) config[member.guild.id].users = {};
+    config[member.guild.id].users[member.user.id] = member.guild.memberCount
+    saveConfig();
 });
 
 bot.on('guildMemberRemove', member => {
@@ -832,7 +808,7 @@ bot.on('message', message => {
                 }
             }
             if (user != undefined && user != null){
-                message.channel.send({embed: {
+                var embed = { embed: {
                     color: main_color,
                     author: {
                         name: user.username,
@@ -866,7 +842,15 @@ bot.on('message', message => {
                         value: user.createdAt,
                         inline: true
                     }]
-                }});
+                }};
+                if (config[id].users[user.id]){
+                    embed.embed.fields.push({
+                        name: `User number`,
+                        value: config[id].users[user.id],
+                        inline: true
+                    })
+                }
+                message.channel.send(embed);
             }
         }
         else if (command(channel, cmd, "bug")){
