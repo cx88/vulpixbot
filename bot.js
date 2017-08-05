@@ -431,11 +431,9 @@ bot.on('guildMemberAdd', member =>{
     config[member.guild.id].users[member.user.id].number = member.guild.memberCount
     if (config[member.guild.id].roles && config[member.guild.id].roles.memberJoin){
         var roles = config[member.guild.id].roles.memberJoin;
-        console.log(roles);
         for (i = 0 ; i < roles.length; i++){
             if (roles[i]){
                 var role = member.guild.roles.find('name', roles[i]);
-                console.log(role);
                 if (role){
                     member.addRole(role);
                 }
@@ -495,6 +493,7 @@ bot.on('message', message => {
         else{
            config[id]["ranks"][message.member.user.id]++;
             if (level_curve.contains(config[id].ranks[message.member.user.id])){
+                var level = level_curve.indexOf(config[id].ranks[message.member.user.id]);
                 if (!config[id].messages["levelup"]){
                     config[id].messages["levelup"] = {
                         "msg": "Congrats, (@user)! You leveled up to level (level)!",
@@ -510,9 +509,20 @@ bot.on('message', message => {
                         str = str.replace('(@user)', message.member.user)
                     }
                     while (str.contains('(level)')){
-                        str = str.replace('(level)', level_curve.indexOf(config[id].ranks[message.member.user.id]));
+                        str = str.replace('(level)', level);
                     }
                     message.channel.send(str);
+                }
+                if (config[id].roles && config[id].roles[`level ${level}`]){
+                    var roles = config[id].roles[`level ${level}`];
+                    for (i = 0 ; i < roles.length; i++){
+                        if (roles[i]){
+                            var role = member.guild.roles.find('name', roles[i]);
+                            if (role){
+                                member.addRole(role);
+                            }
+                        }
+                    }
                 }
             }
         }
