@@ -441,7 +441,12 @@ bot.on('guildMemberAdd', member =>{
     if (config[member.guild.id.toString()].messages.welcome.status == "on"){
         var channel = config[member.guild.id.toString()].messages.welcome.channel;
         var msg = config[member.guild.id.toString()].messages.welcome.msg;
-        msg = msg.replace('(user)', member.user);
+        while (msg.contains('(user)')){
+            msg = msg.replace('(user)', member.user.username);
+        }
+        while (msg.contains('(@user)')){
+            msg = msg.replace('(@user)', member.user);
+        }
         if (channelExists(member.guild, channel)){
             getChannel(member.guild, channel).send(msg);
         }
@@ -483,6 +488,20 @@ bot.on('guildMemberRemove', member => {
     }
     if (config[id] && config[id].users && config[id].users[userid]){
         delete config[id].users[userid];
+    }
+    if (config[id] && config[id].messages && config[id].messages.goodbye && config[id].messages.goodbye.status == "on"){
+        var channel = tryGetChannel(guild, config[id].messages.goodbye.channel);
+        if (channel){
+            var msg = config[id].messages.goodbye.msg;
+            while (msg.contains('(user)')){
+                msg = msg.replace('(user)', member.user.username);
+            }
+            channel.send(msg);
+        }
+        else{
+            guild.defaultChannel.send(`${member.user.username} just left. Goodbye!`);
+            botLog(guild, `Channel \`${config[id].messages.goodbye.channel}\` does not exist as referred to in \`v-config messages goodbye channel\`.`);
+        }
     }
     saveConfig();
 });
