@@ -1749,6 +1749,12 @@ bot.on('message', message => {
     }
 });
 
-if (started) ref.update(config);
+ref.update(config);
+ref.on('value', function(data){
+    config = data.val();
+    console.log('Synced config with database.');
+}, function(err){
+    console.log(err);
+})
 
 bot.login(process.env.TOKEN);
