@@ -1341,7 +1341,7 @@ bot.on('message', message => {
             if (args[0] == "quote"){
                 args.splice(0, 1);
                 if (args[0] == undefined) {
-                    message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that [user] should be one word if it isn't a tag. \`%20\` will be substituted with a space.`);
+                    message.channel.send(`Use \`${config[id].prefix}add quote [user]\` to see someone's quotes. Use \`${config[id].prefix}add quote [user] [message]\` to add a quote to that user. Note that [user] should be one word if it isn't a tag. \`%20\` will be substituted with a space.`);
                     return;
                 }
                 var user = message.mentions.users.first();
@@ -1354,8 +1354,8 @@ bot.on('message', message => {
                 msg.splice(0, 2);
                 msg = msg.join(' ');
                 if (msg != "" && msg != null && msg != undefined && msg != " "){
-                    if (config[id]["quotes"][user.id] == undefined){
-                        config[id]["quotes"][user.id] = [
+                    if (config[id].quotes[user.id] == undefined){
+                        config[id].quotes[user.id] = [
                             msg
                         ];
                         saveConfig();
@@ -1367,7 +1367,7 @@ bot.on('message', message => {
                         message.channel.send(`Quote saved!`);
                     }
                 }
-                else if (config[id]["quotes"][user.id] == undefined || config[id]["quotes"][user.id].length == 0){
+                else if (!config[id].quotes[user.id] || config[id].quotes[user.id].length == 0){
                     message.channel.send(`This user doesn't have any quotes saved!`);
                 }
                 else{
