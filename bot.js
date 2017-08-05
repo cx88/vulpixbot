@@ -1349,7 +1349,7 @@ bot.on('message', message => {
                     message.channel.send(`User not found.`);
                     return;
                 }
-                var msg = message.content.split(`${config[id].prefix}add quote `)[1];
+                var msg = message.content.split(`${config[id].prefix}add quote `)[1].split(' ')[1];
                 if (msg){
                     if (config[id].quotes[user.id] == undefined){
                         config[id].quotes[user.id] = [
@@ -1359,7 +1359,7 @@ bot.on('message', message => {
                         message.channel.send(`Quote saved!`);
                     }
                     else{
-                        config[id]["quotes"][user.id].push(msg);
+                        config[id].quotes[user.id].push(msg);
                         saveConfig();
                         message.channel.send(`Quote saved!`);
                     }
