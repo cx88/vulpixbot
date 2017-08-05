@@ -1398,7 +1398,7 @@ bot.on('message', message => {
                     args.splice(0, 2);
                     var user = message.mentions.users.first();
                     if (!user) user = tryGetUser(guild, args.join(' '));
-                    member = guild.members.get(user.id);
+                    if (user) member = guild.members.get(user.id);
                 }
                 if (getQuotes(member).length == 0){
                     message.channel.send(`${member.user == message.author ? `You don't` : `This user doesn't`} have any quotes saved.`);
