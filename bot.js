@@ -1681,6 +1681,10 @@ bot.on('message', message => {
                     message.channel.send(`You can remove automatically assigned roles by typing \`v-config roles remove [index]\`. You can see the index of the role using \`v-config roles\`.`);
                     return;
                 }
+                if (!config[id].roles){
+                    message.channel.send(`There are no role events that you can remove.`);
+                    return;
+                }
                 if (isNaN(args[2])){
                     message.channel.send(`Invalid index to remove at.`);
                     return;
@@ -1709,10 +1713,12 @@ bot.on('message', message => {
             }
             else{
                 var roles = []
-                var keys = Object.keys(config[id].roles)
-                for (i = 0; i < keys.length; i++){
-                    for (j = 0; j < config[id].roles[keys[i]].length; j++){
-                        roles.push(`${roles.length + 1}.) "${config[id].roles[keys[i]][j]}" on "${keys[i]}"`);
+                if (config[id].roles){
+                    var keys = Object.keys(config[id].roles)
+                    for (i = 0; i < keys.length; i++){
+                        for (j = 0; j < config[id].roles[keys[i]].length; j++){
+                            roles.push(`${roles.length + 1}.) "${config[id].roles[keys[i]][j]}" on "${keys[i]}"`);
+                        }
                     }
                 }
                 message.channel.send(`These role events are currently active:\`\`\`\n${roles.length == 0 ? `---` : roles.join('\n')}\`\`\`Configure roles by using one of the following commands:\`\`\`\nv-config roles add\nv-config roles remove\`\`\``)
