@@ -1349,7 +1349,9 @@ bot.on('message', message => {
                     message.channel.send(`User not found.`);
                     return;
                 }
-                var msg = message.content.split(`${config[id].prefix}add quote `)[1].split(' ')[1];
+                var msg = message.content.split(`${config[id].prefix}add quote `)[1].split(' ');
+                msg.splice(0, 1);
+                msg = msg.join(' ');
                 if (msg){
                     if (config[id].quotes[user.id] == undefined){
                         config[id].quotes[user.id] = [
