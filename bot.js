@@ -1677,14 +1677,41 @@ bot.on('message', message => {
                 }
             }
             else if (args[1] == "remove"){
-
+                if (!args[2]){
+                    message.channel.send(`You can remove automatically assigned roles by typing \`v-config roles remove [index]\`. You can see the index of the role using \`v-config roles\`.`);
+                    return;
+                }
+                if (isNaN(args[2])){
+                    message.channel.send(`Invalid index to remove at.`);
+                    return;
+                }
+                var roles = []
+                var keys = Object.keys(config[id].roles)
+                for (i = 0; i < keys.length; i++){
+                    for (j = 0; j < config[id].roles[keys[i]].length; j++){
+                        roles.push(`${roles.length + 1}.) "${config[id].roles[keys[i]][j]}" on "${keys[i]}"`);
+                    }
+                }
+                var index = parseInt(args[2]) - 1;
+                if (index >= roles.length){
+                    message.channel.send(`Index out of range.`);
+                    return;
+                }
+                var msg = roles[index];
+                var key = msg.split('"')[3].split('"')[0];
+                var value = msg.split('"')[1].split('"')[0];
+                config[id].roles[key] = config[id].roles[key].splice(config[id].roles[key].indexOf(value), 1);
+                if (config[id].roles[key].length == 0){
+                    delete config[id].roles[key];
+                }
+                message.channel.send(`Successfully removed "${value}" on ${key}`);
             }
             else{
                 var roles = []
                 var keys = Object.keys(config[id].roles)
                 for (i = 0; i < keys.length; i++){
                     for (j = 0; j < config[id].roles[keys[i]].length; j++){
-                        roles.push(`${roles.length + 1}.) "${config[id].roles[keys[i]][j]}"" on "${keys[i]}"`);
+                        roles.push(`${roles.length + 1}.) "${config[id].roles[keys[i]][j]}" on "${keys[i]}"`);
                     }
                 }
                 message.channel.send(`These role events are currently active:\`\`\`\n${roles.length == 0 ? `---` : roles.join('\n')}\`\`\`Configure roles by using one of the following commands:\`\`\`\nv-config roles add\nv-config roles remove\`\`\``)
