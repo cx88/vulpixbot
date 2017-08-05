@@ -54,7 +54,7 @@ const commands = [
     "dex", "thundaga", "wikia", "ebs",
     "pbs+", "read", "lenny", "shrug",
     "delet", "rank", "8ball",
-    "eval", "quote", "user", "bug", "spoon",
+    "eval", "user", "bug", "spoon",
     "mock", "gandalf", "channel", "server",
     "quotes", "add", "remove", "top"
 ]
@@ -290,6 +290,9 @@ function setDefaults(guild){
         "channels": {
 
         },
+        "suggestions": [
+
+        ],
         "messages": {
             "welcome": {
                 "msg": "Welcome to the server, (user)!",
@@ -849,41 +852,6 @@ bot.on('message', message => {
                 message.channel.send(`Failed to evaluate expression.`);
             }
         }
-        else if (command(channel, cmd, "quote")){
-            if (args[0] == undefined) {
-                message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that [user] should be one word if it isn't a tag. \`%20\` will be substituted with a space.`);
-                return;
-            }
-            var user = message.mentions.users.first();
-            if (!user) user = tryGetUser(guild, args[0]);
-            if (!user){
-                message.channel.send(`User not found.`);
-                return;
-            }
-            var msg = message.content.split(' ')
-            msg.splice(0, 2);
-            msg = msg.join(' ');
-            if (msg != "" && msg != null && msg != undefined && msg != " "){
-                if (config[id]["quotes"][user.id] == undefined){
-                    config[id]["quotes"][user.id] = [
-                        msg
-                    ];
-                    saveConfig();
-                    message.channel.send(`Quote saved!`);
-                }
-                else{
-                    config[id]["quotes"][user.id].push(msg);
-                    saveConfig();
-                    message.channel.send(`Quote saved!`);
-                }
-            }
-            else if (config[id]["quotes"][user.id] == undefined || config[id]["quotes"][user.id].length == 0){
-                message.channel.send(`This user doesn't have any quotes saved!`);
-            }
-            else{
-                message.channel.send(`"${config[id].quotes[user.id][rand(config[id].quotes[user.id].length)]}"\n - ${user.username}`);
-            }
-        }
         else if (command(channel, cmd, "user")){
             var user = message.mentions.users.first();
             if (!user) user = tryGetUser(guild, args.join(' '));
@@ -1333,20 +1301,23 @@ bot.on('message', message => {
         	message.channel.send(embed);
         }
         else if (command(channel, cmd, "quotes")){
-            var member = message.member;
-            var redirect = false;
-            if (isBotAdmin(message.member)){
-                var user = message.mentions.users.first();
+            var user;
+            if (args[1]){
+                user = message.mentions.users.first();
                 if (!user) user = tryGetUser(guild, args[0]);
-                if (!user) user = message.member.user;
-                if (user){
-                    message.channel.send(user.username);
-                    member = guild.members.get(user.id);
-                    redirect = true;
+                if (!user){
+                    message.channel.send(`User not found.`);
+                    return;
                 }
             }
+            else{
+                user = message.member.user;
+            }
+            var member = message.member;
+            message.channel.send(user.username);
+            member = guild.members.get(user.id);
             if (getQuotes(member).length == 0){
-                message.channel.send(`${redirect ? `This user doesn't` : `You don't`} have any quotes saved!`);
+                message.channel.send(`This user doesn't have any quotes saved!`);
                 return;
             }
         	var embed = { embed: {
@@ -1367,7 +1338,41 @@ bot.on('message', message => {
 
         }
         else if (command(channel, cmd, "add")){
-
+            if (args[0] == "quote"){
+                if (args[0] == undefined) {
+                    message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that [user] should be one word if it isn't a tag. \`%20\` will be substituted with a space.`);
+                    return;
+                }
+                var user = message.mentions.users.first();
+                if (!user) user = tryGetUser(guild, args[0]);
+                if (!user){
+                    message.channel.send(`User not found.`);
+                    return;
+                }
+                var msg = message.content.split(' ')
+                msg.splice(0, 2);
+                msg = msg.join(' ');
+                if (msg != "" && msg != null && msg != undefined && msg != " "){
+                    if (config[id]["quotes"][user.id] == undefined){
+                        config[id]["quotes"][user.id] = [
+                            msg
+                        ];
+                        saveConfig();
+                        message.channel.send(`Quote saved!`);
+                    }
+                    else{
+                        config[id]["quotes"][user.id].push(msg);
+                        saveConfig();
+                        message.channel.send(`Quote saved!`);
+                    }
+                }
+                else if (config[id]["quotes"][user.id] == undefined || config[id]["quotes"][user.id].length == 0){
+                    message.channel.send(`This user doesn't have any quotes saved!`);
+                }
+                else{
+                    message.channel.send(`"${config[id].quotes[user.id][rand(config[id].quotes[user.id].length)]}"\n - ${user.username}`);
+                }
+            }
         }
         else if (command(channel, cmd, "remove")){
             var member = message.member;
@@ -1599,7 +1604,7 @@ bot.on('message', message => {
                 if (setting == "msg"){
                     var msg = message.content.split('v-config messages welcome msg ')[1];
                     if (!msg){
-                        message.channel.send(`The current welcoming message is: \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\`\nUse this command to change the message:\`\`\`v-config messages welcome msg [message]\`\`\`Inside the message, (user) will be replaced with the joining user's username, whereas (@user) will tag the joining user.`);
+                        message.channel.send(`The current welcoming message is: \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\`\nUse this command to change the message:\`\`\`v-config messages welcome msg [message]\`\`\`Inside the message, \`(user)\` will be replaced with the joining user's username, whereas \`(@user)\` will tag the joining user.`);
                     }
                     else{
                         config[id].messages.welcome.msg = msg;
@@ -1660,7 +1665,7 @@ bot.on('message', message => {
                 }
                 if (setting == "msg"){
                     if (args[3] == undefined){
-                        message.channel.send(`You can change the levelup message by typing \`v-config messages levelup msg [message]\`.\nIn the message, (user) will become the user's name, (@user) will tag the person, and (level) will become the new level.`);
+                        message.channel.send(`You can change the levelup message by typing \`v-config messages levelup msg [message]\`.\nIn the message, \`(user)\` will become the user's name, \`(@user)\` will tag the person, and (level) will become the new level.`);
                         return;
                     }
                     config[id].messages.levelup.msg = message.content.split(`v-config messages levelup msg `)[1];
