@@ -434,7 +434,7 @@ bot.on('guildMemberAdd', member =>{
         console.log(roles);
         for (i = 0 ; i < roles.length; i++){
             if (roles[i]){
-                var role = member.guild.roles.get('name', roles[i]);
+                var role = member.guild.roles.find('name', roles[i]);
                 console.log(role);
                 if (role){
                     member.addRole(role);
