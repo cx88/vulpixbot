@@ -9,7 +9,6 @@ var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
 var config = "";
 var main_color = 10876925;
-var started = false;
 var admin = require('firebase-admin');
 var serviceAccount = require('./database/vulpix-bot-service-account.json');
 admin.initializeApp({
@@ -17,12 +16,12 @@ admin.initializeApp({
   databaseURL: process.env.DATABASE
 });
 var ref = admin.database().ref();
-ref.once('value', function(data){
-    config = data.val();
-    started = true;
-}, function(err){
-    console.log(err)
-});
+//ref.once('value', function(data){
+//    config = data.val();
+//    started = true;
+//}, function(err){
+//    console.log(err)
+//});
 //var pbuser = process.env.PASTEBIN.split('|')[0];
 //var pbpass = process.env.PASTEBIN.split('|')[1];
 //paste.setDevKey(process.env.DEVKEY);
@@ -1750,12 +1749,12 @@ bot.on('message', message => {
 });
 
 ref.on('value', function(data){
-    config = data.val();
+    if (data.val()) config = data.val();
     console.log('Synced config with database.');
 }, function(err){
     console.log(err);
 })
 
-ref.update(config);
+if (config) ref.update(config);
 
 bot.login(process.env.TOKEN);
