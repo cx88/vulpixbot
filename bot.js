@@ -357,6 +357,7 @@ function setDefaults(guild){
 }
 
 function saveConfig(){
+    ref.update(config);
     /*var str = jsonToString(config);
     paste.setDevKey(process.env.DEVKEY);
     paste.login(pbuser, pbpass, function(success, data){
@@ -418,20 +419,20 @@ setInterval(saveConfig, 30000);
 setInterval(changeAvatar, 720000)
 
 bot.on('ready', () => {
-    if (!started) return;
+    if (!config) return;
     console.log('Vulpix online');
     bot.user.setGame("Type v-config");
 });
 
 bot.on('guildCreate', guild =>{
-    if (!started) return;
+    if (!config) return;
     logMessage('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
     guild.defaultChannel.send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
     setDefaults(guild);
 })
 
 bot.on('guildMemberAdd', member =>{
-    if (!started) return;
+    if (!config) return;
     if (config[member.guild.id.toString()] == undefined){
         setDefaults(member.guild);
     }
@@ -449,7 +450,7 @@ bot.on('guildMemberAdd', member =>{
 });
 
 bot.on('guildMemberRemove', member => {
-    if (!started) return;
+    if (!config) return;
     var guild = member.guild;
     var id = guild.id;
     var userid = member.user.id;
@@ -462,7 +463,7 @@ bot.on('guildMemberRemove', member => {
 });
 
 bot.on('channelDelete', channel => {
-    if (!started) return;
+    if (!config) return;
     var guild = channel.guild;
     var id = guild.id;
     var channelid = channel.id;
@@ -472,7 +473,7 @@ bot.on('channelDelete', channel => {
 });
 
 bot.on('guildDelete', guild => {
-    if (!started) return;
+    if (!config) return;
     var id = guild.id;
     if (config[id]){
         delete config[id];
@@ -480,7 +481,7 @@ bot.on('guildDelete', guild => {
 })
 
 bot.on('message', message => {
-    if (!started) return;
+    if (!config) return;
 	if (!message || !message.member) return;
     if (message.member.user.bot) return;
     var guild = message.guild;
