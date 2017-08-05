@@ -11,7 +11,7 @@ var config = "";
 var main_color = 10876925;
 var started = false;
 var admin = require('firebase-admin');
-var serviceAccount = require('./database/vulpic-bot-service-account.json');
+var serviceAccount = require('./database/vulpix-bot-service-account.json');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: process.env.DATABASE
