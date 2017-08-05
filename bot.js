@@ -14,7 +14,7 @@ var admin = require('firebase-admin');
 var serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT)
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.DATABASE_URL
+  databaseURL: process.env.DATABASE
 });
 var ref = admin.database().ref();
 ref.once('value', function(data){
