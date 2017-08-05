@@ -1687,7 +1687,7 @@ bot.on('message', message => {
                         console.log(config[id].roles[keys[i]][j] + ' on ' + keys[i])
                     }
                 }
-                message.channel.send(`These role events are currently active:\`\`\`\n${active.length == 0 ? active.join('\n') : `---`}\`\`\`Configure roles by using one of the following commands:\`\`\`\nv-config roles add\nv-config roles remove\`\`\``)
+                message.channel.send(`These role events are currently active:\`\`\`\n${roles.length == 0 ? roles.join('\n') : `---`}\`\`\`Configure roles by using one of the following commands:\`\`\`\nv-config roles add\nv-config roles remove\`\`\``)
             }
         }
         else if (cmd == "bot_log"){
