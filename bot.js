@@ -1624,6 +1624,9 @@ bot.on('message', message => {
                 var role = msg.split('"')[1].split('"')[0];
                 var event = msg.split('"')[2].split('"')[0];
                 var param = event.split(' ')[1];
+                console.log(role);
+                console.log(event);
+                console.log(param);
                 if (event.contains('level')){
                     if (isNaN(param)){
                         message.channel.send(`Invalid level for event "level X".`);
