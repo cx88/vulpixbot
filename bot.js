@@ -1302,7 +1302,7 @@ bot.on('message', message => {
         }
         else if (command(channel, cmd, "quotes")){
             var user;
-            if (args[1]){
+            if (args[0]){
                 user = message.mentions.users.first();
                 if (!user) user = tryGetUser(guild, args[0]);
                 if (!user){
@@ -1314,7 +1314,6 @@ bot.on('message', message => {
                 user = message.member.user;
             }
             var member = message.member;
-            message.channel.send(user.username);
             member = guild.members.get(user.id);
             if (getQuotes(member).length == 0){
                 message.channel.send(`This user doesn't have any quotes saved!`);
@@ -1350,9 +1349,7 @@ bot.on('message', message => {
                     message.channel.send(`User not found.`);
                     return;
                 }
-                var msg = message.content.split(`${config[id].prefix}add quote `)[1]
-                msg.splice(0, 2);
-                msg = msg.join(' ');
+                var msg = message.content.split(`${config[id].prefix}add quote `)[1];
                 if (msg){
                     if (config[id].quotes[user.id] == undefined){
                         config[id].quotes[user.id] = [
@@ -1428,7 +1425,7 @@ bot.on('message', message => {
                         message.channel.send(`This user does not have any quotes yet.`);
                         return;
                     }
-                    config[id]["quotes"][user.id] = [];
+                    config[id].quotes[user.id] = [];
                     message.channel.send(`Successfully cleared all ${user.username}'s quotes.`);
                 }
             }
