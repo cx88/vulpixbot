@@ -517,9 +517,9 @@ bot.on('message', message => {
                     var roles = config[id].roles[`level ${level}`];
                     for (i = 0 ; i < roles.length; i++){
                         if (roles[i]){
-                            var role = member.guild.roles.find('name', roles[i]);
+                            var role = guild.roles.find('name', roles[i]);
                             if (role){
-                                member.addRole(role);
+                                guild.members.get(user.id).addRole(role);
                             }
                         }
                     }
