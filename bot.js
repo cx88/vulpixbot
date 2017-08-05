@@ -1682,6 +1682,7 @@ bot.on('message', message => {
                     var msg = message.content.split('v-config messages goodbye msg ')[1];
                     if (!msg){
                         message.channel.send(`The current goodbye message is:\`\`\`\n${config[id].messages.goodbye.msg}\`\`\`Type \`v-config messages goodbye msg [message]\` to change it.`)
+                        return;
                     }
                     config[id].messages.goodbye.msg = msg;
                     saveConfig();
