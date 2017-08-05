@@ -243,9 +243,19 @@ function tryGetUser(guild, str){
         user = getUser(guild, str);
     }
     else{
-        var name = guild.members.find(m => m.nickname == str);
-        if (!name) name = guild.members.find(m => m.nickname.toLowerCase() == str.toLowerCase());
-        if (name) user = name.user;
+        var name;
+        try{
+            name = guild.members.find(m => m.nickname == str);
+        }
+        catch (err){
+            try{
+                if (!name) name = guild.members.find(m => m.nickname.toLowerCase() == str.toLowerCase());
+                if (name) user = name.user;
+            }
+            catch (err){
+                return null;
+            }
+        }
     }
     if (!user){
     	user = guild.members.get(str);
