@@ -1755,7 +1755,7 @@ bot.on('message', message => {
                 }
                 config[id].bot_log.channel = args[2];
                 saveConfig();
-                message.channel.send(`The bot will now log unordinary actions in channel \`${config[id].bot_log.channel}`\`.`);
+                message.channel.send(`The bot will now log unordinary actions in channel \`${config[id].bot_log.channel}\`.`);
             }
             else if (args[1] == "on"){
                 if (config[id].bot_log.status == "on"){
