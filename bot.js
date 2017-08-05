@@ -342,10 +342,9 @@ function saveConfig(){
     ref.update(config);
 }
 
-function logMessage(message){
-    console.log(message);
-    if (!config[message.guild.id].commandlog) config[message.guild.id].commandlog = []
-    config[message.guild.id].commandlog.push(message);
+function logMessage(guild, message){
+    if (!config[guild.id].commandlog) config[guild.id].commandlog = []
+    config[guild.id].commandlog.push(message);
 }
 
 function rand(int){
@@ -506,7 +505,7 @@ bot.on('message', message => {
         cmd = message.content.substr(1).split(' ')[0];
         args = message.content.split(" ");
         args.splice(0, 1);
-        logMessage(dateNow() + ' ' + message.author.username + `: ` + message.content);
+        logMessage(guild, dateNow() + ' ' + message.author.username + `: ` + message.content);
         if (command(channel, cmd, "pc")){
             if (args[0] == undefined) return;
             message.channel.send('https://pokecommunity.com/~'+args[0]);
@@ -1493,7 +1492,7 @@ bot.on('message', message => {
         args.splice(0, 1);
         var cmd = args[0];
         var setting = args[1];
-        logMessage(`${dateNow()} ${message.author.username}: ${message.content}`);
+        logMessage(guild, `${dateNow()} ${message.author.username}: ${message.content}`);
         if (cmd == "prefix"){
             if (setting != undefined){
                 if (setting == "v-"){
@@ -1730,7 +1729,6 @@ bot.on('message', message => {
 
 ref.on('value', function(data){
     if (data.val()) config = data.val();
-    console.log('Synced config with database.');
 }, function(err){
     console.log(err);
 })
