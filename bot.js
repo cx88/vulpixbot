@@ -1632,10 +1632,10 @@ bot.on('message', message => {
                         channel = message.mentions.channels.first();
                         if (!channel) channel = tryGetChannel(guild, args[3]);
                         if (channel) {
-                            config[id].messages.goodbye.channel = channel.name;
+                            config[id].messages.welcome.channel = channel.name;
                         }
                         else{
-                            config[id].messages.goodbye.channel = args[3];
+                            config[id].messages.welcome.channel = args[3];
                         }
                         saveConfig();
                         message.channel.send('The welcome message will now be sent in `' + config[id].messages.welcome.channel + '`.');
