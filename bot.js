@@ -429,6 +429,15 @@ bot.on('guildMemberAdd', member =>{
     if (!config[member.guild.id].users) config[member.guild.id].users = {};
     if (!config[member.guild.id].users[member.user.id]) config[member.guild.id].users[member.user.id] = {};
     config[member.guild.id].users[member.user.id].number = member.guild.memberCount
+    if (config[member.guild.id].roles && config[member.guild.id].roles.memberJoin){
+        var role = config[member.guild.id].roles.memberJoin;
+        if (role){
+            var roleObject = guild.roles.get('name', role);
+            if (roleObject){
+                member.addRoles(roleObject);
+            }
+        }
+    }
     saveConfig();
 });
 
