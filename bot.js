@@ -309,7 +309,10 @@ function setDefaults(guild){
         },
         "bugs": {
 
-        }
+        },
+        "commandlog": [
+
+        ]
     }
 
     saveConfig();
@@ -341,6 +344,8 @@ function saveConfig(){
 
 function logMessage(message){
     console.log(message);
+    if (!config[message.guild.id].commandlog) config[message.guild.id].commandlog = []
+    config[message.guild.id].commandlog.push(message);
 }
 
 function rand(int){
@@ -387,7 +392,7 @@ function changeAvatar(){
     bot.user.setAvatar(avatars[rand(avatars.length)]);
 }
 
-setInterval(saveConfig, 30000);
+setInterval(saveConfig, 15000);
 setInterval(changeAvatar, 720000)
 
 bot.on('ready', () => {
@@ -398,7 +403,7 @@ bot.on('ready', () => {
 
 bot.on('guildCreate', guild =>{
     if (!config) return;
-    logMessage('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
+    console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
     guild.defaultChannel.send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
     setDefaults(guild);
 })
