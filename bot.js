@@ -1700,11 +1700,12 @@ bot.on('message', message => {
                 var msg = roles[index];
                 var key = msg.split('"')[3].split('"')[0];
                 var value = msg.split('"')[1].split('"')[0];
-                config[id].roles[key] = config[id].roles[key].splice(config[id].roles[key].indexOf(value), 1);
+                config[id].roles[key].splice(config[id].roles[key].indexOf(value), 1);
                 if (config[id].roles[key].length == 0){
                     delete config[id].roles[key];
                 }
-                message.channel.send(`Successfully removed "${value}" on ${key}`);
+                saveConfig();
+                message.channel.send(`Successfully removed "${value}" on "${key}"`);
             }
             else{
                 var roles = []
