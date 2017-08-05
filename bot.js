@@ -1339,6 +1339,7 @@ bot.on('message', message => {
         }
         else if (command(channel, cmd, "add")){
             if (args[0] == "quote"){
+                args.splice(0, 1);
                 if (args[0] == undefined) {
                     message.channel.send(`Use \`${config[id].prefix}quote [user]\` to see someone's quotes. Use \`${config[id].prefix}quote [user] [message]\` to add a quote to that user. Note that [user] should be one word if it isn't a tag. \`%20\` will be substituted with a space.`);
                     return;
