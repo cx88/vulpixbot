@@ -431,10 +431,12 @@ bot.on('guildMemberAdd', member =>{
     config[member.guild.id].users[member.user.id].number = member.guild.memberCount
     if (config[member.guild.id].roles && config[member.guild.id].roles.memberJoin){
         var role = config[member.guild.id].roles.memberJoin;
+        console.log(role);
         if (role){
             var roleObject = member.guild.roles.get('name', role);
+            console.log(roleObject);
             if (roleObject){
-                member.addRoles(roleObject);
+                member.addRole(roleObject);
             }
         }
     }
