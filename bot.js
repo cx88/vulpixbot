@@ -355,6 +355,7 @@ function logMessage(guild, message){
 }
 
 function botLog(guild, message){
+    var id = guild.id;
     if (config[id].bot_log && config[id].bot_log.channel && config[id].bot_log.status == "on"){
         channel = trygetChannel(guild, config[id].bot_log.channel);
         if (channel){
