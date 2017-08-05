@@ -306,7 +306,7 @@ function setDefaults(guild){
         },
         "roles": {
 
-        }
+        },
         "quotes": {
 
         },
@@ -1623,6 +1623,17 @@ bot.on('message', message => {
                 }
                 var role = msg.split('"')[1].split('"')[0];
                 var event = msg.split('"')[2].split('"')[0];
+                var param = event.split(' ')[1];
+                if (event.contains('level')){
+                    if (isNaN(param)){
+                        message.channel.send(`Invalid level for event "level X".`);
+                        return;
+                    }
+                }
+                if (event != "memberJoin" && !event.contains('level')){
+                    message.channel.send(`Invalid event specified.`);
+                    return;
+                }
                 if (role && event){
                     if (!config[id].roles) config[id].roles = {};
                     if (!config[id].roles[event]) config[id].roles[event] = [];
