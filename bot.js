@@ -1382,8 +1382,14 @@ bot.on('message', message => {
                     message.channel.send(`Please enter the index of the quote you'd like to remove. You can see your quotes with ?quotes.`);
                     return;
                 }
+                if (isBotAdmin(message.member)){
+                    args.splice(0, 2);
+                    var user = message.mentions.users.first();
+                    if (!user) user = tryGetUser(guild, args.join(' '));
+                    member = guild.members.get(user.id);
+                }
                 if (getQuotes(member).length == 0){
-                    message.channel.send(`You don't have any quotes saved.`);
+                    message.channel.send(`${member.user == message.author ? `You don't` : `This user doesn't`} have any quotes saved.`);
                     return;
                 }
                 if (index >= getQuotes(member).length){
