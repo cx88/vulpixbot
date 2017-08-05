@@ -1749,12 +1749,13 @@ bot.on('message', message => {
     }
 });
 
-ref.update(config);
 ref.on('value', function(data){
     config = data.val();
     console.log('Synced config with database.');
 }, function(err){
     console.log(err);
 })
+
+ref.update(config);
 
 bot.login(process.env.TOKEN);
