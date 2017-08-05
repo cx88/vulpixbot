@@ -1684,10 +1684,10 @@ bot.on('message', message => {
                 var keys = Object.keys(config[id].roles)
                 for (i = 0; i < keys.length; i++){
                     for (j = 0; j < config[id].roles[keys[i]].length; j++){
-                        roles.push(`${i+j}.) "${config[id].roles[keys[i]][j]}"" on "${keys[i]}"`);
+                        roles.push(`${roles.length + 1}.) "${config[id].roles[keys[i]][j]}"" on "${keys[i]}"`);
                     }
                 }
-                message.channel.send(`These role events are currently active:\`\`\`\n${roles.length == 0 ? roles.join('\n') : `---`}\`\`\`Configure roles by using one of the following commands:\`\`\`\nv-config roles add\nv-config roles remove\`\`\``)
+                message.channel.send(`These role events are currently active:\`\`\`\n${roles.length == 0 ? `---` : roles.join('\n')}\`\`\`Configure roles by using one of the following commands:\`\`\`\nv-config roles add\nv-config roles remove\`\`\``)
             }
         }
         else if (cmd == "bot_log"){
