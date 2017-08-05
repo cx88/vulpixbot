@@ -1622,7 +1622,7 @@ bot.on('message', message => {
                     return;
                 }
                 var role = msg.split('"')[1].split('"')[0];
-                var event = msg.split('"')[2].split('"')[0];
+                var event = msg.split('"')[3].split('"')[0];
                 var param = event.split(' ')[1];
                 console.log(role);
                 console.log(event);
