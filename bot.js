@@ -272,6 +272,10 @@ function isBotAdmin(member){
     return hasRole(member, "Vulpix Admin") || member.user.id == member.guild.ownerID || member.user.id == '270175313856561153';
 }
 
+function isDeveloper(member){
+    return isBotAdmin(member) || hasRole(member, "Developers");
+}
+
 function setDefaults(guild){
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {
@@ -302,6 +306,11 @@ function setDefaults(guild){
             "levelup": {
                 "msg": "Congrats, (@user)! You leveled up to level (level)!",
                 "status": "on"
+            },
+            "goodbye": {
+                "msg": "(user) has just left the server. Rest in peace!",
+                "status": "on",
+                "channel": "general"
             }
         },
         "bot_log": {
@@ -1570,56 +1579,62 @@ bot.on('message', message => {
             if (arg == "welcome"){
                 if (setting == "msg"){
                     var msg = message.content.split('v-config messages welcome msg ')[1];
-                    if (msg == null || msg == undefined || msg == "" || msg == " "){
-                        message.channel.send(`The current welcoming message is: \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\`\nUse this command to change the message: \
-                        \`\`\`v-config messages welcome msg [message]\`\`\`Keep in mind that \`(user)\` inside the message will be replaced with the joining player's name.`);
+                    if (!msg){
+                        message.channel.send(`The current welcoming message is: \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\`\nUse this command to change the message:\`\`\`v-config messages welcome msg [message]\`\`\`Inside the message, (user) will be replaced with the joining user's username, whereas (@user) will tag the joining user.`);
                     }
                     else{
-                        config[id]["messages"]["welcome"]["msg"] = msg;
+                        config[id].messages.welcome.msg = msg;
                         saveConfig();
-                        message.channel.send(`Successfully set welcome message to: \`\`\`${config[id]["messages"]["welcome"]["msg"]}\`\`\``);
+                        message.channel.send(`Successfully set welcome message to: \`\`\`${config[id].messages.welcome.msg}\`\`\``);
                     }
                 }
                 else if (setting == "on"){
-                    if (config[id]["messages"]["welcome"]["status"] == "on"){
+                    if (config[id].messages.welcome.status == "on"){
                         message.channel.send(`The welcome message was already enabled. Nothing happened.`);
                     }
                     else{
-                        config[id]["messages"]["welcome"]["status"] = "on";
+                        config[id].messages.welcome.status = "on";
                         saveConfig();
                         message.channel.send(`The welcome message will now be sent for every new member that joins the server.`);
                     }
                 }
                 else if (setting == "off"){
-                    if (config[id]["messages"]["welcome"]["status"] == "off"){
+                    if (config[id].messages.welcome.status == "off"){
                         message.channel.send(`The welcome message was already disabled. Nothing happened.`);
                     }
                     else{
-                        config[id]["messages"]["welcome"]["status"] = "off";
+                        config[id].messages.welcome.status = "off";
                         saveConfig();
                         message.channel.send(`The welcome message will no longer be sent for every new member that joins the server.`);
                     }
                 }
                 else if (setting == "channel"){
                     if (args[3] != undefined){
-                        config[id].messages["welcome"].channel = args[3];
+                        channel = message.mentions.channels.first();
+                        if (!channel) channel = tryGetChannel(guild, args[3]);
+                        if (channel) {
+                            config[id].messages.goodbye.channel = channel.name;
+                        }
+                        else{
+                            config[id].messages.goodbye.channel = args[3];
+                        }
                         saveConfig();
-                        message.channel.send('The welcome message will now be sent in `' + config[id].messages["welcome"].channel + '`.');
+                        message.channel.send('The welcome message will now be sent in `' + config[id].messages.welcome.channel + '`.');
                     }
                     else{
-                        message.channel.send('The channel the welcome message will be sent in. Currently set to ```' + config[id].messages["welcome"].channel + '```Use the following command to change it: ```v-config messages welcome channel [channelname]```Note that it should be the channel **name**, not a hyperlink or id.');
+                        message.channel.send('The channel the welcome message will be sent in. Currently set to ```' + config[id].messages.welcome.channel + '```Use the following command to change it: ```v-config messages welcome channel [channelname]```Note that it should be the channel **name**, not a hyperlink or id.');
                     }
                 }
                 else{
-                    message.channel.send('The message that is sent whenever a new user joins.```Message: '+config[id].messages["welcome"].msg+'\nStatus: '+config[id].messages["welcome"].status+'\nChannel: '+config[id]["messages"]["welcome"]["channel"]+'```\nUse one of the following commands to change the settings:```v-config messages welcome msg [message]\nv-config messages welcome on\nv-config messages welcome off\nv-config messages welcome channel [channelname]```In the welcome message, `(user)` will be replaced with the username.');
+                    message.channel.send('The message that is sent whenever a new user joins.```Message: '+config[id].messages.welcome.msg+'\nStatus: '+config[id].messages.welcome.status+'\nChannel: '+config[id]["messages"]["welcome"]["channel"]+'```\nUse one of the following commands to change the settings:```v-config messages welcome msg [message]\nv-config messages welcome on\nv-config messages welcome off\nv-config messages welcome channel [channelname]```In the welcome message, `(user)` will be replaced with the username.');
                 }
             }
             else if (arg == "mute"){
                 message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+config[id].messages["mute"].msg+'\r\nStatus: '+config[id].messages["mute"].status+'```');
             }
             else if (arg == "levelup"){
-                if (!config[id].messages["levelup"]){
-                    config[id].messages["levelup"] = {
+                if (!config[id].messages.levelup){
+                    config[id].messages.levelup = {
                         "msg": "Congrats, (@user)! You leveled up to level (level)!",
                         "status": "on"
                     }
@@ -1629,30 +1644,85 @@ bot.on('message', message => {
                         message.channel.send(`You can change the levelup message by typing \`v-config messages levelup msg [message]\`.\nIn the message, (user) will become the user's name, (@user) will tag the person, and (level) will become the new level.`);
                         return;
                     }
-                    config[id].messages["levelup"].msg = message.content.split(`v-config messages levelup msg `)[1];
+                    config[id].messages.levelup.msg = message.content.split(`v-config messages levelup msg `)[1];
                     saveConfig();
-                    message.channel.send(`The message when a user levels up has been set to\`\`\`\n${config[id].messages["levelup"].msg}\`\`\``);
+                    message.channel.send(`The message when a user levels up has been set to\`\`\`\n${config[id].messages.levelup.msg}\`\`\``);
                 }
                 else if (setting == "on"){
-                    if (config[id].messages["levelup"].status == "on"){
+                    if (config[id].messages.levelup.status == "on"){
                         message.channel.send(`The message when a user levels up is already enabled.`);
                         return;
                     }
-                    config[id].messages["levelup"].status = "on";
+                    config[id].messages.levelup.status = "on";
                     saveConfig();
                     message.channel.send(`The message when a user levels up has been enabled.`);
                 }
                 else if (setting == "off"){
-                    if (config[id].messages["levelup"].status == "off"){
+                    if (config[id].messages.levelup.status == "off"){
                         message.channel.send(`The message when a user levels up is already disabled.`);
                         return;
                     }
-                    config[id].messages["levelup"].status = "off";
+                    config[id].messages.levelup.status = "off";
                     saveConfig();
                     message.channel.send(`The message when a user levels up has been disabled.`);
                 }
                 else{
                     message.channel.send(`When someone levels up, Vulpix will send a message. You can configure that using one of the following commands:\n\`\`\`v-config messages levelup msg\nv-config messages levelup on\nv-config messages levelup off\`\`\``);
+                }
+            }
+            else if (arg == "goodbye"){
+                if (!config[id].messages.goodbye){
+                    config[id].messages.goodbye = {
+                        "msg": "(user) has just left the server. Rest in peace!",
+                        "status": "on",
+                        "channel": "general"
+                    }
+                }
+                if (args[2] == "msg"){
+                    var msg = message.content.split('v-config messages goodbye msg ')[1];
+                    if (!msg){
+                        message.channel.send(`The current message sent whenever a member leaves the server is:\`\`\`\n${config[id].messages.goodbye.msg}\`\`\`Type \`v-config messages goodbye msg [message]\` to change it.`)
+                    }
+                    config[id].messages.goodbye.msg = msg;
+                    saveConfig();
+                    message.channel.send(`The message sent whenever a member leaves the server has been set to:\`\`\`\n${config[id].messages.goodbye.msg}\`\`\``);
+                }
+                else if (args[2] == "on"){
+                    if (config[id].messages.goodbye.status == "on"){
+                        message.channel.send(`The message sent whenever a member leaves the server is already enabled.`);
+                        return;
+                    }
+                    config[id].messages.goodbye.status = "on";
+                    saveConfig();
+                    message.channel.send(`The message sent whenever a member leaves the server has been enabled.`);
+                }
+                else if (args[2] == "off"){
+                    if (config[id].messages.goodbye.status == "off"){
+                        message.channel.send(`The message sent whenever a member leaves the server is already disabled.`);
+                        return;
+                    }
+                    config[id].messages.goodbye.status = "off";
+                    saveConfig();
+                    message.channel.send(`The message sent whenever a member leaves the server has been disabled.`);
+                }
+                else if (args[2] == "channel"){
+                    if (!args[3]){
+                        message.channel.send(`The goodbye message is currently being sent in \`${config[id].messages.goodbye.channel}\`. You can change the channel using \`v-config messages goodbye channel [channel]\`.`);
+                        return;
+                    }
+                    channel = message.mentions.channels.first();
+                    if (!channel) channel = tryGetChannel(guild, args[3]);
+                    if (channel) {
+                        config[id].messages.goodbye.channel = channel.name;
+                    }
+                    else{
+                        config[id].messages.goodbye.channel = args[3];
+                    }
+                    saveConfig();
+                    message.channel.send(`The goodbye message will now be sent in \`${config[id].messages.goodbye.channel}\`.`);
+                }
+                else{
+
                 }
             }
             else{
@@ -1754,7 +1824,14 @@ bot.on('message', message => {
                     message.channel.send(`The bot will currently log its unordinary actions in \`${config[id].bot_log.channel}\`.`);
                     return;
                 }
-                config[id].bot_log.channel = args[2];
+                channel = message.mentions.channels.first();
+                if (!channel) channel = tryGetChannel(guild, args[2]);
+                if (channel) {
+                    config[id].bot_log.channel = channel.name;
+                }
+                else{
+                    config[id].bot_log.channel = args[2];
+                }
                 saveConfig();
                 message.channel.send(`The bot will now log unordinary actions in channel \`${config[id].bot_log.channel}\`.`);
             }
