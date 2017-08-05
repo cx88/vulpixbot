@@ -304,6 +304,9 @@ function setDefaults(guild){
                 "status": "on"
             }
         },
+        "roles": {
+
+        }
         "quotes": {
 
         },
@@ -1501,7 +1504,7 @@ bot.on('message', message => {
                 else{
                     config[id]["prefix"] = setting;
                     saveConfig();
-                    message.channel.send(`Successfully set active command prefix to \`${config[id]["prefix"]}\`.`);
+                    message.channel.send(`Successfully set active command prefix to \`${config[id].prefix}\`.`);
                 }
             }
             else{
@@ -1604,7 +1607,35 @@ bot.on('message', message => {
             }
         }
         else if (cmd == "roles"){
-            
+            if (args[1] == "add"){
+                if (!args[2]){
+                    message.channel.send(`To add a role on a specific event, use one of the following commands:\`\`\`\nv-config roles add "myRole" on "memberJoin"\nv-config roles add "myRole" on "level 5"\`\`\`Explanation:\nIf the event is "memberJoin", whenever the user joins the server, "myRole" will be given to them.\nIf the event is "level X", whenever level X is reached, the user will be given "myRole".`);
+                    return;
+                }
+                var msg = message.content.split('v-config roles add ')[1];
+                if (msg.match(/"/g).length != 4){
+                    message.channel.send(`Invalid format for adding role event.`);
+                    return;
+                }
+                if (!msg.contains('on')){
+                    message.channel.send(`Invalid format for adding role event.`);
+                    return;
+                }
+                var role = msg.split('"')[1].split('"')[0];
+                var event = msg.split('"')[2].split('"')[0];
+                if (role && event){
+                    if (!config[id].roles) config[id].roles = {};
+                    if (!config[id].roles[event]) config[id].roles[event] = [];
+                    config[id].roles[event].push(role);
+                    message.channel.send(`Upon event "${event}", role "${role}" will be added.`);
+                }
+            }
+            else if (args[1] == "remove"){
+
+            }
+            else{
+
+            }
         }
         else if (cmd == "channels"){
             if (config[id].channels == undefined){
