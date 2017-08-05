@@ -307,7 +307,7 @@ function setDefaults(guild){
         "bot_log": {
             "channel": "self",
             "status": "on"
-        }
+        },
         "roles": {
 
         },
