@@ -11,7 +11,7 @@ var config = "";
 var main_color = 10876925;
 var started = false;
 var admin = require('firebase-admin');
-var serviceAccount = process.env.SERVICE_ACCOUNT;
+var serviceAccount = require('./database/vulpic-bot-service-account.json');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: process.env.DATABASE
@@ -1748,6 +1748,6 @@ bot.on('message', message => {
     }
 });
 
-ref.update(config);
+if (started) ref.update(config);
 
 bot.login(process.env.TOKEN);
