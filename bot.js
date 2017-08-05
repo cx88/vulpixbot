@@ -1350,10 +1350,10 @@ bot.on('message', message => {
                     message.channel.send(`User not found.`);
                     return;
                 }
-                var msg = message.content.split(' ')
+                var msg = message.content.split(`${config[id].prefix}add quote `)[1]
                 msg.splice(0, 2);
                 msg = msg.join(' ');
-                if (msg != "" && msg != null && msg != undefined && msg != " "){
+                if (msg){
                     if (config[id].quotes[user.id] == undefined){
                         config[id].quotes[user.id] = [
                             msg
@@ -1369,9 +1369,6 @@ bot.on('message', message => {
                 }
                 else if (!config[id].quotes[user.id] || config[id].quotes[user.id].length == 0){
                     message.channel.send(`This user doesn't have any quotes saved!`);
-                }
-                else{
-                    message.channel.send(`"${config[id].quotes[user.id][rand(config[id].quotes[user.id].length)]}"\n - ${user.username}`);
                 }
             }
         }
