@@ -1416,7 +1416,7 @@ bot.on('message', message => {
                 else{
                     config[id].quotes[member.user.id].splice(index, 1);
                     saveConfig();
-                    message.channel.send(`Successfully removed quote #${index + 1}.`);
+                    message.channel.send(`Successfully removed quote #${index + 1}${member.user != message.author ? ` of ${member.user.username}`}.`);
                 }
             }
         }
