@@ -1722,7 +1722,7 @@ bot.on('message', message => {
                     message.channel.send(`The goodbye message will now be sent in \`${config[id].messages.goodbye.channel}\`.`);
                 }
                 else{
-                    message.channel.send(`These are the current configurations for the goodbye messages:\`\`\`Message: ${config[id].messages.goodbye.msg}\nStatus: ${config[id].messages.goodbye.status}\nChannel: ${config[id].messages.goodbye.channel}\`\`\`Change the configurations with one of the following commands: \`\`\`\nv-config messages goodbye msg\nv-config messages goodbye on\nv-config messages goodbye off\nv-config messages goodbye channel\`\`\``)
+                    message.channel.send(`These are the current configurations for the goodbye messages:\`\`\`\nMessage: ${config[id].messages.goodbye.msg}\nStatus: ${config[id].messages.goodbye.status}\nChannel: ${config[id].messages.goodbye.channel}\`\`\`Change the configurations with one of the following commands: \`\`\`\nv-config messages goodbye msg\nv-config messages goodbye on\nv-config messages goodbye off\nv-config messages goodbye channel\`\`\``)
                 }
             }
             else{
