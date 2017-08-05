@@ -11,7 +11,7 @@ var config = "";
 var main_color = 10876925;
 var started = false;
 var admin = require('firebase-admin');
-var serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT)
+var serviceAccount = process.env.SERVICE_ACCOUNT;
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: process.env.DATABASE
