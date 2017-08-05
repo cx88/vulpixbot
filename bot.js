@@ -243,10 +243,9 @@ function tryGetUser(guild, str){
         user = getUser(guild, str);
     }
     else{
-        var name = guild.members.find('nickname', str);
-        if (name != null && name != undefined){
-            user = name.user;
-        }
+        var name = guild.members.find(m => m.nickname == str);
+        if (!name) name = guild.members.find(m => m.nickname.toLowerCase() == str.toLowerCase());
+        if (name) user = name.user;
     }
     if (!user){
     	user = guild.members.get(str);
@@ -277,6 +276,7 @@ function setDefaults(guild){
     var g = guild.id.toString(); // Default Config settings.
     config[g] = {
         "prefix": "?",
+        "servername": guild.name,
         "ranks": {
 
         },
@@ -454,6 +454,9 @@ bot.on('guildMemberRemove', member => {
     if (config[id] && config[id].quotes && config[id].quotes[userid]){
         delete config[id].quotes[userid];
     }
+    if (config[id] && config[id].users && config[id].users[userid]){
+        delete config[id].users[userid];
+    }
 });
 
 bot.on('channelDelete', channel => {
@@ -472,7 +475,12 @@ bot.on('guildDelete', guild => {
     if (config[id]){
         delete config[id];
     }
-})
+});
+
+bot.on('guildUpdate', (oldguild, newguild) => {
+    var id = newguild.id;
+    config[id].servername = newguild.name;
+});
 
 bot.on('message', message => {
     if (!config) return;
