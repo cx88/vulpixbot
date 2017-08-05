@@ -430,13 +430,15 @@ bot.on('guildMemberAdd', member =>{
     if (!config[member.guild.id].users[member.user.id]) config[member.guild.id].users[member.user.id] = {};
     config[member.guild.id].users[member.user.id].number = member.guild.memberCount
     if (config[member.guild.id].roles && config[member.guild.id].roles.memberJoin){
-        var role = config[member.guild.id].roles.memberJoin;
-        console.log(role);
-        if (role){
-            var roleObject = member.guild.roles.get('name', role);
-            console.log(roleObject);
-            if (roleObject){
-                member.addRole(roleObject);
+        var roles = config[member.guild.id].roles.memberJoin;
+        console.log(roles);
+        for (i = 0 ; i < roles.length; i++){
+            if (roles[i]){
+                var role = member.guild.roles.get('name', roles[i]);
+                console.log(role);
+                if (role){
+                    member.addRole(role);
+                }
             }
         }
     }
