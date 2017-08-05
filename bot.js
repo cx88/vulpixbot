@@ -305,7 +305,7 @@ function setDefaults(guild){
             }
         },
         "bot_log": {
-            "channel": "self",
+            "channel": "bot_logs",
             "status": "on"
         },
         "roles": {
@@ -352,6 +352,15 @@ function saveConfig(){
 function logMessage(guild, message){
     if (!config[guild.id].commandlog) config[guild.id].commandlog = []
     config[guild.id].commandlog.push(message);
+}
+
+function botLog(guild, message){
+    if (config[id].bot_log && config[id].bot_log.channel && config[id].bot_log.status == "on"){
+        channel = trygetChannel(guild, config[id].bot_log.channel);
+        if (channel){
+            channel.send(message);
+        }
+    }
 }
 
 function rand(int){
@@ -427,7 +436,8 @@ bot.on('guildMemberAdd', member =>{
             getChannel(member.guild, channel).send(msg);
         }
         else{
-            member.guild.defaultChannel.send(`Channel '${channel}' does not exist as referred to in \`v-config messages welcome channel\`. Welcome either way, ` + member.user + `!`);
+            member.guild.defaultChannel.send(`Welcome to the server, ${member.user}!`);
+            botLog(guild, `Channel '${channel}' does not exist as referred to in \`v-config messages welcome channel\`.`);
         }
     }
     if (!config[member.guild.id].users) config[member.guild.id].users = {};
@@ -461,6 +471,7 @@ bot.on('guildMemberRemove', member => {
     if (config[id] && config[id].users && config[id].users[userid]){
         delete config[id].users[userid];
     }
+    saveConfig();
 });
 
 bot.on('channelDelete', channel => {
@@ -471,6 +482,7 @@ bot.on('channelDelete', channel => {
     if (config[id] && config[id].channels && config[id].channels[channelid]){
         delete config[id].channels[channelid];
     }
+    saveConfig();
 });
 
 bot.on('guildDelete', guild => {
@@ -479,11 +491,13 @@ bot.on('guildDelete', guild => {
     if (config[id]){
         delete config[id];
     }
+    saveConfig();
 });
 
 bot.on('guildUpdate', (oldguild, newguild) => {
     var id = newguild.id;
     config[id].servername = newguild.name;
+    saveConfig();
 });
 
 bot.on('message', message => {
@@ -1677,12 +1691,12 @@ bot.on('message', message => {
                 }
             }
             else if (args[1] == "remove"){
-                if (!args[2]){
-                    message.channel.send(`You can remove automatically assigned roles by typing \`v-config roles remove [index]\`. You can see the index of the role using \`v-config roles\`.`);
-                    return;
-                }
                 if (!config[id].roles){
                     message.channel.send(`There are no role events that you can remove.`);
+                    return;
+                }
+                if (!args[2]){
+                    message.channel.send(`You can remove automatically assigned roles by typing \`v-config roles remove [index]\`. You can see the index of the role using \`v-config roles\`.`);
                     return;
                 }
                 if (isNaN(args[2])){
@@ -1725,7 +1739,42 @@ bot.on('message', message => {
             }
         }
         else if (cmd == "bot_log"){
-
+            if (!config[id].bot_log) {
+                config[id].bot_log = {
+                    "channel": "bot_log",
+                    "status": "on"
+                }
+            }
+            if (args[1] == "channel"){
+                if (!args[2]){
+                    message.channel.send(`The bot will currently log its unordinary actions in channel "${config[id].bot_log.channel}".`);
+                    return;
+                }
+                config[id].bot_log.channel = args[2];
+                saveConfig();
+                message.channel.send(`The bot will now log unordinary actions in channel "${config[id].bot_log.channel}".`);
+            }
+            else if (args[1] == "on"){
+                if (config[id].bot_log.status == "on"){
+                    message.channel.send(`The bot log is already enabled.`);
+                    return;
+                }
+                config[id].bot_log.status = "on";
+                saveConfig();
+                message.channel.send(`The bot log is now enabled.`);
+            }
+            else if (args[1] == "off"){
+                if (config[id].bot_log.status == "off"){
+                    message.channel.send(`The bot log is already disabled.`);
+                    return;
+                }
+                config[id].bot_log.status = "off";
+                saveConfig();
+                message.channel.send(`The bot log is now disabled.`);
+            }
+            else{
+                message.channel.send(`The channel the bot will log its unordinary actions. The current configuration is as follows:\`\`\`\nChannel: ${config[id].bot_log.channel}\nStatus: ${config[id].bot_log.status}\`\`\`Use one of the following commands to change the configuration:\`\`\`\nv-config bot_log channel\nv-config bot_log on\nv-config bot_log off\`\`\``);
+            }
         }
         else if (cmd == "channels"){
             if (config[id].channels == undefined){
