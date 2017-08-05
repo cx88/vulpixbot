@@ -9,19 +9,33 @@ var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
 var config = "";
 var main_color = 10876925;
-var pbuser = process.env.PASTEBIN.split('|')[0];
-var pbpass = process.env.PASTEBIN.split('|')[1];
-paste.setDevKey(process.env.DEVKEY);
-paste.login(pbuser, pbpass, function(success, data){
-    if (!success){
-        console.log(`Failed (${data})`);
-    }
-    paste.get(url, function(success, data){
-        if (success){
-            config = JSON.parse(data);
-        }
-    });
+var started = false;
+var admin = require('firebase-admin');
+var serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT)
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: process.env.DATABASE_URL
 });
+var ref = admin.database().ref();
+ref.once('value', function(data){
+    config = data.val();
+    started = true;
+}, function(err){
+    console.log(err)
+});
+//var pbuser = process.env.PASTEBIN.split('|')[0];
+//var pbpass = process.env.PASTEBIN.split('|')[1];
+//paste.setDevKey(process.env.DEVKEY);
+//paste.login(pbuser, pbpass, function(success, data){
+//    if (!success){
+//        console.log(`Failed (${data})`);
+//    }
+//    paste.get(url, function(success, data){
+//        if (success){
+//            config = JSON.parse(data);
+//        }
+//    });
+//});
 const level_curve = [ 0,
   24,    54,    93,    135,   183,   // 1  - 5
   234,   288,   351,   420,   495,   // 6  - 10
@@ -343,13 +357,13 @@ function setDefaults(guild){
 }
 
 function saveConfig(){
-    var str = jsonToString(config);
+    /*var str = jsonToString(config);
     paste.setDevKey(process.env.DEVKEY);
     paste.login(pbuser, pbpass, function(success, data){
         paste.edit(url, {
             contents: str
         });
-    });
+    });*/
 }
 
 function logMessage(message){
@@ -404,17 +418,20 @@ setInterval(saveConfig, 30000);
 setInterval(changeAvatar, 720000)
 
 bot.on('ready', () => {
+    if (!started) return;
     console.log('Vulpix online');
     bot.user.setGame("Type v-config");
 });
 
 bot.on('guildCreate', guild =>{
+    if (!started) return;
     logMessage('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
     guild.defaultChannel.send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
     setDefaults(guild);
 })
 
 bot.on('guildMemberAdd', member =>{
+    if (!started) return;
     if (config[member.guild.id.toString()] == undefined){
         setDefaults(member.guild);
     }
@@ -432,6 +449,7 @@ bot.on('guildMemberAdd', member =>{
 });
 
 bot.on('guildMemberRemove', member => {
+    if (!started) return;
     var guild = member.guild;
     var id = guild.id;
     var userid = member.user.id;
@@ -444,6 +462,7 @@ bot.on('guildMemberRemove', member => {
 });
 
 bot.on('channelDelete', channel => {
+    if (!started) return;
     var guild = channel.guild;
     var id = guild.id;
     var channelid = channel.id;
@@ -453,21 +472,15 @@ bot.on('channelDelete', channel => {
 });
 
 bot.on('guildDelete', guild => {
+    if (!started) return;
     var id = guild.id;
     if (config[id]){
         delete config[id];
     }
 })
 
-bot.on('disconnect', event => {
-    console.log('Disconnecting...');
-})
-
-bot.on('reconnecting', function(){
-    console.log('Reconnecting...');
-});
-
 bot.on('message', message => {
+    if (!started) return;
 	if (!message || !message.member) return;
     if (message.member.user.bot) return;
     var guild = message.guild;
@@ -1485,12 +1498,12 @@ bot.on('message', message => {
                 var member = guild.members.get(user.id);
                 if (args[1] == undefined){
                     member.setNickname('');
-                    message.channel.send(`User "${member.user.username}"'s nickname has been reset.`);
+                    message.channel.send(`User "${user.username}"'s nickname has been reset.`);
                 }
                 else{
                     args.splice(0, 1);
                     member.setNickname(args.join(' '));
-                    message.channel.send(`User "${member.user.username}"'s nickname has been set to "${args.join(' ')}".`);   
+                    message.channel.send(`User "${user.username}"'s nickname has been set to "${args.join(' ')}".`);   
                 }
             }
         }
@@ -1734,5 +1747,7 @@ bot.on('message', message => {
         }
     }
 });
+
+ref.update(config);
 
 bot.login(process.env.TOKEN);
