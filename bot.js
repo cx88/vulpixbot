@@ -437,7 +437,7 @@ bot.on('guildMemberAdd', member =>{
         }
         else{
             member.guild.defaultChannel.send(`Welcome to the server, ${member.user}!`);
-            botLog(guild, `Channel '${channel}' does not exist as referred to in \`v-config messages welcome channel\`.`);
+            botLog(member.guild, `Channel \`${channel}\` does not exist as referred to in \`v-config messages welcome channel\`.`);
         }
     }
     if (!config[member.guild.id].users) config[member.guild.id].users = {};
@@ -450,6 +450,9 @@ bot.on('guildMemberAdd', member =>{
                 var role = member.guild.roles.find('name', roles[i]);
                 if (role){
                     member.addRole(role);
+                }
+                else{
+                    botLog(member.guild, `Role \`${roles[i]}\` does not exist as referred to in \`v-config roles\` with event "memberJoin".`);
                 }
             }
         }
@@ -1422,7 +1425,7 @@ bot.on('message', message => {
                 	var channel = message.mentions.channels.first();
                 	if (!channel) channel = tryGetChannel(guild, args.join(' '));
                 	if (!channel) channel = message.channel;
-                    message.channel.send(`ID of channel "${channel.name}": ${channel.id}`);
+                    message.channel.send(`ID of channel \`${channel.name}\`: ${channel.id}`);
                 }
                 else if (args[0] == "server"){
                     message.channel.send(`ID of guild "${guild.name}": ${guild.id}`);
@@ -1747,12 +1750,12 @@ bot.on('message', message => {
             }
             if (args[1] == "channel"){
                 if (!args[2]){
-                    message.channel.send(`The bot will currently log its unordinary actions in channel "${config[id].bot_log.channel}".`);
+                    message.channel.send(`The bot will currently log its unordinary actions in \`${config[id].bot_log.channel}\`.`);
                     return;
                 }
                 config[id].bot_log.channel = args[2];
                 saveConfig();
-                message.channel.send(`The bot will now log unordinary actions in channel "${config[id].bot_log.channel}".`);
+                message.channel.send(`The bot will now log unordinary actions in channel \`${config[id].bot_log.channel}`\`.`);
             }
             else if (args[1] == "on"){
                 if (config[id].bot_log.status == "on"){
@@ -1798,12 +1801,12 @@ bot.on('message', message => {
                             return;
                         }
                         if (config[id].channels[channelid].disabled_commands.contains(args[3])){
-                            message.channel.send(`"${args[3]}" is already disabled in channel "${args[1]}".`);
+                            message.channel.send(`"${args[3]}" is already disabled in \`${args[1]}\`.`);
                         }
                         else{
                             config[id].channels[channelid].disabled_commands.push(args[3]);
                             saveConfig();
-                            message.channel.send(`"${args[3]}" is now disabled in channel "${args[1]}".`);
+                            message.channel.send(`"${args[3]}" is now disabled in \`${args[1]}\`.`);
                         }
                     }
                     else{
@@ -1817,12 +1820,12 @@ bot.on('message', message => {
                             return;
                         }
                         if (!config[id].channels[channelid].disabled_commands.contains(args[3])){
-                            message.channel.send(`"${args[3]}" is already enabled in channel "${args[1]}".`);
+                            message.channel.send(`"${args[3]}" is already enabled in \`${args[1]}\`.`);
                         }
                         else{
                             config[id].channels[channelid].disabled_commands.splice(config[id].channels[channelid].disabled_commands.indexOf(args[3]), 1);
                             saveConfig();
-                            message.channel.send(`"${args[3]}" is now enabled in channel "${args[1]}".`);
+                            message.channel.send(`"${args[3]}" is now enabled in \`${args[1]}\`.`);
                         }
                     }
                     else{
@@ -1835,15 +1838,15 @@ bot.on('message', message => {
                         config[id].channels[channelid].disabled_commands.push(commands[i]);
                     }
                     saveConfig();
-                    message.channel.send(`All public Vulpix commands besides "v-config" are now disabled in channel "${args[1]}".`)
+                    message.channel.send(`All public Vulpix commands besides "v-config" are now disabled in \`${args[1]}\`.`)
                 }
                 else if (args[2] == "enable_all"){
                     config[id].channels[channelid].disabled_commands = [];
                     saveConfig();
-                    message.channel.send(`All public Vulpix commands are now enabled in channel "${args[1]}".`)
+                    message.channel.send(`All public Vulpix commands are now enabled in channel \`${args[1]}\`.`)
                 }
                 else{
-                    message.channel.send(`${`These commands are currently disabled in channel "${args[1]}": \`\`\`\n${config[id].channels[channelid].disabled_commands.length == 0 ? "---" : config[id].channels[channelid].disabled_commands.join('\n')}\`\`\``} To disable or enable a command/all commands for a channel, use one of the following commands:\`\`\`\nv-config channels [channel] disable_command\nv-config channels [channel] enable_command\nv-config channels [channel] disable_all\nv-config channels [channel] enable_all\`\`\``);
+                    message.channel.send(`${`These commands are currently disabled in \`${args[1]}\`: \`\`\`\n${config[id].channels[channelid].disabled_commands.length == 0 ? "---" : config[id].channels[channelid].disabled_commands.join('\n')}\`\`\``} To disable or enable a command/all commands for a channel, use one of the following commands:\`\`\`\nv-config channels [channel] disable_command\nv-config channels [channel] enable_command\nv-config channels [channel] disable_all\nv-config channels [channel] enable_all\`\`\``);
                 }
             }
             else if (args[1] == undefined){
@@ -1852,7 +1855,7 @@ bot.on('message', message => {
                 message.channel.send(`Use one of the following commands to configure commands for a channel: \`\`\`\n${msg}\`\`\``);
             }
             else{
-                message.channel.send(`Channel "${args[1]}" doesn't exist.`);
+                message.channel.send(`Channel \`${args[1]}\` doesn't exist.`);
             }
         }
         else if (cmd == "default"){
@@ -1892,7 +1895,7 @@ bot.on('message', message => {
             message.channel.send('```JavaScript\n'+msg+'```');
         }
         else{
-            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config roles\nv-config default\nv-config channels\nv-config show\nv-config bot_logs```')
+            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config roles\nv-config default\nv-config channels\nv-config show\nv-config bot_log```')
         }
     }
 });
