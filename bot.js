@@ -519,7 +519,7 @@ bot.on('message', message => {
                         if (roles[i]){
                             var role = guild.roles.find('name', roles[i]);
                             if (role){
-                                guild.members.get(user.id).addRole(role);
+                                message.member.addRole(role);
                             }
                         }
                     }
