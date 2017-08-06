@@ -369,6 +369,11 @@ function setDefaults(guild){
 
 function saveConfig(){
     ref.update(config);
+    ref.once('value', function(data){
+        if (data.val()) config = data.val();
+    }, function(err){
+        console.log(err);
+    })
 }
 
 function logMessage(guild, message){
@@ -1905,7 +1910,7 @@ bot.on('message', message => {
             }
             if (channels.contains(args[1])){
                 channelid = getChannel(message.guild, args[1]).id;
-                if (config[id].channels[channelid] == undefined){
+                if (!config[id].channels[channelid]){
                     config[id].channels[channelid] = {
                         "disabled_commands": []
                     };
