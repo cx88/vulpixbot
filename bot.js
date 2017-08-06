@@ -2021,7 +2021,7 @@ bot.on('message', message => {
     }
 });
 
-ref.on('value', function(data){
+ref.once('value', function(data){
     if (data.val()) config = data.val();
 }, function(err){
     console.log(err);
