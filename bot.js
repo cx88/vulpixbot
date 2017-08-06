@@ -1896,7 +1896,7 @@ bot.on('message', message => {
             }
         }
         else if (cmd == "channels"){
-            if (config[id].channels == undefined){
+            if (!config[id].channels){
                 config[id].channels = {};
             }
             var channels = [];
@@ -1910,7 +1910,7 @@ bot.on('message', message => {
                         "disabled_commands": []
                     };
                 }
-                if (args[2] == "disablecommand" || args[2] == "disable_command"){
+                if (args[2] == "disable"){
                     if (args[3] != undefined){
                         if (!commands.contains(args[3])){
                             message.channel.send(`Command "${args[3]}" is not a valid Vulpix command.`);
@@ -1926,10 +1926,10 @@ bot.on('message', message => {
                         }
                     }
                     else{
-                        message.channel.send(`To disable one of the following Vulpix commands: \`\`\`\n${commands.join('\n')}\`\`\`\nType the following: \`\`\`\nv-config channels [channel] disable_command [command]\`\`\`You should not write a prefix before the command, only the name.`);
+                        message.channel.send(`To disable one of the following Vulpix commands: \`\`\`\n${commands.join('\n')}\`\`\`\nType the following: \`\`\`\nv-config channels [channel] disable [command]\`\`\`You should not write a prefix before the command, only the name.`);
                     }
                 }
-                else if (args[2] == "enablecommand" || args[2] == "enable_command"){
+                else if (args[2] == "enable"){
                     if (args[3] != undefined){
                         if (!commands.contains(args[3])){
                             message.channel.send(`Command "${args[3]}" is not a valid Vulpix command.`);
@@ -1945,7 +1945,7 @@ bot.on('message', message => {
                         }
                     }
                     else{
-                        message.channel.send(`To enable one of the following Vulpix commands: \`\`\`\n${commands.join('\n')}\`\`\`Type the following: \`\`\`\nv-config channels [channel] enable_command [command]\`\`\`You should not write a prefix before the command, only the name.`);
+                        message.channel.send(`To enable one of the following Vulpix commands: \`\`\`\n${commands.join('\n')}\`\`\`Type the following: \`\`\`\nv-config channels [channel] enable [command]\`\`\`You should not write a prefix before the command, only the name.`);
                     }
                 }
                 else if (args[2] == "disable_all"){
@@ -1962,7 +1962,7 @@ bot.on('message', message => {
                     message.channel.send(`All public Vulpix commands are now enabled in channel \`${args[1]}\`.`)
                 }
                 else{
-                    message.channel.send(`${`These commands are currently disabled in \`${args[1]}\`: \`\`\`\n${config[id].channels[channelid].disabled_commands.length == 0 ? "---" : config[id].channels[channelid].disabled_commands.join('\n')}\`\`\``} To disable or enable a command/all commands for a channel, use one of the following commands:\`\`\`\nv-config channels [channel] disable_command\nv-config channels [channel] enable_command\nv-config channels [channel] disable_all\nv-config channels [channel] enable_all\`\`\``);
+                    message.channel.send(`${`These commands are currently disabled in \`${args[1]}\`: \`\`\`\n${config[id].channels[channelid].disabled_commands.length == 0 ? "---" : config[id].channels[channelid].disabled_commands.join('\n')}\`\`\``} To disable or enable a command/all commands for a channel, use one of the following commands:\`\`\`\nv-config channels [channel] disable\nv-config channels [channel] enable\nv-config channels [channel] disable_all\nv-config channels [channel] enable_all\`\`\``);
                 }
             }
             else if (args[1] == undefined){
