@@ -1916,8 +1916,8 @@ bot.on('message', message => {
             if (!channel || channel.type != 'text'){
                 message.channel.send(`That channel does not exist or is not a text channel.`);
             }
-            if (!config[id].channels[channelid]){
-                config[id].channels[channelid] = {
+            if (!config[id].channels[channel.id]){
+                config[id].channels[channel.id] = {
                     "disabled_commands": []
                 };
             }
@@ -1928,12 +1928,12 @@ bot.on('message', message => {
                             message.channel.send(`Command "${args[3]}" is not a valid Vulpix command.`);
                             return;
                         }
-                        if (config[id].channels[channelid].disabled_commands.contains(args[3])){
+                        if (config[id].channels[channel.id].disabled_commands.contains(args[3])){
                             message.channel.send(`"${args[3]}" is already disabled in \`${args[1]}\`.`);
                         }
                         else{
                             console.log('>'+config['339588361712959489'].channels);
-                            config[id].channels[channelid].disabled_commands.push(args[3]);
+                            config[id].channels[channel.id].disabled_commands.push(args[3]);
                             console.log('>'+config['339588361712959489'].channels);
                             saveConfig();
                             console.log('>'+config['339588361712959489'].channels);
@@ -1950,11 +1950,11 @@ bot.on('message', message => {
                             message.channel.send(`Command "${args[3]}" is not a valid Vulpix command.`);
                             return;
                         }
-                        if (!config[id].channels[channelid].disabled_commands.contains(args[3])){
+                        if (!config[id].channels[channel.id].disabled_commands.contains(args[3])){
                             message.channel.send(`"${args[3]}" is already enabled in \`${args[1]}\`.`);
                         }
                         else{
-                            config[id].channels[channelid].disabled_commands.splice(config[id].channels[channelid].disabled_commands.indexOf(args[3]), 1);
+                            config[id].channels[channel.id].disabled_commands.splice(config[id].channels[channel.id].disabled_commands.indexOf(args[3]), 1);
                             saveConfig();
                             message.channel.send(`"${args[3]}" is now enabled in \`${args[1]}\`.`);
                         }
@@ -1964,20 +1964,20 @@ bot.on('message', message => {
                     }
                 }
                 else if (args[2] == "disable_all"){
-                    config[id].channels[channelid].disabled_commands = [];
+                    config[id].channels[channel.id].disabled_commands = [];
                     for (i = 0; i < commands.length; i++){
-                        config[id].channels[channelid].disabled_commands.push(commands[i]);
+                        config[id].channels[channel.id].disabled_commands.push(commands[i]);
                     }
                     saveConfig();
                     message.channel.send(`All public Vulpix commands besides "v-config" are now disabled in \`${args[1]}\`.`)
                 }
                 else if (args[2] == "enable_all"){
-                    config[id].channels[channelid].disabled_commands = [];
+                    config[id].channels[channel.id].disabled_commands = [];
                     saveConfig();
                     message.channel.send(`All public Vulpix commands are now enabled in channel \`${args[1]}\`.`)
                 }
                 else{
-                    message.channel.send(`${`These commands are currently disabled in \`${args[1]}\`: \`\`\`\n${config[id].channels[channelid].disabled_commands.length == 0 ? "---" : config[id].channels[channelid].disabled_commands.join('\n')}\`\`\``} To disable or enable a command/all commands for a channel, use one of the following commands:\`\`\`\nv-config channels [channel] disable\nv-config channels [channel] enable\nv-config channels [channel] disable_all\nv-config channels [channel] enable_all\`\`\``);
+                    message.channel.send(`${`These commands are currently disabled in \`${args[1]}\`: \`\`\`\n${config[id].channels[channel.id].disabled_commands.length == 0 ? "---" : config[id].channels[channel.id].disabled_commands.join('\n')}\`\`\``} To disable or enable a command/all commands for a channel, use one of the following commands:\`\`\`\nv-config channels [channel] disable\nv-config channels [channel] enable\nv-config channels [channel] disable_all\nv-config channels [channel] enable_all\`\`\``);
                 }
             }
             else if (args[1] == undefined){
