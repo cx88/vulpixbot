@@ -1895,7 +1895,7 @@ bot.on('message', message => {
             for (i = 0; i < guild.channels.array().length; i++){
                 if (guild.channels.array()[i].type == 'text') { channels.push(guild.channels.array()[i].name); }
             }
-            if (args[1])
+            if (args[1]){
                 channel = message.mentions.channels.first();
                 if (!channel) channel = tryGetChannel(guild, args[1]);
                 if (!channel || channel.type != 'text'){
