@@ -59,38 +59,6 @@ const commands = [
     "quotes", "add", "remove", "top"
 ]
 
-/*
-{
-  CREATE_INSTANT_INVITE: true,
-  KICK_MEMBERS: true,
-  BAN_MEMBERS: true,
-  ADMINISTRATOR: true,
-  MANAGE_CHANNELS: true,
-  MANAGE_GUILD: true,
-  ADD_REACTIONS: true,
-  READ_MESSAGES: true,
-  SEND_MESSAGES: true,
-  SEND_TTS_MESSAGES: true,
-  MANAGE_MESSAGES: true,
-  EMBED_LINKS: true,
-  ATTACH_FILES: true,
-  READ_MESSAGE_HISTORY: true,
-  MENTION_EVERYONE: true,
-  EXTERNAL_EMOJIS: true,
-  CONNECT: true,
-  SPEAK: true,
-  MUTE_MEMBERS: true,
-  DEAFEN_MEMBERS: true,
-  MOVE_MEMBERS: true,
-  USE_VAD: true,
-  CHANGE_NICKNAME: true,
-  MANAGE_NICKNAMES: true,
-  MANAGE_ROLES_OR_PERMISSIONS: true,
-  MANAGE_WEBHOOKS: true,
-  MANAGE_EMOJIS: true
-}
-*/
-
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
@@ -310,12 +278,6 @@ function setDefaults(guild){
                 "role": "Member",
                 "channel": "general"
             },
-            "mute": {
-                "msg": "(user) has been muted!",
-                "status": "on",
-                "role": "Muted",
-                "channel": "general"
-            },
             "levelup": {
                 "msg": "Congrats, (@user)! You leveled up to level (level)!",
                 "status": "on"
@@ -379,7 +341,7 @@ function saveConfig(id = null){
     }
     else{
         ref.update(config);
-        ref.once('value'), function(data){
+        ref.once('value', function(data){
             config = data.val();
         }, function(err){
             console.log(err);
@@ -1446,7 +1408,7 @@ bot.on('message', message => {
             }
             else if (cmd == "clearquotes"){
                 if (args[0] == undefined){
-                    message.channel.send(`Specificy a user to clear all of their quotes.`);
+                    message.channel.send(`Specify a user to clear all of their quotes.`);
                     return;
                 }
                 var user = message.mentions.users.first();
@@ -1583,13 +1545,13 @@ bot.on('message', message => {
             }
             else if (cmd == "nick"){
                 if (args[0] == undefined){
-                    message.channel.send(`Specificy a user to change their nickname.`);
+                    message.channel.send(`Specify a user to change their nickname.`);
                     return;
                 }
                 var user = message.mentions.users.first();
                 if (!user) user = tryGetUser(guild, args[0]);
                 if (!user){
-                    message.channel.send(`Specificy a valid user to change their nickname.`);
+                    message.channel.send(`Specify a valid user to change their nickname.`);
                     return;
                 }
                 var member = guild.members.get(user.id);
@@ -1602,6 +1564,22 @@ bot.on('message', message => {
                     member.setNickname(args.join(' '));
                     message.channel.send(`User "${user.username}"'s nickname has been set to "${args.join(' ')}".`);   
                 }
+            }
+            else if (cmd == "kick"){
+                if (!args[0]){
+                    message.channel.send(`Specify a user to kick.`);
+                    return;
+                }
+                var user = message.mentions.users.first();
+                if (!user) user = tryGetUser(guild, args[0]);
+                if (!user){
+                    message.channel.send(`User not found.`);
+                    return;
+                }
+                args.splice(0, 1);
+                var reason = args.join(' ');
+                guild.members.get(user.id).kick(reason);
+                botLog(`User "${message.author.username}" kicked user "${user.username}" for: ${reason}`);
             }
         }
     }
@@ -1681,9 +1659,6 @@ bot.on('message', message => {
                 else{
                     message.channel.send('The message that is sent whenever a new user joins.```Message: '+config[id].messages.welcome.msg+'\nStatus: '+config[id].messages.welcome.status+'\nChannel: '+config[id]["messages"]["welcome"]["channel"]+'```\nUse one of the following commands to change the settings:```v-config messages welcome msg [message]\nv-config messages welcome on\nv-config messages welcome off\nv-config messages welcome channel [channelname]```In the welcome message, `(user)` will be replaced with the username.');
                 }
-            }
-            else if (arg == "mute"){
-                message.channel.send('When you mute someone via the bot, this is the message that will be displayed. ```Mute message: '+config[id].messages["mute"].msg+'\r\nStatus: '+config[id].messages["mute"].status+'```');
             }
             else if (arg == "levelup"){
                 if (!config[id].messages.levelup){
@@ -1780,7 +1755,7 @@ bot.on('message', message => {
                 }
             }
             else{
-                message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off, change the messages, and choose in which channel they should be sent. Use one of the following commands for more information:```v-config messages welcome\nv-config messages mute\nv-config messages levelup\nv-config messages goodbye```');
+                message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off, change the messages, and choose in which channel they should be sent. Use one of the following commands for more information:```v-config messages welcome\nv-config messages levelup\nv-config messages goodbye```');
             }
         }
         else if (cmd == "roles"){
@@ -2039,8 +2014,9 @@ bot.on('message', message => {
     }
 });
 
-ref.once('value', function(data){
+ref.on('value', function(data){
     config = data.val();
+    console.log(`Synced with database.`);
 }, function(err){
     console.log(err);
 })
