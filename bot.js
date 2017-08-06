@@ -413,7 +413,6 @@ setInterval(saveConfig, 15000);
 setInterval(changeAvatar, 720000)
 
 bot.on('ready', () => {
-    if (!config) return;
     console.log('Vulpix online');
     bot.user.setGame("Type v-config");
 });
@@ -1580,7 +1579,7 @@ bot.on('message', message => {
                 args.splice(0, 1);
                 var reason = args.join(' ');
                 guild.members.get(user.id).kick(reason);
-                botLog(`User "${message.author.username}" kicked user "${user.username}" for: ${reason}`);
+                botLog(guild, `User "${message.author.username}" kicked user "${user.username}" for: ${reason}`);
             }
         }
     }
