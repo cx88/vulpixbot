@@ -345,7 +345,7 @@ function saveConfig(id = null){
             config = data.val();
         }, function(err){
             console.log(err);
-        }
+        });
     }
 }
 
