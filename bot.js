@@ -336,7 +336,6 @@ function setDefaults(guild){
 }
 
 function saveConfig(){
-    console.log(config['339588361712959489']);
     ref.update(config);
 //    if (id){
 //        var rf = admin.database().ref(id)
