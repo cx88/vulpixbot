@@ -344,7 +344,7 @@ function setDefaults(guild){
         ]
     }
 
-    saveConfig();
+    saveConfig(guild.id);
     var role = guild.roles.find("name", "Vulpix Admin");
     if (role == null || role == undefined){
         guild.createRole({
@@ -367,16 +367,23 @@ function setDefaults(guild){
     }
 }
 
-function saveConfig(){
-    console.log(config['339588361712959489'].channels);
-    ref.update(config);
-    console.log(config['339588361712959489'].channels);
-    ref.once('value', function(data){
-        if (data.val()) config = data.val();
-    }, function(err){
-        console.log(err);
-    })
-    console.log(config['339588361712959489'].channels);
+function saveConfig(id = null){
+    if (id){
+        ref.ref(id).update(config[id]);
+        ref.once('value', function(data){
+            if (data.val()) config[id] = data.val()[id];
+        }, function(err){
+            console.log(err);
+        })
+    }
+    else{
+        ref.update(config);
+        ref.once('value'), function(data){
+            if (data.val()) config = data.val();
+        }, function(err){
+            console.log(err);
+        }
+    }
 }
 
 function logMessage(guild, message){
@@ -406,7 +413,7 @@ function command(channel, arg, cmd){
         config[channel.guild.id].channels = {};
         config[channel.guild.id].channels[channel.id] = {};
         config[channel.guild.id].channels[channel.id].disabled_commands = [];
-        saveConfig();
+        saveConfig(channel.guild.id);
         return true;
     }
 }
@@ -493,7 +500,7 @@ bot.on('guildMemberAdd', member =>{
             }
         }
     }
-    saveConfig();
+    saveConfig(member.guild.id);
 });
 
 bot.on('guildMemberRemove', member => {
@@ -524,7 +531,7 @@ bot.on('guildMemberRemove', member => {
             botLog(guild, `Channel \`${config[id].messages.goodbye.channel}\` does not exist as referred to in \`v-config messages goodbye channel\`.`);
         }
     }
-    saveConfig();
+    saveConfig(guild.id);
 });
 
 bot.on('channelDelete', channel => {
@@ -535,7 +542,7 @@ bot.on('channelDelete', channel => {
     if (config[id] && config[id].channels && config[id].channels[channelid]){
         delete config[id].channels[channelid];
     }
-    saveConfig();
+    saveConfig(id);
 });
 
 bot.on('guildDelete', guild => {
@@ -544,13 +551,13 @@ bot.on('guildDelete', guild => {
 //    if (config[id]){
 //        delete config[id];
 //    }
-//    saveConfig();
+//    saveConfig(id);
 });
 
 bot.on('guildUpdate', (oldguild, newguild) => {
     var id = newguild.id;
     config[id].servername = newguild.name;
-    saveConfig();
+    saveConfig(id);
 });
 
 bot.on('message', message => {
@@ -921,7 +928,7 @@ bot.on('message', message => {
         else if (command(channel, cmd, "bug")){
             if (config[id].bugs == undefined){
                 config[id].bugs = {};
-                saveConfig();
+                saveConfig(guild.id);
             }
             if (args[0] == "list"){
                 var bug_titles = Object.keys(config[id].bugs);
@@ -978,7 +985,7 @@ bot.on('message', message => {
                     config[id].bugs[name].desc = desc;
                     config[id].bugs[name].username = message.member.user.tag;
                     config[id].bugs[name].url = message.member.user.avatarURL;
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`Successfully submitted a new bug:`);
                     message.channel.send(getBugEmbed(name, config[id].bugs[name].desc, config[id].bugs[name].username, config[id].bugs[name].url));
                 }
@@ -1005,7 +1012,7 @@ bot.on('message', message => {
                         name = name.toUpperCase();
                         if (config[id].bugs[name] != undefined){
                             delete config[id].bugs[name];
-                            saveConfig();
+                            saveConfig(guild.id);
                             message.channel.send(`Succefully closed bug "${name}".`);
                         }
                         else{
@@ -1024,13 +1031,13 @@ bot.on('message', message => {
                     if (user != undefined){
                         if (config[id].users == undefined){
                             config[id].users = {};
-                            saveConfig();
+                            saveConfig(guild.id);
                             message.channel.send(`This user is already able to submit bugs.`);
                             return;
                         }
                         if (config[id].users[user.id] == undefined){
                             config[id].users[user.id] = {};
-                            saveConfig();
+                            saveConfig(guild.id);
                             message.channel.send(`This user is already able to submit bugs.`);
                             return;
                         }
@@ -1040,7 +1047,7 @@ bot.on('message', message => {
                         }
                         else{
                             config[id].users[user.id].can_submit_bugs = true;
-                            saveConfig();
+                            saveConfig(guild.id);
                             message.channel.send(`This user can now submit bugs.`);
                         }
                     }
@@ -1058,14 +1065,14 @@ bot.on('message', message => {
                             config[id].users = {};
                             config[id].users[user.id] = {};
                             config[id].users[user.id].can_submit_bugs = false;
-                            saveConfig();
+                            saveConfig(guild.id);
                             message.channel.send(`This user is no longer able to submit bugs.`);
                             return;
                         }
                         if (config[id].users[user.id] == undefined){
                             config[id].users[user.id] = {};
                             config[id].users[user.id].can_submit_bugs = false;
-                            saveConfig();
+                            saveConfig(guild.id);
                             message.channel.send(`This user is no longer able to submit bugs.`);
                             return;
                         }
@@ -1075,7 +1082,7 @@ bot.on('message', message => {
                         }
                         else{
                             config[id].users[user.id].can_submit_bugs = false;
-                            saveConfig();
+                            saveConfig(guild.id);
                             message.channel.send(`This user can no longer submit bugs.`);
                         }
                     }
@@ -1375,12 +1382,12 @@ bot.on('message', message => {
                         config[id].quotes[user.id] = [
                             msg
                         ];
-                        saveConfig();
+                        saveConfig(guild.id);
                         message.channel.send(`Quote saved!`);
                     }
                     else{
                         config[id].quotes[user.id].push(msg);
-                        saveConfig();
+                        saveConfig(guild.id);
                         message.channel.send(`Quote saved!`);
                     }
                 }
@@ -1423,7 +1430,7 @@ bot.on('message', message => {
                 }
                 else{
                     config[id].quotes[member.user.id].splice(index, 1);
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`Successfully removed quote #${index + 1}${member.user != message.author ? ` of ${member.user.username}` : ``}.`);
                 }
             }
@@ -1497,7 +1504,7 @@ bot.on('message', message => {
             else if (cmd == "serverdesc"){
             	if (args[0]){
           			config[id].desc = args.join(' ');
-          			saveConfig();
+          			saveConfig(guild.id);
           			message.channel.send(`Set the server description to:\n${config[id].desc}`);
             	}
             	else{
@@ -1524,7 +1531,7 @@ bot.on('message', message => {
                         return;
                     }
                     config[id].ranks[user.id] += exp / 7;
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
                 }
                 else if (args[0] == "remove"){
@@ -1547,7 +1554,7 @@ bot.on('message', message => {
                     }
                     config[id].ranks[user.id] -= exp / 7;
                     if (config[id].ranks[user.id] < 0) config[id].ranks[user.id] = 0;
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
                 }
                 else if (args[0] == "set"){
@@ -1569,7 +1576,7 @@ bot.on('message', message => {
                         return;
                     }
                     config[id].ranks[user.id] = exp / 7;
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`User "${user.username}" experience is now ${config[id].ranks[user.id] * 7}.`);
                 }
             }
@@ -1610,7 +1617,7 @@ bot.on('message', message => {
                 }
                 else{
                     config[id]["prefix"] = setting;
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`Successfully set active command prefix to \`${config[id].prefix}\`.`);
                 }
             }
@@ -1629,7 +1636,7 @@ bot.on('message', message => {
                     }
                     else{
                         config[id].messages.welcome.msg = msg;
-                        saveConfig();
+                        saveConfig(guild.id);
                         message.channel.send(`Successfully set welcome message to: \`\`\`${config[id].messages.welcome.msg}\`\`\``);
                     }
                 }
@@ -1639,7 +1646,7 @@ bot.on('message', message => {
                     }
                     else{
                         config[id].messages.welcome.status = "on";
-                        saveConfig();
+                        saveConfig(guild.id);
                         message.channel.send(`The welcome message will now be sent for every new member that joins the server.`);
                     }
                 }
@@ -1649,7 +1656,7 @@ bot.on('message', message => {
                     }
                     else{
                         config[id].messages.welcome.status = "off";
-                        saveConfig();
+                        saveConfig(guild.id);
                         message.channel.send(`The welcome message will no longer be sent for every new member that joins the server.`);
                     }
                 }
@@ -1663,7 +1670,7 @@ bot.on('message', message => {
                         else{
                             config[id].messages.welcome.channel = args[3];
                         }
-                        saveConfig();
+                        saveConfig(guild.id);
                         message.channel.send('The welcome message will now be sent in `' + config[id].messages.welcome.channel + '`.');
                     }
                     else{
@@ -1690,7 +1697,7 @@ bot.on('message', message => {
                         return;
                     }
                     config[id].messages.levelup.msg = message.content.split(`v-config messages levelup msg `)[1];
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`The message when a user levels up has been set to\`\`\`\n${config[id].messages.levelup.msg}\`\`\``);
                 }
                 else if (setting == "on"){
@@ -1699,7 +1706,7 @@ bot.on('message', message => {
                         return;
                     }
                     config[id].messages.levelup.status = "on";
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`The message when a user levels up has been enabled.`);
                 }
                 else if (setting == "off"){
@@ -1708,7 +1715,7 @@ bot.on('message', message => {
                         return;
                     }
                     config[id].messages.levelup.status = "off";
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`The message when a user levels up has been disabled.`);
                 }
                 else{
@@ -1730,7 +1737,7 @@ bot.on('message', message => {
                         return;
                     }
                     config[id].messages.goodbye.msg = msg;
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`The goodbye message has been set to:\`\`\`\n${config[id].messages.goodbye.msg}\`\`\``);
                 }
                 else if (args[2] == "on"){
@@ -1739,7 +1746,7 @@ bot.on('message', message => {
                         return;
                     }
                     config[id].messages.goodbye.status = "on";
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`The goodbye message has been enabled.`);
                 }
                 else if (args[2] == "off"){
@@ -1748,7 +1755,7 @@ bot.on('message', message => {
                         return;
                     }
                     config[id].messages.goodbye.status = "off";
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`The goodbye message has been disabled.`);
                 }
                 else if (args[2] == "channel"){
@@ -1764,7 +1771,7 @@ bot.on('message', message => {
                     else{
                         config[id].messages.goodbye.channel = args[3];
                     }
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`The goodbye message will now be sent in \`${config[id].messages.goodbye.channel}\`.`);
                 }
                 else{
@@ -1842,7 +1849,7 @@ bot.on('message', message => {
                 if (config[id].roles[key].length == 0){
                     delete config[id].roles[key];
                 }
-                saveConfig();
+                saveConfig(guild.id);
                 message.channel.send(`Successfully removed "${value}" on "${key}"`);
             }
             else{
@@ -1878,7 +1885,7 @@ bot.on('message', message => {
                 else{
                     config[id].bot_log.channel = args[2];
                 }
-                saveConfig();
+                saveConfig(guild.id);
                 message.channel.send(`The bot will now log unordinary actions in channel \`${config[id].bot_log.channel}\`.`);
             }
             else if (args[1] == "on"){
@@ -1887,7 +1894,7 @@ bot.on('message', message => {
                     return;
                 }
                 config[id].bot_log.status = "on";
-                saveConfig();
+                saveConfig(guild.id);
                 message.channel.send(`The bot log is now enabled.`);
             }
             else if (args[1] == "off"){
@@ -1896,7 +1903,7 @@ bot.on('message', message => {
                     return;
                 }
                 config[id].bot_log.status = "off";
-                saveConfig();
+                saveConfig(guild.id);
                 message.channel.send(`The bot log is now disabled.`);
             }
             else{
@@ -1932,10 +1939,10 @@ bot.on('message', message => {
                             message.channel.send(`"${args[3]}" is already disabled in \`${args[1]}\`.`);
                         }
                         else{
-                            console.log('>'+config['339588361712959489'].channels);
+//                            console.log('>'+config['339588361712959489'].channels);
                             config[id].channels[channel.id].disabled_commands.push(args[3]);
                             console.log('>'+config['339588361712959489'].channels);
-                            saveConfig();
+                            saveConfig(guild.id);
                             console.log('>'+config['339588361712959489'].channels);
                             message.channel.send(`"${args[3]}" is now disabled in \`${args[1]}\`.`);
                         }
@@ -1955,7 +1962,7 @@ bot.on('message', message => {
                         }
                         else{
                             config[id].channels[channel.id].disabled_commands.splice(config[id].channels[channel.id].disabled_commands.indexOf(args[3]), 1);
-                            saveConfig();
+                            saveConfig(guild.id);
                             message.channel.send(`"${args[3]}" is now enabled in \`${args[1]}\`.`);
                         }
                     }
@@ -1968,12 +1975,12 @@ bot.on('message', message => {
                     for (i = 0; i < commands.length; i++){
                         config[id].channels[channel.id].disabled_commands.push(commands[i]);
                     }
-                    saveConfig();
+                    saveConfig(guild.id);
                     message.channel.send(`All public Vulpix commands besides "v-config" are now disabled in \`${args[1]}\`.`)
                 }
                 else if (args[2] == "enable_all"){
                     config[id].channels[channel.id].disabled_commands = [];
-                    saveConfig();
+                    saveConfig(guild.idd);
                     message.channel.send(`All public Vulpix commands are now enabled in channel \`${args[1]}\`.`)
                 }
                 else{
