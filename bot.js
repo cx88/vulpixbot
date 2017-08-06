@@ -369,9 +369,10 @@ function setDefaults(guild){
 
 function saveConfig(id = null){
     if (id){
-        ref.ref(id).update(config[id]);
-        ref.once('value', function(data){
-            if (data.val()) config[id] = data.val()[id];
+        var rf = admin.database().ref(id)
+        rf.update(config[id]);
+        rf.once('value', function(data){
+            if (data.val()) config[id] = data.val();
         }, function(err){
             console.log(err);
         })
