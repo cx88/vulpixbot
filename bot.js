@@ -360,7 +360,7 @@ function setDefaults(guild){
                 "CHANGE_NICKNAME", "MANAGE_NICKNAMES",
                 "MANAGE_ROLES_OR_PERMISSIONS", "MUTE_MEMBERS",
                 "MOVE_MEMBERS", "USE_VAD", "MANAGE_WEBHOOKS",
-                "MANAGE_EMOJIS"
+                "MANAGE_EMOJIS", "MANAGE_SERVER", "MANAGE_CHANNELS"
             ],
             mentionable: true
         })
