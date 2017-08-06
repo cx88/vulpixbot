@@ -372,7 +372,7 @@ function saveConfig(id = null){
         var rf = admin.database().ref(id)
         rf.update(config[id]);
         rf.once('value', function(data){
-            if (data.val()) config[id] = data.val();
+            config[id] = data.val();
         }, function(err){
             console.log(err);
         })
@@ -380,7 +380,7 @@ function saveConfig(id = null){
     else{
         ref.update(config);
         ref.once('value'), function(data){
-            if (data.val()) config = data.val();
+            config = data.val();
         }, function(err){
             console.log(err);
         }
@@ -2040,7 +2040,7 @@ bot.on('message', message => {
 });
 
 ref.once('value', function(data){
-    if (data.val()) config = data.val();
+    config = data.val();
 }, function(err){
     console.log(err);
 })
