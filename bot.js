@@ -2016,7 +2016,6 @@ bot.on('message', message => {
 
 ref.on('value', function(data){
     config = data.val();
-    console.log(`Synced with database.`);
 }, function(err){
     console.log(err);
 })
