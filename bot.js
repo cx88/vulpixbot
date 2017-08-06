@@ -381,10 +381,6 @@ function command(channel, arg, cmd){
         return arg == cmd && !config[channel.guild.id].channels[channel.id].disabled_commands.contains(cmd);
     }
     catch (err){
-        if (!config[channel.guild.id].channels) config[channel.guild.id].channels = {};
-        if (!config[channel.guild.id].channels[channel.id]) config[channel.guild.id].channels[channel.id] = {};
-        if (!config[channel.guild.id].channels[channel.id].disabled_commands) config[channel.guild.id].channels[channel.id].disabled_commands = [];
-        saveConfig();
         return true;
     }
 }
