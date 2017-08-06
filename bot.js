@@ -1918,11 +1918,8 @@ bot.on('message', message => {
                             message.channel.send(`"${args[3]}" is already disabled in \`${args[1]}\`.`);
                         }
                         else{
-//                            console.log('>'+config['339588361712959489'].channels);
                             config[id].channels[channel.id].disabled_commands.push(args[3]);
-                            console.log('>'+config['339588361712959489'].channels);
                             saveConfig(guild.id);
-                            console.log('>'+config['339588361712959489'].channels);
                             message.channel.send(`"${args[3]}" is now disabled in \`${args[1]}\`.`);
                         }
                     }
