@@ -531,12 +531,12 @@ bot.on('channelDelete', channel => {
 });
 
 bot.on('guildDelete', guild => {
-    if (!config) return;
-    var id = guild.id;
-    if (config[id]){
-        delete config[id];
-    }
-    saveConfig();
+//    if (!config) return;
+//    var id = guild.id;
+//    if (config[id]){
+//        delete config[id];
+//    }
+//    saveConfig();
 });
 
 bot.on('guildUpdate', (oldguild, newguild) => {
