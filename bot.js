@@ -376,7 +376,7 @@ function saveConfig(){
     }, function(err){
         console.log(err);
     })
-    console.log(config.339588361712959489.channels);
+    console.log(config.['339588361712959489'].channels);
 }
 
 function logMessage(guild, message){
