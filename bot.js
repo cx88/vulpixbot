@@ -381,10 +381,11 @@ function command(channel, arg, cmd){
         return arg == cmd && !config[channel.guild.id].channels[channel.id].disabled_commands.contains(cmd);
     }
     catch (err){
-        config[channel.guild.id].channels = {};
-        config[channel.guild.id].channels[channel.id] = {};
-        config[channel.guild.id].channels[channel.id].disabled_commands = [];
-        saveConfig();
+        console.log(err);
+//        config[channel.guild.id].channels = {};
+//        config[channel.guild.id].channels[channel.id] = {};
+//        config[channel.guild.id].channels[channel.id].disabled_commands = [];
+//        saveConfig();
         return true;
     }
 }
@@ -1895,6 +1896,7 @@ bot.on('message', message => {
         }
         else if (cmd == "channels"){
             if (!config[id].channels){
+                console.log(`Resetting channels for server ${id}`)
                 config[id].channels = {};
             }
             var channels = [];
@@ -1909,6 +1911,7 @@ bot.on('message', message => {
                 }
             }
             if (!config[id].channels[channel.id]){
+                console.log(`Resetting commands for channel ${channel.id} on server ${id}`)
                 config[id].channels[channel.id] = {
                     "disabled_commands": []
                 };
