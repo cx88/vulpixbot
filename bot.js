@@ -1926,7 +1926,9 @@ bot.on('message', message => {
                         }
                         else{
                             config[id].channels[channelid].disabled_commands.push(args[3]);
+                            console.log(config[id]);
                             saveConfig();
+                            console.log(config[id]);
                             message.channel.send(`"${args[3]}" is now disabled in \`${args[1]}\`.`);
                         }
                     }
