@@ -1911,13 +1911,17 @@ bot.on('message', message => {
             for (i = 0; i < guild.channels.array().length; i++){
                 if (guild.channels.array()[i].type == 'text') { channels.push(guild.channels.array()[i].name); }
             }
+            channel = message.mentions.channels.first();
+            if (!channel) channel = tryGetChannel(guild, args[1]);
+            if (!channel || channel.type != 'text'){
+                message.channel.send(`That channel does not exist or is not a text channel.`);
+            }
+            if (!config[id].channels[channelid]){
+                config[id].channels[channelid] = {
+                    "disabled_commands": []
+                };
+            }
             if (channels.contains(args[1])){
-                channelid = getChannel(message.guild, args[1]).id;
-                if (!config[id].channels[channelid]){
-                    config[id].channels[channelid] = {
-                        "disabled_commands": []
-                    };
-                }
                 if (args[2] == "disable"){
                     if (args[3] != undefined){
                         if (!commands.contains(args[3])){
@@ -1928,8 +1932,11 @@ bot.on('message', message => {
                             message.channel.send(`"${args[3]}" is already disabled in \`${args[1]}\`.`);
                         }
                         else{
+                            console.log('>'+config['339588361712959489'].channels);
                             config[id].channels[channelid].disabled_commands.push(args[3]);
+                            console.log('>'+config['339588361712959489'].channels);
                             saveConfig();
+                            console.log('>'+config['339588361712959489'].channels);
                             message.channel.send(`"${args[3]}" is now disabled in \`${args[1]}\`.`);
                         }
                     }
