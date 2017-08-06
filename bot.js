@@ -191,6 +191,7 @@ function getUser(guild, _user){
 }
 
 function tryGetChannel(guild, str){
+    if (!str) return;
     var channel;
     while (str.contains('%20')){
     	str = str.replace('%20', ' ');
@@ -1894,10 +1895,12 @@ bot.on('message', message => {
             for (i = 0; i < guild.channels.array().length; i++){
                 if (guild.channels.array()[i].type == 'text') { channels.push(guild.channels.array()[i].name); }
             }
-            channel = message.mentions.channels.first();
-            if (!channel) channel = tryGetChannel(guild, args[1]);
-            if (!channel || channel.type != 'text'){
-                message.channel.send(`That channel does not exist or is not a text channel.`);
+            if (args[1])
+                channel = message.mentions.channels.first();
+                if (!channel) channel = tryGetChannel(guild, args[1]);
+                if (!channel || channel.type != 'text'){
+                    message.channel.send(`That channel does not exist or is not a text channel.`);
+                }
             }
             if (!config[id].channels[channel.id]){
                 config[id].channels[channel.id] = {
