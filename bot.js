@@ -6,7 +6,7 @@ var fs = require('fs');
 var delet_this = JSON.parse(fs.readFileSync('database/delet_this.json')).memes;
 var vids = fs.readFileSync('database/thundaga.json');
 var eps = JSON.parse(vids);
-var config = "";
+var config = {};
 var main_color = 10876925;
 var admin = require('firebase-admin');
 var serviceAccount = require('./database/vulpix-bot-service-account.json');
@@ -14,6 +14,11 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: process.env.DATABASE
 });
+ref.once('value', function(data){
+    config = data.val();
+}, function(err){
+    console.log(err);
+})
 var ref = admin.database().ref();
 const level_curve = [ 0,
   24,    54,    93,    135,   183,   // 1  - 5
@@ -331,23 +336,24 @@ function setDefaults(guild){
 }
 
 function saveConfig(id = null){
-    if (id){
-        var rf = admin.database().ref(id)
-        rf.update(config[id]);
-        rf.once('value', function(data){
-            config[id] = data.val();
-        }, function(err){
-            console.log(err);
-        })
-    }
-    else{
-        ref.update(config);
-        ref.once('value', function(data){
-            config = data.val();
-        }, function(err){
-            console.log(err);
-        });
-    }
+    ref.update(config);
+//    if (id){
+//        var rf = admin.database().ref(id)
+//        rf.update(config[id]);
+//        rf.once('value', function(data){
+//            config[id] = data.val();
+//        }, function(err){
+//            console.log(err);
+//        })
+//    }
+//    else{
+//        ref.update(config);
+//        ref.once('value', function(data){
+//            config = data.val();
+//        }, function(err){
+//            console.log(err);
+//        });
+//    }
 }
 
 function logMessage(guild, message){
@@ -1579,7 +1585,7 @@ bot.on('message', message => {
                 args.splice(0, 1);
                 var reason = args.join(' ');
                 guild.members.get(user.id).kick(reason);
-                botLog(guild, `User "${message.author.username}" kicked user "${user.username}"${reason ? `for: ${reason}` : ``}`);
+                botLog(guild, `User "${message.author.username}" kicked user "${user.username}"${reason ? `for: ${reason}` : `.`}`);
             }
         }
     }
@@ -2012,13 +2018,5 @@ bot.on('message', message => {
         }
     }
 });
-
-ref.on('value', function(data){
-    config = data.val();
-}, function(err){
-    console.log(err);
-})
-
-if (config) ref.update(config);
 
 bot.login(process.env.TOKEN);
