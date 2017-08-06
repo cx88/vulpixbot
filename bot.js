@@ -936,9 +936,9 @@ bot.on('message', message => {
                 message.channel.send(`Known bugs:\`\`\`\n${bug_titles.length == 0 ? `---` : bug_titles.join('\n')}\`\`\``)
             }
             else if (args[0] == "submit"){
-                if (config[id].users != undefined){
-                    if (config[id].users[message.member.user.id] != undefined){
-                        if (!config[id].users[message.member.user.id].can_submit_bugs){
+                if (config[id].users){
+                    if (config[id].users[message.member.user.id]){
+                        if (config[id].users[message.member.user.id].can_submit_bugs == false){
                             message.channel.send(`You are not authorized to submit bugs.`);
                             return;
                         }
