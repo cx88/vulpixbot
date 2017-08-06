@@ -14,12 +14,12 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: process.env.DATABASE
 });
+var ref = admin.database().ref();
 ref.once('value', function(data){
     config = data.val();
 }, function(err){
     console.log(err);
 })
-var ref = admin.database().ref();
 const level_curve = [ 0,
   24,    54,    93,    135,   183,   // 1  - 5
   234,   288,   351,   420,   495,   // 6  - 10
