@@ -91,6 +91,7 @@ String.prototype.capitalize = function(){
 }
 
 function jsonToString(json){
+    if (!json) return '---';
     if (json.construcor == Array){
         return `[\n    "${json.join('",\n    "')}"\n]`
     }
