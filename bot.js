@@ -368,12 +368,15 @@ function setDefaults(guild){
 }
 
 function saveConfig(){
+    console.log(config.339588361712959489.channels);
     ref.update(config);
+    console.log(config.339588361712959489.channels);
     ref.once('value', function(data){
         if (data.val()) config = data.val();
     }, function(err){
         console.log(err);
     })
+    console.log(config.339588361712959489.channels);
 }
 
 function logMessage(guild, message){
@@ -1926,9 +1929,7 @@ bot.on('message', message => {
                         }
                         else{
                             config[id].channels[channelid].disabled_commands.push(args[3]);
-                            console.log(config[id]);
                             saveConfig();
-                            console.log(config[id]);
                             message.channel.send(`"${args[3]}" is now disabled in \`${args[1]}\`.`);
                         }
                     }
