@@ -329,7 +329,7 @@ function setDefaults(guild){
                 "CHANGE_NICKNAME", "MANAGE_NICKNAMES",
                 "MANAGE_ROLES_OR_PERMISSIONS", "MUTE_MEMBERS",
                 "MOVE_MEMBERS", "USE_VAD", "MANAGE_WEBHOOKS",
-                "MANAGE_EMOJIS", "MANAGE_SERVER", "MANAGE_CHANNELS"
+                "MANAGE_EMOJIS"
             ],
             mentionable: true
         })
@@ -338,23 +338,6 @@ function setDefaults(guild){
 
 function saveConfig(){
     ref.update(config);
-//    if (id){
-//        var rf = admin.database().ref(id)
-//        rf.update(config[id]);
-//        rf.once('value', function(data){
-//            config[id] = data.val();
-//        }, function(err){
-//            console.log(err);
-//        })
-//    }
-//    else{
-//        ref.update(config);
-//        ref.once('value', function(data){
-//            config = data.val();
-//        }, function(err){
-//            console.log(err);
-//        });
-//    }
 }
 
 function logMessage(guild, message){
