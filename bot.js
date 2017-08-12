@@ -527,7 +527,7 @@ bot.on('guildUpdate', (oldguild, newguild) => {
 });
 
 bot.on('message', message => {
-    if (!config) setDefaults(message.channel.guild);
+    if (!config[message.channel.guild.id]) setDefaults(message.channel.guild);
 	if (!message || !message.member) return;
     if (message.member.user.bot) return;
     var guild = message.guild;
