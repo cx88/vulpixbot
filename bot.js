@@ -765,7 +765,7 @@ bot.on('message', message => {
             if (!user) user = tryGetUser(guild, args.join(' '));
             if (!user) user = message.member.user;
             if (user.bot){
-                message.channel.send(`Bots do not have a rank.`);
+                message.channel.send(`Bots do not have ranks.`);
                 return;
             }
             var rank = 0;
@@ -1384,6 +1384,74 @@ bot.on('message', message => {
                 }
             }
         }
+        else if (command(channel, cmd, "bot")){
+            var guilds = bot.guilds.map(g => g).length;
+            var members = 0;
+            for (guild in bot.guild.map(g => g)){
+                members += guild.members.map(m => m).length;
+            }
+            var onlineSince = dateNow(bot.readyAt).split('__')[0] + " at " + dateNow(bot.readyAt)[1] + " (GMT + 2 (Mid EU))";
+            message.channel.send({ embed:{
+                author: {
+                    name: bot.user.tag,
+                    icon_url: bot.user.avatarURL
+                },
+                thumbnail: {
+                    url: bot.user.avatarURL
+                }
+                title: `Serving ${members} users in ${guilds} guilds!`,
+                /*
+                            var embed = { embed: {
+                color: main_color,
+                author: {
+                    name: user.username,
+                    icon_url: user.avatarURL
+                },
+                title: user.tag,
+                thumbnail: {
+                    url: user.avatarURL
+                },
+                fields: [{
+                    name: `**Nickname**`,
+                    value: user.username,
+                    inline: true
+                },{
+                    name: `**User ID**`,
+                    value: user.id,
+                    inline: true
+                },{
+                    name: `**Status**`,
+                    value: user.presence.status,
+                    inline: true
+                },{
+                    name: `**Game**`,
+                    value: user.presence.game ? user.presence.game.name : "---",
+                    inline: true
+                },{
+                    name: `**Bot**`,
+                    value: user.bot
+                },{
+                    name: `**Created At**`,
+                    value: user.createdAt,
+                    inline: true
+                }]
+            }};
+            */
+                description: `Online since ${onlineSince}`,
+                fields:[{
+                    name: `**Status**`,
+                    value: bot.user.presence.status.toUpperCase(),
+                    inline: true
+                },{
+                    name: `**ID**`,
+                    value: bot.user.id,
+                    inline: true
+                },{
+                    name: `**Creator**`,
+                    value: `M3rein#7122`
+                }]
+            }});
+        }
         if (isBotAdmin(message.member)){
             if (cmd == "say"){
                 if (args[0] != undefined){
@@ -1409,25 +1477,6 @@ bot.on('message', message => {
                     }
                     config[id].quotes[user.id] = [];
                     message.channel.send(`Successfully cleared all ${user.username}'s quotes.`);
-                }
-            }
-            else if (cmd == "reload"){
-                if (args[0] == undefined){
-                    dlt = fs.readFileSync('database/delet_this.json');
-                    delet_this = JSON.parse(dlt)["memes"];
-                    vids = fs.readFileSync('database/thundaga.json');
-                    eps = JSON.parse(vids);
-                    message.channel.send('Successfully reloaded `memes` and `thundaga`.');
-                }
-                else if (args[0] == "memes"){
-                    dlt = fs.readFileSync('database/delet_this.json');
-                    delet_this = JSON.parse(dlt)["memes"];
-                    message.channel.send('Successfully reloaded `memes`.');
-                }
-                else if (args[0] == "thundaga"){
-                    vids = fs.readFileSync('database/thundaga.json');
-                    eps = JSON.parse(vids);
-                    message.channel.send('Successfully reloaded `thundaga`.');
                 }
             }
             else if (cmd == "id"){
