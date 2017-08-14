@@ -1387,8 +1387,8 @@ bot.on('message', message => {
         else if (command(channel, cmd, "bot")){
             var guilds = bot.guilds.map(g => g).length;
             var members = 0;
-            for (guild in bot.guilds.map(g => g)){
-                members += guild.members.map(m => m).length;
+            for (i = 0; i < bot.guilds.map(g => g).length; i++){
+                mebmers += bot.guilds.map(g => g)[i].members.map(m => m).length;
             }
             var onlineSince = dateNow(bot.readyAt).split('__')[0] + " at " + dateNow(bot.readyAt)[1] + " (GMT + 2 (Mid EU))";
             message.channel.send({ embed:{
