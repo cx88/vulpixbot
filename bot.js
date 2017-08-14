@@ -100,8 +100,8 @@ function jsonToString(json){
     }
 }
 
-function dateNow(){
-    var d = new Date();
+function getDate(date = null){
+    var d = date ? date : new Date();
     var y = d.getFullYear();
     var m = d.getMonth() + 1;
     var dt = d.getDate();
@@ -566,7 +566,7 @@ bot.on('message', message => {
         cmd = message.content.substr(1).split(' ')[0];
         args = message.content.split(" ");
         args.splice(0, 1);
-        logMessage(guild, dateNow() + ' ' + message.author.username + `: ` + message.content);
+        logMessage(guild, getDate() + ' ' + message.author.username + `: ` + message.content);
         if (command(channel, cmd, "pc")){
             if (args[0] == undefined) return;
             message.channel.send('https://pokecommunity.com/~'+args[0]);
@@ -1390,7 +1390,7 @@ bot.on('message', message => {
             for (i = 0; i < bot.guilds.map(g => g).length; i++){
                 members += bot.guilds.map(g => g)[i].members.map(m => m).length;
             }
-            var onlineSince = dateNow(bot.readyAt).split('__')[0] + " at " + dateNow(bot.readyAt)[1] + " (GMT + 2 (Mid EU))";
+            var onlineSince = getDate(bot.readyAt).split('__')[0] + " at " + getDate(bot.readyAt)[1] + " (GMT + 2 (Mid EU))";
             message.channel.send({ embed:{
                 author: {
                     name: bot.user.tag,
@@ -1624,7 +1624,7 @@ bot.on('message', message => {
         args.splice(0, 1);
         var cmd = args[0];
         var setting = args[1];
-        logMessage(guild, `${dateNow()} ${message.author.username}: ${message.content}`);
+        logMessage(guild, `${getDate()} ${message.author.username}: ${message.content}`);
         if (cmd == "prefix"){
             if (setting != undefined){
                 if (setting == "v-"){
