@@ -1398,7 +1398,7 @@ bot.on('message', message => {
                 },
                 thumbnail: {
                     url: bot.user.avatarURL
-                }
+                },
                 title: `Serving ${members} users in ${guilds} guilds!`,
                 /*
                             var embed = { embed: {
