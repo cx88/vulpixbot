@@ -1440,7 +1440,7 @@ bot.on('message', message => {
                 description: `Online since ${onlineSince}`,
                 fields:[{
                     name: `**Status**`,
-                    value: bot.user.presence.status.toUpperCase(),
+                    value: bot.user.presence.status.capitalize(),
                     inline: true
                 },{
                     name: `**ID**`,
