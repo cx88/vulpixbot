@@ -1583,6 +1583,7 @@ bot.on('message', message => {
                     }
                     if (config[guilds[i].id].messages.news.status == "on"){
                         var channel = tryGetChannel(guilds[i], config[guilds[i].id].messages.news.channel);
+                        console.log(channel);
                         if (channel){
                             channel.send(args.join(' '));
                         }
