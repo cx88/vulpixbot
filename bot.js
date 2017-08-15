@@ -1583,16 +1583,11 @@ bot.on('message', message => {
                     }
                     if (config[guilds[i].id].messages.news.status == "on"){
                         var channel = tryGetChannel(guilds[i], config[guilds[i].id].messages.news.channel);
-                        console.log('==============');
-                        console.log(guilds[i].name);
-                        console.log(channel);
-                        console.log(channel.constructor);
-                        console.log(typeof channel);
-                        if (channel){
+                        if (channel.constructor.name == 'TextChannel'){
                             channel.send(args.join(' '));
                         }
                         else{
-                            botLog(guilds[i], `Channel \`${config[guilds[i].id].messages.news.channel}\` does not exist as referred to in \`v-config messages news channel\`.`);
+                            botLog(guilds[i], `Channel \`${config[guilds[i].id].messages.news.channel}\` does not exist as referred to in \`v-config messages news channel\` or is invalid.`);
                         }
                     }
                 }
