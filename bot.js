@@ -283,7 +283,7 @@ function setDefaults(guild){
                 "msg": "Welcome to the server, (user)!",
                 "status": "on",
                 "role": "Member",
-                "channel": "general"
+                "channel": guild.defaultChannel.name
             },
             "levelup": {
                 "msg": "Congrats, (@user)! You leveled up to level (level)!",
@@ -292,15 +292,15 @@ function setDefaults(guild){
             "goodbye": {
                 "msg": "(user) has just left the server. Rest in peace!",
                 "status": "on",
-                "channel": "general"
+                "channel": guild.defaultChannel.name
             },
             "news": {
                 "status": "on",
-                "channel": "general"
+                "channel": guild.defaultChannel.name
             }
         },
         "bot_log": {
-            "channel": "bot_logs",
+            "channel": guild.defaultChannel.name,
             "status": "on"
         },
         "roles": {
@@ -1394,7 +1394,7 @@ bot.on('message', message => {
             for (i = 0; i < bot.guilds.map(g => g).length; i++){
                 members += bot.guilds.map(g => g)[i].members.map(m => m).length;
             }
-            var onlineSince = getDate(bot.readyAt).split('__')[0] + " at " + getDate(bot.readyAt)[1] + " (GMT + 2 (Mid EU))";
+            var onlineSince = getDate(bot.readyAt).split('__')[0] + " at " + getDate(bot.readyAt).split('__')[1] + " (GMT + 2 (Mid EU))";
             message.channel.send({ embed:{
                 author: {
                     name: bot.user.tag,
@@ -1405,43 +1405,6 @@ bot.on('message', message => {
                 },
                 color: main_color,
                 title: `Serving ${members} users in ${guilds} guilds!`,
-                /*
-                            var embed = { embed: {
-                color: main_color,
-                author: {
-                    name: user.username,
-                    icon_url: user.avatarURL
-                },
-                title: user.tag,
-                thumbnail: {
-                    url: user.avatarURL
-                },
-                fields: [{
-                    name: `**Nickname**`,
-                    value: user.username,
-                    inline: true
-                },{
-                    name: `**User ID**`,
-                    value: user.id,
-                    inline: true
-                },{
-                    name: `**Status**`,
-                    value: user.presence.status,
-                    inline: true
-                },{
-                    name: `**Game**`,
-                    value: user.presence.game ? user.presence.game.name : "---",
-                    inline: true
-                },{
-                    name: `**Bot**`,
-                    value: user.bot
-                },{
-                    name: `**Created At**`,
-                    value: user.createdAt,
-                    inline: true
-                }]
-            }};
-            */
                 description: `Online since ${onlineSince}`,
                 fields:[{
                     name: `**Status**`,
@@ -1463,25 +1426,6 @@ bot.on('message', message => {
                     if (channelExists(message.guild, args[0])){
                         getChannel(message.guild, args[0]).send(message.content.split(`${config[id].prefix}say ${args[0]} `)[1]);
                     }
-                }
-            }
-            else if (cmd == "clearquotes"){
-                if (args[0] == undefined){
-                    message.channel.send(`Specify a user to clear all of their quotes.`);
-                    return;
-                }
-                var user = message.mentions.users.first();
-                if (!user) user = tryGetUser(guild, args[0]);
-                if (user == undefined){
-                    message.channel.send(`User not found.`);
-                }
-                else{
-                    if (config[id].quotes[user.id] == undefined || config[id].quotes[user.id].length == 0){
-                        message.channel.send(`This user does not have any quotes yet.`);
-                        return;
-                    }
-                    config[id].quotes[user.id] = [];
-                    message.channel.send(`Successfully cleared all ${user.username}'s quotes.`);
                 }
             }
             else if (cmd == "id"){
@@ -1620,6 +1564,30 @@ bot.on('message', message => {
                 var reason = args.join(' ');
                 guild.members.get(user.id).kick(reason);
                 botLog(guild, `User "${message.author.username}" kicked user "${user.username}"${reason ? `for: ${reason}` : `.`}`);
+            }
+            else if (cmd == "sendnews"){
+                if (!args[0]){
+                    message.channel.send(`Please enter a message that you would like to send to all servers the bot is a part of.`);
+                    return;
+                }
+                var guilds = bot.guilds.map(g => g);
+                for (int i = 0; i < guilds.length; i++){
+                    if (!config[guilds[i].id].messages.news){
+                        config[guilds[i].id].messages.news = {
+                            "status": "on",
+                            "channel": guilds[i].defaultChannel.name
+                        }
+                    }
+                    if (config[guilds[i].id].messages.news.status == "on"){
+                        var channel = tryGetChannel(guilds[i], config[guilds[i].id].messages.news.channel);
+                        if (channel){
+                            channel.send(args.join(' '));
+                        }
+                        else{
+                            botLog(guilds[i], `Channel \`${config[guilds[i].id].messages.news.channel}\` does not exist as referred to in \`v-config messages news channel\`.`);
+                        }
+                    }
+                }
             }
         }
     }
