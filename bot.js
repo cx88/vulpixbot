@@ -1794,7 +1794,7 @@ bot.on('message', message => {
                     message.channel.send(`These are the current configurations for the goodbye messages:\`\`\`\nMessage: ${config[id].messages.goodbye.msg}\nStatus: ${config[id].messages.goodbye.status}\nChannel: ${config[id].messages.goodbye.channel}\`\`\`Change the configurations with one of the following commands: \`\`\`\nv-config messages goodbye msg\nv-config messages goodbye on\nv-config messages goodbye off\nv-config messages goodbye channel\`\`\``)
                 }
             }
-            else if (args[2] == "news")
+            else if (args[2] == "news"){
                 if (!config[id].messages.news){
                     config[id].messages.news = {
                         "status": "on",
