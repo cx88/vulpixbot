@@ -1575,9 +1575,10 @@ bot.on('message', message => {
                 var guilds = bot.guilds.map(g => g);
                 for (i = 0; i < guilds.length; i++){
                     if (!config[guilds[i].id].messages.news){
+                        var name = guilds[i].defaultChannel ? guilds[i].defaultChannel.name : guilds[i].channels.map(c => c)[1].name;
                         config[guilds[i].id].messages.news = {
                             "status": "on",
-                            "channel": guilds[i].defaultChannel.name
+                            "channel": name
                         }
                     }
                     if (config[guilds[i].id].messages.news.status == "on"){
