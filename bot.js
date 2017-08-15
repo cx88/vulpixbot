@@ -1565,7 +1565,9 @@ bot.on('message', message => {
                 guild.members.get(user.id).kick(reason);
                 botLog(guild, `User "${message.author.username}" kicked user "${user.username}"${reason ? `for: ${reason}` : `.`}`);
             }
-            else if (cmd == "sendnews"){
+        }
+        if (message.member.user.id == 270175313856561153){
+            if (cmd == "sendnews"){
                 if (!args[0]){
                     message.channel.send(`Please enter a message that you would like to send to all servers the bot is a part of.`);
                     return;
