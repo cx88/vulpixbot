@@ -1794,8 +1794,50 @@ bot.on('message', message => {
                     message.channel.send(`These are the current configurations for the goodbye messages:\`\`\`\nMessage: ${config[id].messages.goodbye.msg}\nStatus: ${config[id].messages.goodbye.status}\nChannel: ${config[id].messages.goodbye.channel}\`\`\`Change the configurations with one of the following commands: \`\`\`\nv-config messages goodbye msg\nv-config messages goodbye on\nv-config messages goodbye off\nv-config messages goodbye channel\`\`\``)
                 }
             }
+            else if (args[2] == "news")
+                if (!config[id].messages.news){
+                    config[id].messages.news = {
+                        "status": "on",
+                        "channel": "general"
+                    }
+                }
+                if (args[2] == "on"){
+                    if (config[id].messages.news.status == "on"){
+                        message.channel.send(`You already have news enabled.`);
+                        return;
+                    }
+                    config[id].messages.news.status = "on";
+                    saveConfig();
+                    message.channel.send(`News has been enabled.`);
+                }
+                else if (args[2] == "off"){
+                    if (config[id].messages.news.status == "off"){
+                        message.channel.send(`You already have news disabled.`);
+                        return;
+                    }
+                    config[id].messages.news.status = "off";
+                    saveConfig();
+                    message.channel.send(`News has been disabled.`);
+                }
+                else if (args[2] == "channel"){
+                    if (args[3]){
+                        if (config[id].messages.news.channel == args[3]){
+                            message.channel.send(`You are already receiving news in that channel.`);
+                            return;
+                        }
+                        config[id].messages.news.channel = args[3]
+                        saveConfig();
+                        message.channel.send(`You will now receive news in \`${config[id].messages.news.channel}\` if you have it enabled.`);
+                        return;
+                    }
+                    message.channel.send(`News will be sent in channel \`${config[id].messages.news.channel}\` if you have it enabled. To change in which channel news is sent, use \`v-config messages news channels [channel]\`.`);
+                }
+                else{
+                    message.channel.send(`Your news configurations are as follows: \`\`\`Status: ${config[id].messages.news.status}\nChannel: ${config[id].messages.news.channel}\`\`\`To change any of them, use one of the following commands: \`\`\`v-config messages news off\nv-config messages news on\nv-config messages news channel\`\`\`News are messages sent by the creator of the bot, M3rein, to inform you about things that are currently hot and happening. This includes: new, major game releases, fangame takedowns, and other resource releases (including his own).`);
+                }
+            }
             else{
-                message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off, change the messages, and choose in which channel they should be sent. Use one of the following commands for more information:```v-config messages welcome\nv-config messages levelup\nv-config messages goodbye```');
+                message.channel.send('These are messages the bot will send under specific circumstances. You can turn them on/off, change the messages, and choose in which channel they should be sent. Use one of the following commands for more information:```v-config messages welcome\nv-config messages levelup\nv-config messages goodbye\nv-config messages news```');
             }
         }
         else if (cmd == "roles"){
@@ -2011,48 +2053,6 @@ bot.on('message', message => {
             }
             else{
                 message.channel.send(`Channel \`${args[1]}\` doesn't exist.`);
-            }
-        }
-        else if (cmd == "news"){
-            if (!config[id].messages.news){
-                config[id].messages.news = {
-                    "status": "on",
-                    "channel": "general"
-                }
-            }
-            if (args[1] == "on"){
-                if (config[id].messages.news.status == "on"){
-                    message.channel.send(`You already have news enabled.`);
-                    return;
-                }
-                config[id].messages.news.status = "on";
-                saveConfig();
-                message.channel.send(`News has been enabled.`);
-            }
-            else if (args[1] == "off"){
-                if (config[id].messages.news.status == "off"){
-                    message.channel.send(`You already have news disabled.`);
-                    return;
-                }
-                config[id].messages.news.status = "off";
-                saveConfig();
-                message.channel.send(`News has been disabled.`);
-            }
-            else if (args[1] == "channel"){
-                if (args[2]){
-                    if (config[id].messages.news.channel == args[2]){
-                        message.channel.send(`You are already receiving news in that channel.`);
-                        return;
-                    }
-                    config[id].messages.news.channel = args[2]
-                    saveConfig();
-                    message.channel.send(`You will now receive news in \`${config[id].messages.news.channel}\` if you have it enabled.`);
-                    return;
-                }
-                message.channel.send(`News will be sent in channel \`${config[id].messages.news.channel}\` if you have it enabled. To change in which channel news is sent, use \`v-config messages news channels [channel]\`.`);
-            }
-            else{
-                message.channel.send(`Your news configurations are as follows: \`\`\`Status: ${config[id].messages.news.status}\nChannel: ${config[id].messages.news.channel}\`\`\`To change any of them, use one of the following commands: \`\`\`v-config messages news off\nv-config messages news on\nv-config messages news channel\`\`\`News are messages sent by the creator of the bot, M3rein, to inform you about things that are currently hot and happening. This includes: new, major game releases, fangame takedowns, and other resource releases (including his own).`);
             }
         }
         else if (cmd == "reset_to_default"){
