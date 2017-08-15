@@ -1575,7 +1575,7 @@ bot.on('message', message => {
                 var guilds = bot.guilds.map(g => g);
                 for (i = 0; i < guilds.length; i++){
                     if (!config[guilds[i].id].messages.news){
-                        var name = guilds[i].defaultChannel ? guilds[i].defaultChannel.name : guilds[i].channels.map(c => c)[1].name;
+                        var name = guilds[i].defaultChannel ? guilds[i].defaultChannel.name : guilds[i].channels.map(c => c)[0].name;
                         config[guilds[i].id].messages.news = {
                             "status": "on",
                             "channel": name
@@ -1583,7 +1583,11 @@ bot.on('message', message => {
                     }
                     if (config[guilds[i].id].messages.news.status == "on"){
                         var channel = tryGetChannel(guilds[i], config[guilds[i].id].messages.news.channel);
+                        console.log('==============');
+                        console.log(guilds[i].name);
                         console.log(channel);
+                        console.log(channel.constructor);
+                        console.log(typeof channel);
                         if (channel){
                             channel.send(args.join(' '));
                         }
