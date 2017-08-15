@@ -1571,7 +1571,7 @@ bot.on('message', message => {
                     return;
                 }
                 var guilds = bot.guilds.map(g => g);
-                for (int i = 0; i < guilds.length; i++){
+                for (i = 0; i < guilds.length; i++){
                     if (!config[guilds[i].id].messages.news){
                         config[guilds[i].id].messages.news = {
                             "status": "on",
