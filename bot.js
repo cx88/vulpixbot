@@ -293,6 +293,10 @@ function setDefaults(guild){
                 "msg": "(user) has just left the server. Rest in peace!",
                 "status": "on",
                 "channel": "general"
+            },
+            "news": {
+                "status": "on",
+                "channel": "general"
             }
         },
         "bot_log": {
@@ -2009,7 +2013,49 @@ bot.on('message', message => {
                 message.channel.send(`Channel \`${args[1]}\` doesn't exist.`);
             }
         }
-        else if (cmd == "default"){
+        else if (cmd == "news"){
+            if (!config[id].messages.news){
+                config[id].messages.news = {
+                    "status": "on",
+                    "channel": "general"
+                }
+            }
+            if (args[1] == "on"){
+                if (config[id].messages.news.status == "on"){
+                    message.channel.send(`You already have news enabled.`);
+                    return;
+                }
+                config[id].messages.news.status = "on";
+                saveConfig();
+                message.channel.send(`News has been enabled.`);
+            }
+            else if (args[1] == "off"){
+                if (config[id].messages.news.status == "off"){
+                    message.channel.send(`You already have news disabled.`);
+                    return;
+                }
+                config[id].messages.news.status = "off";
+                saveConfig();
+                message.channel.send(`News has been disabled.`);
+            }
+            else if (args[1] == "channel"){
+                if (args[2]){
+                    if (config[id].messages.news.channel == args[2]){
+                        message.channel.send(`You are already receiving news in that channel.`);
+                        return;
+                    }
+                    config[id].messages.news.channel = args[2]
+                    saveConfig();
+                    message.channel.send(`You will now receive news in \`${config[id].messages.news.channel}\` if you have it enabled.`);
+                    return;
+                }
+                message.channel.send(`News will be sent in channel \`${config[id].messages.news.channel}\` if you have it enabled. To change in which channel news is sent, use \`v-config messages news channels [channel]\`.`);
+            }
+            else{
+                message.channel.send(`Your news configurations are as follows: \`\`\`Status: ${config[id].messages.news.status}\nChannel: ${config[id].messages.news.channel}\`\`\`To change any of them, use one of the following commands: \`\`\`v-config messages news off\nv-config messages news on\nv-config messages news channel\`\`\`News are messages sent by the creator of the bot, M3rein, to inform you about things that are currently hot and happening. This includes: new, major game releases, fangame takedowns, and other resource releases (including his own).`);
+            }
+        }
+        else if (cmd == "reset_to_default"){
             setDefaults(message.guild);
             message.channel.send(`The configurations have been reset to the default.`);
         }
@@ -2046,7 +2092,7 @@ bot.on('message', message => {
             message.channel.send('```JavaScript\n'+msg+'```');
         }
         else{
-            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config roles\nv-config default\nv-config channels\nv-config show\nv-config bot_log```')
+            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config roles\nv-config reset_to_default\nv-config channels\nv-config show\nv-config bot_log```')
         }
     }
 });
