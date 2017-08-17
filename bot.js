@@ -521,9 +521,11 @@ bot.on('message', message => {
     var id = guild.id;
     var channel = message.channel;
     var prefix = config[id].prefix;
+    var user = message.author;
+    var member = message.member;
     if (config[id] == undefined) return;
 
-    function canAddRole(guild, user, role){
+    function canAddRole(user, role){
       var role = guild.roles.find('name', role);
       if (!role) return false;
       var rolepos = role.position;
@@ -2120,8 +2122,22 @@ bot.on('message', message => {
             }
             message.channel.send('```JavaScript\n'+msg+'```');
         }
+        else if (cmd == "commands"){
+            if (args[1] == "create"){
+
+            }
+            else if (args[1] == "delete"){
+
+            }
+            else if (args[1] == "view"){
+
+            }
+            else{
+                message.channel.send(`These are all custom commands currently configured:\`\`\`${}\`\`\`To create a new command, use \`v-config commands create\`. To delete a command, use \`v-config commands delete [index]\`. To see the code behind a command, use \`v-config commands view [index]\`.`);
+            }
+        }
         else{
-            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config roles\nv-config reset_to_default\nv-config channels\nv-config show\nv-config bot_log```')
+            message.channel.send('To configure the bot for this server, use one of the following commands: ```v-config prefix\nv-config messages\nv-config roles\nv-config reset_to_default\nv-config channels\nv-config show\nv-config bot_log\nv-config commands```')
         }
     }
 });
