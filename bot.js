@@ -361,6 +361,7 @@ function logMessage(guild, message){
 
 function botLog(guild, message){
     var id = guild.id;
+    if (!config[id]) return;
     if (config[id].bot_log && config[id].bot_log.channel && config[id].bot_log.status == "on"){
         channel = tryGetChannel(guild, config[id].bot_log.channel);
         if (channel){
@@ -1701,7 +1702,6 @@ bot.on('message', message => {
                     message.channel.send(`Please enter a message that you would like to send to all servers the bot is a part of.`);
                     return;
                 }
-                send(2)
                 var guilds = bot.guilds.map(g => g);
                 for (i = 0; i < guilds.length; i++){
                     if (!config[guilds[i].id].messages.news){
@@ -1722,9 +1722,6 @@ bot.on('message', message => {
                     }
                 }
             }
-        }
-        else{
-            send(0);
         }
     }
     if (message.content.startsWith("v-config") && isBotAdmin(message.member)){ // Configuration of the bot for the server.
