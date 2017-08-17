@@ -2124,6 +2124,9 @@ bot.on('message', message => {
             message.channel.send('```JavaScript\n'+msg+'```');
         }
         else if (cmd == "commands"){
+            if (!config[id].commands){
+                config[id].commands = {}
+            }
             if (args[1] == "create"){
 
             }
