@@ -208,15 +208,6 @@ function tryGetChannel(guild, str){
     return channel;
 }
 
-function canAddRole(guild, user, role){
-  var role = guild.roles.find('name', role);
-  if (!role) return false;
-  var rolepos = role.position;
-  var positions = guild.members.get(bot.user.id).roles.map(r => r.position);
-  var upositions = guild.members.get(user.id).roles.map(r => r.position);
-  return Math.max.apply(Math, positions) > role.position && Math.max.apply(Math, positions) > Math.max.apply(Math, upositions);  
-}
-
 function tryGetUser(guild, str){
 	if (!str) return;
     var user;
@@ -531,6 +522,33 @@ bot.on('message', message => {
     var channel = message.channel;
     var prefix = config[id].prefix;
     if (config[id] == undefined) return;
+
+    function canAddRole(guild, user, role){
+      var role = guild.roles.find('name', role);
+      if (!role) return false;
+      var rolepos = role.position;
+      var positions = guild.members.get(bot.user.id).roles.map(r => r.position);
+      var upositions = guild.members.get(user.id).roles.map(r => r.position);
+      return Math.max.apply(Math, positions) > role.position && Math.max.apply(Math, positions) > Math.max.apply(Math, upositions);  
+    }
+
+    function send(msg, channel = null){
+      if (!channel){
+        message.channel.send(msg);
+      }
+      else{
+        var chnl = tryGetChannel(guild, channel);
+        if (chnl){
+          chnl.send(msg);
+        }
+        else{
+          message.channel.send('Could not find channel.');
+        }
+      }
+    }
+
+
+
     if (!message.content.startsWith(config[id].prefix) && !message.content.startsWith("v-")){
         if (config[id]["ranks"] == undefined){
             config[id]["ranks"] = {};
