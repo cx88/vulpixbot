@@ -208,7 +208,7 @@ function tryGetChannel(guild, str){
     return channel;
 }
 
-function canAddRole(user, role){
+function canAddRole(guild, user, role){
   var role = guild.roles.find('name', role);
   if (!role) return false;
   var rolepos = role.position;
