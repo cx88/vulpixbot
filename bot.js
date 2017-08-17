@@ -2193,17 +2193,19 @@ If you feel there are methods missing to make it easier to create a command, ple
                         message.channel.send(`Invalid command format. Separator \`:\` was not found.`);
                         return;
                     }
-                    name = msg.split(':')[0];
+                    var name = msg.split(':')[0];
                     if (name.startsWith('"') || name.startsWith("'")){
                         name = name.substr(1);
                     }
                     if (name.endsWith('"') || name.endsWith("'")){
                         name = name.substr(0, name.length - 1);
                     }
-                    channel.send(name);
+                    channel.send(msg);
                     var tmp = msg.split(':');
                     tmp = tmp.splice(0, 1);
+                    channel.send(tmp);
                     var code = tmp.join(':');
+                    channel.send(code);
                     while (code.startsWith(' ')){
                         code = code.substr(1);
                     }
