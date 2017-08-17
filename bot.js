@@ -835,22 +835,24 @@ bot.on('message', message => {
             try{
                 var result = eval(str);
                 message.channel.send({embed:{
+                    color: main_color,
                     fields: [{
                         name: `**Input**`,
                         value: str
                     },{
-                        name: `**Output:white_check_mark:`,
+                        name: `**Output**:white_check_mark:`,
                         value: (result && result != "" && result != " " ? result : `---`)
                     }]
                 }});
             }
             catch (err){
                 message.channel.send({embed:{
+                    color: main_color,
                     fields: [{
                         name: `**Input**`,
                         value: str
                     },{
-                        name: `**Output:x:`,
+                        name: `**Output**:x:`,
                         value: err.stack
                     }]
                 }});
