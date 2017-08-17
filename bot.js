@@ -420,7 +420,7 @@ bot.on('ready', () => {
 bot.on('guildCreate', guild =>{
     if (!config) return;
     console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
-    guild.defaultChannel.send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `M3rein#7122` for questions and inquiries!');
+    guild.defaultChannel.send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `Marin#7122` for questions and inquiries!');
     setDefaults(guild);
 })
 
@@ -1514,18 +1514,23 @@ bot.on('message', message => {
                     inline: true
                 },{
                     name: `**Creator**`,
-                    value: `M3rein#7122`
+                    value: `Marin#7122`
                 }]
             }});
         }
         if (config[id] && config[id].commands){
             var cmds = Object.keys(config[id].commands);
             if (cmds.contains(cmd)){
-                try{
-                    eval(config[id].commands[cmd]);
-                }
-                catch (e){
-                    botLog(`Failed to evaluate custom command \`${cmd}\`.\r\n${e.name}: ${e.message}`);
+                if (!config[id].channels) config[id].channels = {};
+                if (!config[id].channels[message.channel.id]) config[id].channels[message.channel.id] = {};
+                if (!config[id].channels[message.channel.id].disabled_commands) config[id].channels[message.channel.id].disabled_commands = [];
+                if (!config[id].channels[message.channel.id].disabled_commands.contains(cmd)){
+                    try{
+                        eval(config[id].commands[cmd]);
+                    }
+                    catch (e){
+                        botLog(`Failed to evaluate custom command \`${cmd}\`.\r\n${e.name}: ${e.message}`);
+                    }
                 }
             }
         }
@@ -1913,7 +1918,7 @@ bot.on('message', message => {
                     message.channel.send(`News will be sent in channel \`${config[id].messages.news.channel}\` if you have it enabled. To change in which channel news is sent, use \`v-config messages news channels [channel]\`.`);
                 }
                 else{
-                    message.channel.send(`Your news configurations are as follows: \`\`\`Status: ${config[id].messages.news.status}\nChannel: ${config[id].messages.news.channel}\`\`\`To change any of them, use one of the following commands: \`\`\`v-config messages news off\nv-config messages news on\nv-config messages news channel\`\`\`News are messages sent by the creator of the bot, M3rein, to inform you about things that are currently hot and happening. This includes: new, major game releases, fangame takedowns, and other resource releases (including his own).`);
+                    message.channel.send(`Your news configurations are as follows: \`\`\`Status: ${config[id].messages.news.status}\nChannel: ${config[id].messages.news.channel}\`\`\`To change any of them, use one of the following commands: \`\`\`v-config messages news off\nv-config messages news on\nv-config messages news channel\`\`\`News are messages sent by the creator of the bot, Marin, to inform you about things that are currently hot and happening. This includes: new, major game releases, fangame takedowns, and other resource releases (including his own).`);
                 }
             }
             else{
