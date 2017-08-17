@@ -1519,8 +1519,8 @@ bot.on('message', message => {
             }});
         }
         if (config[id] && config[id].commands){
-            var commands = Object.keys(config[id].commands);
-            if (commands.contains(cmd)){
+            var cmds = Object.keys(config[id].commands);
+            if (cmds.contains(cmd)){
                 try{
                     eval(config[id].commands[cmd]);
                 }
@@ -2072,7 +2072,8 @@ bot.on('message', message => {
             }
             console.log(commands);
             var all_commands = commands;
-            console.log(all_commands);
+            console.log(commands.length);
+            console.log(all_commands.length);
             if (config[id].commands){
                 var cmds = Object.keys(config[id].commands);
                 console.log(all_commands);
@@ -2248,7 +2249,6 @@ If you feel there are methods missing to make it easier to create a command, ple
                     message.channel.send(`Specify at which index you'd like to remove a command.`);
                     return;
                 }
-                var commands = "";
                 var keys = Object.keys(config[id].commands);
                 if (isNaN(args[2])){
                     message.channel.send(`Specify a valid index to delete at.`);
@@ -2276,7 +2276,6 @@ If you feel there are methods missing to make it easier to create a command, ple
                     message.channel.send(`Specify the index of the command you want to see in-depth.`);
                     return;
                 }
-                var commands = "";
                 var keys = Object.keys(config[id].commands);
                 if (isNaN(args[2])){
                     message.channel.send(`Specify a valid index to see that command.`);
@@ -2290,7 +2289,6 @@ If you feel there are methods missing to make it easier to create a command, ple
                 send(`\`${keys[index]}\`:\r\n\`\`\`${config[id].commands[keys[index]]}\`\`\``);
             }
             else{
-                var commands = "";
                 var keys = Object.keys(config[id].commands);
                 for (i = 0; i < keys.length; i++){
                     commands += `${i+1}.) ${keys[i]}\r\n`;
