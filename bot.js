@@ -845,7 +845,7 @@ bot.on('message', message => {
                         value: str
                     },{
                         name: `**Output**:white_check_mark:`,
-                        value: ((result != null) ? result : `---`)
+                        value: ((result != null && result.toString().length > 0) ? result.toString() : `---`)
                     }]
                 }});
             }
