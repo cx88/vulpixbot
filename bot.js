@@ -526,7 +526,7 @@ bot.on('message', message => {
     var prefix = config[id].prefix;
     var user = message.author;
     var member = message.member;
-    if (config[id] == undefined) return;
+    if (!config[id]) return;
 
     function canAddRole(user, role){
       if (!user || user.constructor.name != 'User'|| !role){
@@ -1511,7 +1511,7 @@ bot.on('message', message => {
                 }]
             }});
         }
-        if (config[id].commands){
+        if (config[id] && config[id].commands){
             var commands = Object.keys(config[id].commands);
             if (commands.contains(cmd)){
                 try{
