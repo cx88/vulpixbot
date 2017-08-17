@@ -2199,6 +2199,9 @@ If you feel there are methods missing to make it easier to create a command, ple
                     if (args[0].endsWith('"') || args[0].endsWith("'")){
                         args[0] = args[0].substr(0, str.length - 1);
                     }
+                    if (args[0].endsWith('":') || args[0].endsWith("':")){
+                        args[0] = args[0].substr(0, str.length - 2);
+                    }
                     channel.send(args[0]);
                 }
             }
