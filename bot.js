@@ -536,13 +536,14 @@ bot.on('message', message => {
     if (!config[id]) return;
 
     function canAddRole(user, role){
-      if (!user || user.constructor.name != 'User'|| !role){
-        return false
-      }
-      var role = role;
+      if (!user || !role) return false
       if (role.constructor.name != 'Role'){
         role = guild.roles.find('name', role);
       }
+      if (user.constructor.name != 'User'){
+        user = tryGetUser(guild, user);
+      }
+      if (!user) return false;
       var rolepos = role.position;
       var positions = guild.members.get(bot.user.id).roles.map(r => r.position);
       var upositions = guild.members.get(user.id).roles.map(r => r.position);
@@ -550,18 +551,30 @@ bot.on('message', message => {
     }
 
     function hasRole(user, role){
+        if (!user || !role) return false
+        if (role.constructor.name != 'Role'){
+          role = guild.roles.find('name', role);
+        }
+        if (user.constructor.name != 'User'){
+          user = tryGetUser(guild, user);
+        }
+        if (!user) return false;
         var role = guild.members.get(user.id).roles.find('name', role);
         return role ? true : false;
     }
 
     function addRole(user, role){
+        if (!user || !role) return false
+        if (role.constructor.name != 'Role'){
+          role = guild.roles.find('name', role);
+        }
         if (user.constructor.name == 'GuildMember'){
             user = user.user;
         }
         if (user.constructor.name != 'User'){
-            botLog(`Invalid user given to method \`addRole\`.`);
-            return false;
+          user = tryGetUser(guild, user);
         }
+        if (!user) return false;
         if (canAddRole(user, role)){
             guild.members.get(user.id).addRole(guild.roles.find('name', role));
             return true;
@@ -582,7 +595,7 @@ bot.on('message', message => {
           chnl.send(msg);
         }
         else{
-          message.channel.send('Could not find channel.');
+          botLog(`Could not find channel \`${channel}\`.`);
         }
       }
     }
