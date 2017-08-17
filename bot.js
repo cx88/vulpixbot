@@ -630,8 +630,11 @@ bot.on('message', message => {
         args.splice(0, 1);
         logMessage(guild, getDate() + ' ' + message.author.username + `: ` + message.content);
         if (command(channel, cmd, "pc")){
-            if (args[0] == undefined) return;
-            message.channel.send('https://pokecommunity.com/~'+args[0]);
+            if (args[0] == undefined) {
+                message.channel.send(`Specificy a PokéCommunity user to link the profile of.`);
+                return;
+            }
+            message.channel.send('https://pokecommunity.com/~' + args.join(' '));
         }
         else if (command(channel, cmd, "soon")){
             message.channel.send(`Soon:tm:`);
@@ -1508,6 +1511,17 @@ bot.on('message', message => {
                 }]
             }});
         }
+        if (config[id].commands){
+            var commands = Object.keys(config[id].commands);
+            if (commands.contains(cmd)){
+                try{
+                    eval(config[id].commands["cmd"]);
+                }
+                catch (e){
+                    botLog(`Failed to evaluate custom command \`${cmd}\`.\r\n${e.name}: ${e.message}`);
+                }
+            }
+        }
         if (isBotAdmin(message.member)){
             if (cmd == "say"){
                 if (args[0] != undefined){
@@ -2163,8 +2177,6 @@ Note that you can use \`${config[id].prefix}eval\` to test the code!
 
 To create a more advanced command, you should know the basics of JavaScript. It may be possible if you don't, but it will be harder.
 Here are some methods you can use:
-
-Note: Wherever you see a "user" argument, that, by default, is whoever sent the message, but it can also be a username!
 \`\`\`send('message')
 Sends a message.
                         
@@ -2183,6 +2195,11 @@ Adds the role you specified to the user. Returns true if it succeeded, false if 
 rand(number)
 Returns a random number between 0 and [number], exclusive.
 \`\`\`
+Notes:
+Wherever you see a "user" argument, that, by default, is whoever sent the message, but it can also be a username!
+If you want "subcommands", such as, say, \`${config[id].prefix}tag one\` and \`${config[id].prefix}tag two\`, you should simply make the names \`tag one\` and \`tag two\`.
+
+
 If you feel there are methods missing to make it easier to create a command, please get in touch with \`Marin#7122\`.`);
                     return;
                 }
@@ -2207,6 +2224,8 @@ If you feel there are methods missing to make it easier to create a command, ple
                         code = code.substr(1);
                     }
                     channel.send(code);
+                    config[id].commands[name] = code;
+                    saveConfig();
                 }
             }
             else if (args[1] == "delete"){
