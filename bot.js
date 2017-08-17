@@ -833,10 +833,27 @@ bot.on('message', message => {
                 }
             }
             try{
-               message.channel.send(eval(str));
+                var result = eval(str);
+                message.channel.send({embed:{
+                    fields: [{
+                        name: `**Input**`,
+                        value: str
+                    },{
+                        name: `**Output:white_check_mark:`,
+                        value: (result && result != "" && result != " " ? result : `---`)
+                    }]
+                }});
             }
             catch (err){
-                message.channel.send(`Failed to evaluate expression.`);
+                message.channel.send({embed:{
+                    fields: [{
+                        name: `**Input**`,
+                        value: str
+                    },{
+                        name: `**Output:x:`,
+                        value: err.stack
+                    }]
+                }});
             }
         }
         else if (command(channel, cmd, "user")){
