@@ -2161,7 +2161,7 @@ To create a new command, use the following format: \`\`\`v-config commands creat
 Here is an example: \`\`\`v-config commands create "download": send('The game is not out yet!')\`\`\`
 Note that you can use \`${config[id].prefix}eval\` to test the code!
 
-To create a command, you should know the basics of JavaScript. It may be possible if you don't, but it will be harder.
+To create a more advanced command, you should know the basics of JavaScript. It may be possible if you don't, but it will be harder.
 Here are some methods you can use:
 
 Note: Wherever you see a "user" argument, that, by default, is whoever sent the message, but it can also be a username!
@@ -2182,11 +2182,24 @@ Adds the role you specified to the user. Returns true if it succeeded, false if 
 
 rand(number)
 Returns a random number between 0 and [number], exclusive.
-\`\`\``);
+\`\`\`
+If you feel there are methods missing to make it easier to create a command, please get in touch with \`Marin#7122\`.`);
                     return;
                 }
                 else{
-
+                    args.splice(0, 2);
+                    var msg = args.join(' ');
+                    if (!msg.contains(':')){
+                        message.channel.send(`Invalid command format. Separator \`:\` was not found.`);
+                        return;
+                    }
+                    if (args[0].startsWith('"') || args[0].startsWith("'")){
+                        args[0] = args[0].substr(1);
+                    }
+                    if (args[0].endsWith('"') || args[0].endsWith("'")){
+                        args[0] = args[0].substr(0, str.length - 1);
+                    }
+                    channel.send(args[0]);
                 }
             }
             else if (args[1] == "delete"){
