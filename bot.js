@@ -82,7 +82,7 @@ Array.prototype.shuffle = function shuffle() {
     return this;
 }
 
-Array.prototype.merge(array){
+Array.prototype.merge = function(array){
     for (i = 0; i < array.length; i++){
         this.push(array[i]);
     }
@@ -2073,7 +2073,7 @@ bot.on('message', message => {
             var all_commands = commands;
             if (config[id].commands){
                 var cmds = Object.keys(config[id].commands);
-                all_commands.concat(cmds);
+                all_commands.merge(cmds);
             }
             if (channels.contains(args[1])){
                 if (args[2] == "disable"){
