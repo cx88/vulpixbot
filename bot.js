@@ -1515,7 +1515,7 @@ bot.on('message', message => {
             var commands = Object.keys(config[id].commands);
             if (commands.contains(cmd)){
                 try{
-                    eval(config[id].commands["cmd"]);
+                    eval(config[id].commands[cmd]);
                 }
                 catch (e){
                     botLog(`Failed to evaluate custom command \`${cmd}\`.\r\n${e.name}: ${e.message}`);
