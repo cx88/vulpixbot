@@ -2289,11 +2289,12 @@ If you feel there are methods missing to make it easier to create a command, ple
                 send(`\`${keys[index]}\`:\r\n\`\`\`${config[id].commands[keys[index]]}\`\`\``);
             }
             else{
+                var cmds = "";
                 var keys = Object.keys(config[id].commands);
                 for (i = 0; i < keys.length; i++){
-                    commands += `${i+1}.) ${keys[i]}\r\n`;
+                    cmds += `${i+1}.) ${keys[i]}\r\n`;
                 }
-                message.channel.send(`These are all custom commands currently configured:\`\`\`${keys.length == 0 ? `---` : commands}\`\`\`To create a new command, use \`v-config commands create\`. To delete a command, use \`v-config commands delete [index]\`. To see the code behind a command, use \`v-config commands view [index]\`.`);
+                message.channel.send(`These are all custom commands currently configured:\`\`\`${keys.length == 0 ? `---` : cmds}\`\`\`To create a new command, use \`v-config commands create\`. To delete a command, use \`v-config commands delete [index]\`. To see the code behind a command, use \`v-config commands view [index]\`.`);
             }
         }
         else{
