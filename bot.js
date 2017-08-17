@@ -2193,7 +2193,7 @@ If you feel there are methods missing to make it easier to create a command, ple
                         message.channel.send(`Invalid command format. Separator \`:\` was not found.`);
                         return;
                     }
-                    name = args[0].split(':')[0];
+                    name = msg.split(':')[0];
                     if (name.startsWith('"') || name.startsWith("'")){
                         name = name.substr(1);
                     }
@@ -2201,6 +2201,13 @@ If you feel there are methods missing to make it easier to create a command, ple
                         name = name.substr(0, name.length - 1);
                     }
                     channel.send(name);
+                    var tmp = msg.split(':');
+                    tmp = tmp.splice(0, 1);
+                    var code = tmp.join(':');
+                    while (code.startsWith(' ')){
+                        code = code.substr(1);
+                    }
+                    channel.send(code);
                 }
             }
             else if (args[1] == "delete"){
