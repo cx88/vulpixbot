@@ -836,6 +836,10 @@ bot.on('message', message => {
                 var result = eval(str);
                 message.channel.send({embed:{
                     color: main_color,
+                    footer: {
+                        text: message.author.tag,
+                        icon_url: message.author.avatarURL
+                    },
                     fields: [{
                         name: `**Input**`,
                         value: str
@@ -845,15 +849,19 @@ bot.on('message', message => {
                     }]
                 }});
             }
-            catch (err){
+            catch (e){
                 message.channel.send({embed:{
                     color: main_color,
+                    footer: {
+                        text: message.author.tag,
+                        icon_url: message.author.avatarURL
+                    },
                     fields: [{
                         name: `**Input**`,
                         value: str
                     },{
                         name: `**Output**:x:`,
-                        value: err.stack
+                        value: e.name +': ' + e.message
                     }]
                 }});
             }
