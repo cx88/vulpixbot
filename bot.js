@@ -61,7 +61,7 @@ const commands = [
     "delet", "rank", "8ball",
     "eval", "user", "bug", "spoon",
     "mock", "gandalf", "channel", "server",
-    "quotes", "add", "remove", "top"
+    "quotes", "add", "remove", "top", "bot"
 ]
 
 Array.prototype.contains = function(obj) {
@@ -78,6 +78,13 @@ Array.prototype.shuffle = function shuffle() {
     for (let i = this.length; i; i--) {
         let j = Math.floor(Math.random() * i);
         [this[i - 1], this[j]] = [this[j], this[i - 1]];
+    }
+    return this;
+}
+
+Array.prototype.merge(array){
+    for (i = 0; i < array.length; i++){
+        this.push(array[i]);
     }
     return this;
 }
