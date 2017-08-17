@@ -829,13 +829,16 @@ bot.on('message', message => {
                     str.contains('user') || str.contains('User') || str.contains('channel') || str.contains('Channel') || str.contains('guild') ||
                     str.contains('Guild') || str.contains('message') || str.contains('member') || str.contains('end') || str.contains('while') || 
                     str.contains('process') || str.contains('kill') || str.contains('env') || str.contains('bot')){
+                    message.channel.send(`You are trying to evaluate something you are not authorized to.`);
                     return;
                 }
             }
+            message.delete();
             try{
                 var result = eval(str);
                 message.channel.send({embed:{
                     color: main_color,
+                    description: `Please note that the output is automatically converted into a string.`,
                     footer: {
                         text: message.author.tag,
                         icon_url: message.author.avatarURL
@@ -852,6 +855,7 @@ bot.on('message', message => {
             catch (e){
                 message.channel.send({embed:{
                     color: main_color,
+                    description: `Please note that the output is automatically converted into a string.`,
                     footer: {
                         text: message.author.tag,
                         icon_url: message.author.avatarURL
