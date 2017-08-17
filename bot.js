@@ -280,7 +280,7 @@ function setDefaults(guild){
         ],
         "commands": {
 
-        }
+        },
         "messages": {
             "welcome": {
                 "msg": "Welcome to the server, (user)!",
@@ -2139,7 +2139,7 @@ bot.on('message', message => {
                 for (i = 0; i < keys.length; i++){
                     commands += `${i+1}.) ${keys[i]}\r\n`;
                 }
-                message.channel.send(`These are all custom commands currently configured:\`\`\`${commands}\`\`\`To create a new command, use \`v-config commands create\`. To delete a command, use \`v-config commands delete [index]\`. To see the code behind a command, use \`v-config commands view [index]\`.`);
+                message.channel.send(`These are all custom commands currently configured:\`\`\`${keys.length == 0 ? `---` : commands}\`\`\`To create a new command, use \`v-config commands create\`. To delete a command, use \`v-config commands delete [index]\`. To see the code behind a command, use \`v-config commands view [index]\`.`);
             }
         }
         else{
