@@ -2128,7 +2128,24 @@ bot.on('message', message => {
                 config[id].commands = {}
             }
             if (args[1] == "create"){
-
+                if (!args[2]){
+                    message.channel.send(`To create a new command, use the following format: \`\`\`v-config commands create "[name]": [code]\`\`\` /
+                        Here is an example: \`\`\`v-config commands create "downloads": send('The game is not out yet!')\`\`\` /
+                        To create a command, you should know the basics of JavaScript. It may be possible if you don't, but it will be harder. /
+                        Here are some methods you can use: /
+                        \`\`\`send('message')
+                        Sends a message. /
+                        /
+                        send('message', 'channelname')
+                        Sends a message in the channel you specified. /
+                        /
+                        canAddRole(user, 'Member')
+                        Returns a boolean. True if the bot can give the user the role, false if not. /
+                        /
+                        addRole(user, 'Member')
+                        Adds the role you specified to the user.`);
+                    return;
+                }
             }
             else if (args[1] == "delete"){
 
