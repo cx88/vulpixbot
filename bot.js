@@ -542,7 +542,7 @@ bot.on('message', message => {
       return Math.max.apply(Math, positions) > role.position && Math.max.apply(Math, positions) > Math.max.apply(Math, upositions);  
     }
 
-    function addRole(user, role)){
+    function addRole(user, role){
         if (user.constructor.name == 'GuildMember'){
             user = user.user;
         }
