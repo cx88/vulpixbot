@@ -1681,12 +1681,14 @@ bot.on('message', message => {
                 botLog(guild, `User "${message.author.username}" kicked user "${user.username}"${reason ? `for: ${reason}` : `.`}`);
             }
         }
-        if (message.member.user.id == 270175313856561153){
+        if (message.member.user.id == '270175313856561153'){
             if (cmd == "sendnews"){
+                send(1);
                 if (!args[0]){
                     message.channel.send(`Please enter a message that you would like to send to all servers the bot is a part of.`);
                     return;
                 }
+                send(2)
                 var guilds = bot.guilds.map(g => g);
                 for (i = 0; i < guilds.length; i++){
                     if (!config[guilds[i].id].messages.news){
@@ -1707,6 +1709,9 @@ bot.on('message', message => {
                     }
                 }
             }
+        }
+        else{
+            send(0);
         }
     }
     if (message.content.startsWith("v-config") && isBotAdmin(message.member)){ // Configuration of the bot for the server.
