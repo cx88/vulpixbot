@@ -529,12 +529,35 @@ bot.on('message', message => {
     if (config[id] == undefined) return;
 
     function canAddRole(user, role){
-      var role = guild.roles.find('name', role);
-      if (!role) return false;
+      if (!user || user.constructor.name != 'User'|| !role){
+        return false
+      }
+      var role = role;
+      if (role.constructor.name != 'Role'){
+        role = guild.roles.find('name', role);
+      }
       var rolepos = role.position;
       var positions = guild.members.get(bot.user.id).roles.map(r => r.position);
       var upositions = guild.members.get(user.id).roles.map(r => r.position);
       return Math.max.apply(Math, positions) > role.position && Math.max.apply(Math, positions) > Math.max.apply(Math, upositions);  
+    }
+
+    function (addRole(user, role)){
+        if (user.constructor.name == 'GuildMember'){
+            user = user.user;
+        }
+        if (user.constructor.name != 'User'){
+            botLog(`Invalid user given to method \`addRole\`.`);
+            return false;
+        }
+        if (canAddRole(user, role)){
+            guild.members.get(user.id).addRole(guild.roles.find('name', role));
+            return true;
+        }
+        else{
+            botLog(`Could not add role \`${role}\` to user \`${user.username}\`.`);
+            return false;
+        }
     }
 
     function send(msg, channel = null){
@@ -2144,7 +2167,7 @@ canAddRole(user, 'Member')
 Returns a boolean. True if the bot can give the user the role, false if not.
                         
 addRole(user, 'Member')
-Adds the role you specified to the user.\`\`\``);
+Adds the role you specified to the user. Returns true if it succeeded, false if it didn't. If it can't add the role, it will also log that in the bot-log channel if bot logs are enabled. Use v-config bot_log to configure the bot logs.\`\`\``);
                     return;
                 }
             }
