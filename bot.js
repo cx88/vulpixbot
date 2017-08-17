@@ -2187,9 +2187,7 @@ If you feel there are methods missing to make it easier to create a command, ple
                     return;
                 }
                 else{
-                    send(args);
                     args.splice(0, 2);
-                    send(args);
                     var msg = args.join(' ');
                     if (!msg.contains(':')){
                         message.channel.send(`Invalid command format. Separator \`:\` was not found.`);
@@ -2202,12 +2200,9 @@ If you feel there are methods missing to make it easier to create a command, ple
                     if (name.endsWith('"') || name.endsWith("'")){
                         name = name.substr(0, name.length - 1);
                     }
-                    channel.send(msg);
                     var tmp = msg.split(':');
-                    tmp = tmp.splice(0, 1);
-                    channel.send(tmp);
+                    tmp.splice(0, 1);
                     var code = tmp.join(':');
-                    channel.send(code);
                     while (code.startsWith(' ')){
                         code = code.substr(1);
                     }
