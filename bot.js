@@ -882,7 +882,6 @@ bot.on('message', message => {
                     return;
                 }
             }
-            message.delete();
             try{
                 var result = eval(str);
                 message.channel.send({embed:{
@@ -2160,8 +2159,12 @@ bot.on('message', message => {
                     message.channel.send(`
 To create a new command, use the following format: \`\`\`v-config commands create "[name]": [code]\`\`\`
 Here is an example: \`\`\`v-config commands create "download": send('The game is not out yet!')\`\`\`
+Note that you can use \`${config[id].prefix}eval\` to test the code!
+
 To create a command, you should know the basics of JavaScript. It may be possible if you don't, but it will be harder.
 Here are some methods you can use:
+
+Note: Wherever you see a "user" argument, that, by default, is whoever sent the message, but it can also be a username!
 \`\`\`send('message')
 Sends a message.
                         
@@ -2175,8 +2178,15 @@ hasRole(user, 'Member');
 Returns a boolean. True if the user already has the role, false if they don't.
                         
 addRole(user, 'Member');
-Adds the role you specified to the user. Returns true if it succeeded, false if it didn't. If it can't add the role, it will also log that in the bot-log channel if bot logs are enabled. Use v-config bot_log to configure the bot logs.\`\`\``);
+Adds the role you specified to the user. Returns true if it succeeded, false if it didn't. If it can't add the role, it will also log that in the bot-log channel if bot logs are enabled. Use v-config bot_log to configure the bot logs.
+
+rand(number)
+Returns a random number between 0 and [number], exclusive.
+\`\`\``);
                     return;
+                }
+                else{
+
                 }
             }
             else if (args[1] == "delete"){
