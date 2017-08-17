@@ -2063,10 +2063,15 @@ bot.on('message', message => {
                     "disabled_commands": []
                 };
             }
+            var all_commands = commands;
+            if (config[id].commands){
+                var cmds = Object.keys(config[id].commands);
+                all_commands.concat(cmds);
+            }
             if (channels.contains(args[1])){
                 if (args[2] == "disable"){
                     if (args[3] != undefined){
-                        if (!commands.contains(args[3])){
+                        if (!all_commands.contains(args[3])){
                             message.channel.send(`Command "${args[3]}" is not a valid Vulpix command.`);
                             return;
                         }
@@ -2080,12 +2085,12 @@ bot.on('message', message => {
                         }
                     }
                     else{
-                        message.channel.send(`To disable one of the following Vulpix commands: \`\`\`\n${commands.join('\n')}\`\`\`\nType the following: \`\`\`\nv-config channels [channel] disable [command]\`\`\`You should not write a prefix before the command, only the name.`);
+                        message.channel.send(`To disable one of the following Vulpix commands: \`\`\`\n${all_commands.join('\n')}\`\`\`\nType the following: \`\`\`\nv-config channels [channel] disable [command]\`\`\`You should not write a prefix before the command, only the name.`);
                     }
                 }
                 else if (args[2] == "enable"){
                     if (args[3] != undefined){
-                        if (!commands.contains(args[3])){
+                        if (!all_commands.contains(args[3])){
                             message.channel.send(`Command "${args[3]}" is not a valid Vulpix command.`);
                             return;
                         }
@@ -2099,13 +2104,13 @@ bot.on('message', message => {
                         }
                     }
                     else{
-                        message.channel.send(`To enable one of the following Vulpix commands: \`\`\`\n${commands.join('\n')}\`\`\`Type the following: \`\`\`\nv-config channels [channel] enable [command]\`\`\`You should not write a prefix before the command, only the name.`);
+                        message.channel.send(`To enable one of the following Vulpix commands: \`\`\`\n${all_commands.join('\n')}\`\`\`Type the following: \`\`\`\nv-config channels [channel] enable [command]\`\`\`You should not write a prefix before the command, only the name.`);
                     }
                 }
                 else if (args[2] == "disable_all"){
                     config[id].channels[channel.id].disabled_commands = [];
-                    for (i = 0; i < commands.length; i++){
-                        config[id].channels[channel.id].disabled_commands.push(commands[i]);
+                    for (i = 0; i < all_commands.length; i++){
+                        config[id].channels[channel.id].disabled_commands.push(all_commands[i]);
                     }
                     saveConfig();
                     message.channel.send(`All public Vulpix commands besides "v-config" are now disabled in \`${args[1]}\`.`)
@@ -2245,6 +2250,14 @@ If you feel there are methods missing to make it easier to create a command, ple
                     return;
                 }
                 delete config[id].commands[keys[index]];
+                if (config[id].channels){
+                    var channels = Object.keys(config[id].channels)
+                    for (i = 0; i < channels.length; i++){
+                        if (config[id].channels[channels[i]].disabled_commands.contains(keys[index])){
+                            config[id].channels[channels[i]].disabled_commands.splice(config[id].channels[channels[i]].disabled_commands.indexOf(keys[index]), 1);
+                        }
+                    }
+                }
                 saveConfig();
                 message.channel.send(`Successfully deleted command \`${keys[index]}\`.`);
             }
