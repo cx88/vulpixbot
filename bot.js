@@ -632,8 +632,8 @@ bot.on('message', message => {
         }
     }
     if (message.content.startsWith(config[id].prefix)){
-        cmd = message.content.substr(1).split(' ')[0];
-        args = message.content.split(" ");
+        var args = message.content.split(' ');
+        var cmd = args[0].substr(1);
         args.splice(0, 1);
         logMessage(guild, getDate() + ' ' + message.author.username + `: ` + message.content);
         if (command(channel, cmd, "pc")){
@@ -1519,6 +1519,7 @@ bot.on('message', message => {
             }});
         }
         if (config[id] && config[id].commands){
+            var cmd = args.length > 0 ? cmd + ' ' + args.join(' ') : cmd;
             var cmds = Object.keys(config[id].commands);
             if (cmds.contains(cmd)){
                 if (!config[id].channels) config[id].channels = {};
