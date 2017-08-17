@@ -208,7 +208,7 @@ function tryGetChannel(guild, str){
     return channel;
 }
 
-User.prototype.canAddRole(user, role){
+function canAddRole(user, role){
   var role = guild.roles.find('name', role);
   if (!role) return false;
   var rolepos = role.position;
@@ -216,14 +216,6 @@ User.prototype.canAddRole(user, role){
   var upositions = guild.members.get(user.id).roles.map(r => r.position);
   return Math.max.apply(Math, positions) > role.position && Math.max.apply(Math, positions) > Math.max.apply(Math, upositions);  
 }
-/*function canAddRole(user, role){
-  var role = guild.roles.find('name', role);
-  if (!role) return false;
-  var rolepos = role.position;
-  var positions = guild.members.get(bot.user.id).roles.map(r => r.position);
-  var upositions = guild.members.get(user.id).roles.map(r => r.position);
-  return Math.max.apply(Math, positions) > role.position && Math.max.apply(Math, positions) > Math.max.apply(Math, upositions);
-}*/
 
 function tryGetUser(guild, str){
 	if (!str) return;
