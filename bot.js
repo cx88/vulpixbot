@@ -2249,7 +2249,22 @@ If you feel there are methods missing to make it easier to create a command, ple
                 message.channel.send(`Successfully deleted command \`${keys[index]}\`.`);
             }
             else if (args[1] == "view"){
-
+                if (!args[2]){
+                    message.channel.send(`Specify the index of the command you want to see in-depth.`);
+                    return;
+                }
+                var commands = "";
+                var keys = Object.keys(config[id].commands);
+                if (isNaN(args[2])){
+                    message.channel.send(`Specify a valid index to see that command.`);
+                    return;
+                }
+                var index = parseInt(args[2]) - 1;
+                if (index < 0 || index >= keys.length){
+                    message.channel.send(`Index too high or too low.`);
+                    return;
+                }
+                send(`\`${keys[index]}\`:\r\n\`\`\`${config[id].commands[keys[index]]}\`\`\``);
             }
             else{
                 var commands = "";
