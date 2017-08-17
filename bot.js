@@ -542,6 +542,11 @@ bot.on('message', message => {
       return Math.max.apply(Math, positions) > role.position && Math.max.apply(Math, positions) > Math.max.apply(Math, upositions);  
     }
 
+    function hasRole(user, role){
+        var role = guild.members.get(user.id).roles.find('name', role);
+        return role ? true : false;
+    }
+
     function addRole(user, role){
         if (user.constructor.name == 'GuildMember'){
             user = user.user;
@@ -2160,13 +2165,16 @@ Here are some methods you can use:
 \`\`\`send('message')
 Sends a message.
                         
-send('message', 'channelname')
+send('message', 'channelname');
 Sends a message in the channel you specified.
                         
-canAddRole(user, 'Member')
+canAddRole(user, 'Member');
 Returns a boolean. True if the bot can give the user the role, false if not.
+
+hasRole(user, 'Member');
+Returns a boolean. True if the user already has the role, false if they don't.
                         
-addRole(user, 'Member')
+addRole(user, 'Member');
 Adds the role you specified to the user. Returns true if it succeeded, false if it didn't. If it can't add the role, it will also log that in the bot-log channel if bot logs are enabled. Use v-config bot_log to configure the bot logs.\`\`\``);
                     return;
                 }
