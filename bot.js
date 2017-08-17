@@ -2070,9 +2070,12 @@ bot.on('message', message => {
                     "disabled_commands": []
                 };
             }
+            console.log(commands);
             var all_commands = commands;
+            console.log(all_commands);
             if (config[id].commands){
                 var cmds = Object.keys(config[id].commands);
+                console.log(all_commands);
                 all_commands.merge(cmds);
             }
             if (channels.contains(args[1])){
