@@ -2223,13 +2223,30 @@ If you feel there are methods missing to make it easier to create a command, ple
                     while (code.startsWith(' ')){
                         code = code.substr(1);
                     }
-                    channel.send(code);
                     config[id].commands[name] = code;
                     saveConfig();
+                    message.channel.send(`Successfully created a new command: \`${name}\`.`);
                 }
             }
             else if (args[1] == "delete"){
-
+                if (!args[2]){
+                    message.channel.send(`Specify at which index you'd like to remove a command.`);
+                    return;
+                }
+                var commands = "";
+                var keys = Object.keys(config[id].commands);
+                if (isNaN(args[2])){
+                    message.channel.send(`Specify a valid index to delete at.`);
+                    return;
+                }
+                var index = parseInt(args[2]) - 1;
+                if (index < 0 || index >= keys.length){
+                    message.channel.send(`Index too high or too low.`);
+                    return;
+                }
+                delete config[id].commands[keys[index]];
+                saveConfig();
+                message.channel.send(`Successfully deleted command \`${keys[index]}\`.`);
             }
             else if (args[1] == "view"){
 
