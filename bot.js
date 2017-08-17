@@ -2193,16 +2193,14 @@ If you feel there are methods missing to make it easier to create a command, ple
                         message.channel.send(`Invalid command format. Separator \`:\` was not found.`);
                         return;
                     }
-                    if (args[0].startsWith('"') || args[0].startsWith("'")){
-                        args[0] = args[0].substr(1);
+                    name = args[0].split(':')[0];
+                    if (name.startsWith('"') || name.startsWith("'")){
+                        name = name.substr(1);
                     }
-                    if (args[0].endsWith('"') || args[0].endsWith("'")){
-                        args[0] = args[0].substr(0, str.length - 1);
+                    if (name.endsWith('"') || name.endsWith("'")){
+                        name = name.substr(0, name.length - 1);
                     }
-                    if (args[0].endsWith('":') || args[0].endsWith("':")){
-                        args[0] = args[0].substr(0, str.length - 2);
-                    }
-                    channel.send(args[0]);
+                    channel.send(name);
                 }
             }
             else if (args[1] == "delete"){
