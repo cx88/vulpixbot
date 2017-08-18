@@ -1550,14 +1550,10 @@ bot.on('message', message => {
             var cmd = args[0].substr(1);
             args.splice(0, 1);
             if (cmd == "say"){
-                send(args);
                 if (args[0]){
                     var channel = args[0];
-                    send(channel);
                     args.splice(0, 1);
-                    send(args);
                     var msg = args.join(' ');
-                    send(msg);
                     if (!send(msg, channel)){
                         send('Could not send the message. (Did you specify a valid channel?)');
                     }
