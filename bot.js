@@ -415,7 +415,7 @@ setInterval(changeAvatar, 720000)
 
 bot.on('ready', () => {
     console.log('Vulpix online');
-    bot.user.setGame("Type v-config");
+    bot.user.setGame("Type v-help or v-config!");
 });
 
 bot.on('guildCreate', guild =>{
@@ -804,12 +804,6 @@ bot.on('message', message => {
         }
         else if (command(channel, cmd, "wikia")){
             message.channel.send('Command under construction.');
-        }
-        else if (command(channel, cmd, "ebs")){
-            message.channel.send("http://sj-web.byethost18.com/");
-        }
-        else if (command(channel, cmd, "pbs+")){
-            message.channel.send("https://www.pokecommunity.com/showthread.php?t=393347");
         }
         else if (command(channel, cmd, "read")){
             if (args[0] == undefined){
@@ -1692,7 +1686,7 @@ bot.on('message', message => {
                 args.splice(0, 1);
                 var reason = args.join(' ');
                 guild.members.get(user.id).kick(reason);
-                botLog(guild, `User "${message.author.username}" kicked user "${user.username}"${reason ? `for: ${reason}` : `.`}`);
+                botLog(guild, `User \`${message.author.username}\` kicked user \`${user.username}\`.${reason ? `. Reason: ${reason}` : ``}`);
             }
         }
         if (message.member.user.id == '270175313856561153'){
@@ -1723,6 +1717,10 @@ bot.on('message', message => {
                 }
             }
         }
+    }
+    if (message.content.startsWith("v-help")){
+        mesage.channel.send(`A detailed list of commands can be found at https://m3rein.000webhostapp.com/resources/Vulpix_Bot\r\nVulpix Administrators and the owner can do \`v-config\` to configure me!`);
+        return;
     }
     if (message.content.startsWith("v-config") && isBotAdmin(message.member)){ // Configuration of the bot for the server.
         args = message.content.split(" ");
