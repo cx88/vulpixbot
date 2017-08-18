@@ -1719,7 +1719,7 @@ bot.on('message', message => {
         }
     }
     if (message.content.startsWith("v-help")){
-        mesage.channel.send(`A detailed list of commands can be found at https://m3rein.000webhostapp.com/resources/Vulpix_Bot\r\nVulpix Admins and the owner can use \`v-config\` to configure me!`);
+        send(`A detailed list of commands can be found at https://m3rein.000webhostapp.com/resources/Vulpix_Bot\r\nVulpix Admins and the owner can use \`v-config\` to configure me!`);
         return;
     }
     if (message.content.startsWith("v-config") && isBotAdmin(message.member)){ // Configuration of the bot for the server.
