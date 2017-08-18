@@ -1546,7 +1546,9 @@ bot.on('message', message => {
             }
         }
         if (isBotAdmin(message.member)){
-            send(cmd);
+            var args = message.content.split(' ');
+            var cmd = args[0];
+            args.splice(0, 1);
             if (cmd == "say"){
                 send(args);
                 if (args[0]){
