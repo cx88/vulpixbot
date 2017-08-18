@@ -414,7 +414,7 @@ setInterval(saveConfig, 15000);
 setInterval(changeAvatar, 720000)
 
 bot.on('ready', () => {
-    console.log('Vulpix online');
+    console.log('Online');
     bot.user.setGame("Type v-help or v-config!");
 });
 
@@ -1165,7 +1165,6 @@ bot.on('message', message => {
         else if (command(channel, cmd, "mock")){
             message.delete();
             var msg = message.content.split(`${config[id].prefix}mock `)[1];
-            console.log(msg);
             if (msg != undefined && msg != null){
                 msg = msg.toLowerCase();
                 var mes = "";
@@ -2089,13 +2088,9 @@ bot.on('message', message => {
                     "disabled_commands": []
                 };
             }
-            console.log(commands);
             var all_commands = commands;
-            console.log(commands.length);
-            console.log(all_commands.length);
             if (config[id].commands){
                 var cmds = Object.keys(config[id].commands);
-                console.log(all_commands);
                 all_commands.merge(cmds);
             }
             if (channels.contains(args[1])){
