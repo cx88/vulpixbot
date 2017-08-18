@@ -589,16 +589,19 @@ bot.on('message', message => {
     function send(msg, channel = null){
       if (!channel){
         message.channel.send(msg);
+        return true;
       }
       else{
         var chnl = tryGetChannel(guild, channel);
         if (chnl){
           chnl.send(msg);
+          return true;
         }
         else{
-          botLog(`Could not find channel \`${channel}\`.`);
+          return false;
         }
       }
+      return false;
     }
 
     if (!message.content.startsWith(config[id].prefix) && !message.content.startsWith("v-")){
@@ -1544,10 +1547,12 @@ bot.on('message', message => {
         }
         if (isBotAdmin(message.member)){
             if (cmd == "say"){
-                if (args[0] != undefined){
-                    if (channelExists(message.guild, args[0])){
-                        args.splice(0, 1);
-                        tryGetChannel(message.guild, args[0]).send(args.join(' '));
+                if (args[0]){
+                    var channel = args[0];
+                    args.splice(0, 1);
+                    var msg = args.join(' ');
+                    if (!send(msg, channel)){
+                        send('Could not send the message. (Did you specify a valid channel?');
                     }
                 }
             }
