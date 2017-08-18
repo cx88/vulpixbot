@@ -1546,7 +1546,8 @@ bot.on('message', message => {
             if (cmd == "say"){
                 if (args[0] != undefined){
                     if (channelExists(message.guild, args[0])){
-                        getChannel(message.guild, args[0]).send(message.content.split(`${config[id].prefix}say ${args[0]} `)[1]);
+                        args.splice(0, 1);
+                        tryGetChannel(message.guild, args[0]).send(args.join(' '));
                     }
                 }
             }
