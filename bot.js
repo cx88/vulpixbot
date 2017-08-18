@@ -1547,10 +1547,14 @@ bot.on('message', message => {
         }
         if (isBotAdmin(message.member)){
             if (cmd == "say"){
+                send(args);
                 if (args[0]){
                     var channel = args[0];
+                    send(channel);
                     args.splice(0, 1);
+                    send(args);
                     var msg = args.join(' ');
+                    send(msg);
                     if (!send(msg, channel)){
                         send('Could not send the message. (Did you specify a valid channel?');
                     }
