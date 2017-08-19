@@ -361,8 +361,8 @@ function setDefaults(guild){
 }
 
 function saveConfig(){
-    console.log(config);
-    ref.update(config);
+    //console.log(config);
+    //ref.update(config);
 }
 
 function logMessage(guild, message){
