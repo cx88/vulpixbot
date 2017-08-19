@@ -1,7 +1,5 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
-var paste = require('better-pastebin');
-var url = process.env.URL;
 var fs = require('fs');
 var delet_this = JSON.parse(fs.readFileSync('database/delet_this.json')).memes;
 var vids = fs.readFileSync('database/thundaga.json');
@@ -67,7 +65,7 @@ const commands = [
 const blacklist = [
     'config', 'abort', 'exit', 'close', 'user', 'channel', 'message', 'roles', 'guild', 'member', 'while', 'process', 'kill',
     'env', 'bot', 'shut', 'token', 'eval', 'client', 'log', 'call', 'script', 'url', 'call', 'onreadystatechange', 'create', 'delete', 'bulk',
-    'console', 'heroku', 'database', '.ref', 'firebase'
+    'console', 'heroku', 'database', '.ref', 'firebase', 'serviceAccount', 'admin.'
 ]
 
 Array.prototype.contains = function(obj) {
