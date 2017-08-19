@@ -1528,7 +1528,7 @@ bot.on('message', message => {
             for (i = 0; i < bot.guilds.map(g => g).length; i++){
                 members += bot.guilds.map(g => g)[i].memberCount;
             }
-            var onlineSince = getDate(bot.readyAt).split('__')[0] + " at " + getDate(bot.readyAt).split('__')[1] + " (GMT + 2 (Mid EU))";
+            var onlineSince = getDate(bot.readyAt).split('__')[0] + " at " + getDate(bot.readyAt).split('__')[1] + " GMT";
             message.channel.send({ embed:{
                 author: {
                     name: bot.user.tag,
