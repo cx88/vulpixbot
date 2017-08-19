@@ -142,7 +142,7 @@ function getChannelMembers(channel){
 }
 
 function getGuildMembers(guild){
-	var total = guild.members.map(m => m).length;
+	var total = guild.memberCount;
 	var members;
 	if (total == 0){
 		members = "---";
@@ -1512,7 +1512,7 @@ bot.on('message', message => {
             var guilds = bot.guilds.map(g => g).length;
             var members = 0;
             for (i = 0; i < bot.guilds.map(g => g).length; i++){
-                members += bot.guilds.map(g => g)[i].members.map(m => m).length;
+                members += bot.guilds.map(g => g)[i].memberCount;
             }
             var onlineSince = getDate(bot.readyAt).split('__')[0] + " at " + getDate(bot.readyAt).split('__')[1] + " (GMT + 2 (Mid EU))";
             message.channel.send({ embed:{
