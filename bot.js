@@ -450,9 +450,6 @@ bot.on('guildCreate', guild =>{
 
 bot.on('guildMemberAdd', member =>{
     if (!config) return;
-    if (config[member.guild.id.toString()] == undefined){
-        setDefaults(member.guild);
-    }
     if (config[member.guild.id.toString()].messages.welcome.status == "on"){
         var channel = config[member.guild.id.toString()].messages.welcome.channel;
         var msg = config[member.guild.id.toString()].messages.welcome.msg;
@@ -550,7 +547,7 @@ bot.on('guildUpdate', (oldguild, newguild) => {
 
 bot.on('message', message => {
     if (!config) return;
-    if (!config[message.channel.guild.id]) setDefaults(message.channel.guild);
+    if (!config[message.channel.guild.id]) return;
 	if (!message || !message.member) return;
     if (message.member.user.bot) return;
     var guild = message.guild;
