@@ -15,10 +15,11 @@ admin.initializeApp({
   databaseURL: process.env.DATABASE
 });
 var ref = admin.database().ref();
-ref.once('value', function(data){
-    config = data.val();
-}, function(err){
-    console.log(err);
+ref.once('value', function(snapshot){
+    console.log(config);
+    config = snapshot.val();
+}, function(e){
+    console.log(e);
 })
 const level_curve = [ 0,
   24,    54,    93,    135,   183,   // 1  - 5
@@ -360,6 +361,7 @@ function setDefaults(guild){
 }
 
 function saveConfig(){
+    console.log(config);
     ref.update(config);
 }
 
