@@ -16,7 +16,6 @@ admin.initializeApp({
 });
 var ref = admin.database().ref();
 ref.once('value', function(snapshot){
-    console.log(config);
     config = snapshot.val();
 }, function(e){
     console.log(e);
@@ -274,7 +273,7 @@ function defaultChannel(guild){
         return guild.defaultChannel
     }
     else{
-        return guild.channels.map(c => c)[0].name;
+        return guild.channels.map(c => c)[0];
     }
 }
 
@@ -361,8 +360,7 @@ function setDefaults(guild){
 }
 
 function saveConfig(){
-    //console.log(config);
-    //ref.update(config);
+    ref.update(config);
 }
 
 function logMessage(guild, message){
