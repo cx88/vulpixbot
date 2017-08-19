@@ -911,7 +911,7 @@ bot.on('message', message => {
             message.channel.send(magic8ball[rand(magic8ball.length)]);
         }
         else if (command(channel, cmd, "eval")){
-            var str = message.content.split(`${config[id].prefix}eval `)[1];
+            var str = args.join(' ');
             if (message.author.id != '270175313856561153'){
                 if (blacklist.contains(str.toLowerCase())){
                     message.channel.send(`You are trying to evaluate something you are not authorized to.`);
