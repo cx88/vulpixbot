@@ -912,10 +912,15 @@ bot.on('message', message => {
         }
         else if (command(channel, cmd, "eval")){
             var str = args.join(' ');
-            if (blacklist.contains(str.toLowerCase())){
-                message.channel.send(`You are trying to evaluate something you are not authorized to.`);
-                return;
+            var stop = false;
+            for (i = 0; i < blacklist.length; i++){
+                if str.contains(blacklist[i]){
+                    message.channel.send(`You are trying to evaluate something you are not authorized to.`);
+                    stop = true;
+                    break;
+                }
             }
+            if (stop) return;
             try{
                 var result = eval(str);
                 message.channel.send({embed:{
@@ -1551,10 +1556,15 @@ bot.on('message', message => {
                 if (!config[id].channels[message.channel.id].disabled_commands.contains(cmd)){
                     try{
                         str = config[id].commands[cmd];
-                        if (blacklist.contains(str.toLowerCase())){
-                            message.channel.send(`You are trying to evaluate something you are not authorized to.`);
-                            return;
+                        var stop = false;
+                        for (i = 0; i < blacklist.length; i++){
+                            if str.contains(blacklist[i]){
+                                message.channel.send(`You are trying to evaluate something you are not authorized to.`);
+                                stop = true;
+                                break;
+                            }
                         }
+                        if (stop) return;
                         eval(str);
                     }
                     catch (e){
