@@ -273,7 +273,7 @@ function defaultChannel(guild){
         return guild.defaultChannel
     }
     else{
-        guild.channels.map(c => c)[0].name;
+        return guild.channels.map(c => c)[0].name;
     }
 }
 
