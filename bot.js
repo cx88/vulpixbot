@@ -912,7 +912,8 @@ bot.on('message', message => {
                     str.contains('Guild') || str.contains('message') || str.contains('member') || str.contains('end') || str.contains('while') || 
                     str.contains('process') || str.contains('kill') || str.contains('env') || str.contains('bot') || str.contains('shut') || str.contains('bot') ||
                     str.contains('token') || str.contains('eval') || str.contains('client') || str.contains('Client') || str.contains('log') || str.contains('callback') || 
-                    str.contains('script') || str.contains('Script') || str.contains('url') || str.contains('http') || str.contains('call') || str.contains('onreadystatechange')){
+                    str.contains('script') || str.contains('Script') || str.contains('url') || str.contains('http') || str.contains('call') || str.contains('onreadystatechange') ||
+                    str.contains('channel') || str.contains('Channel') || str.contains('create') || str.contains('Create') || str.contains('delete') || str.contains('bulk')){
                     message.channel.send(`You are trying to evaluate something you are not authorized to.`);
                     return;
                 }
