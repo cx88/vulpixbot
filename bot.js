@@ -64,6 +64,11 @@ const commands = [
     "quotes", "add", "remove", "top", "bot"
 ]
 
+const blacklist = [
+    'config', 'abort', 'exit', 'close', 'user', 'channel', 'message', 'roles', 'guild', 'member', 'while', 'process', 'kill',
+    'env', 'bot', 'shut', 'token', 'eval', 'client', 'log', 'call', 'script', 'url', 'call', 'onreadystatechange', 'create', 'delete', 'bulk'
+]
+
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
@@ -907,13 +912,7 @@ bot.on('message', message => {
         else if (command(channel, cmd, "eval")){
             var str = message.content.split(`${config[id].prefix}eval `)[1];
             if (message.author.id != '270175313856561153'){
-                if (str.contains('config') || str.contains('Config') || str.contains('abort') || str.contains('exit') || str.contains('close') || 
-                    str.contains('user') || str.contains('User') || str.contains('channel') || str.contains('Channel') || str.contains('guild') ||
-                    str.contains('Guild') || str.contains('message') || str.contains('member') || str.contains('end') || str.contains('while') || 
-                    str.contains('process') || str.contains('kill') || str.contains('env') || str.contains('bot') || str.contains('shut') || str.contains('bot') ||
-                    str.contains('token') || str.contains('eval') || str.contains('client') || str.contains('Client') || str.contains('log') || str.contains('callback') || 
-                    str.contains('script') || str.contains('Script') || str.contains('url') || str.contains('http') || str.contains('call') || str.contains('onreadystatechange') ||
-                    str.contains('channel') || str.contains('Channel') || str.contains('create') || str.contains('Create') || str.contains('delete') || str.contains('bulk')){
+                if (blacklist.contains(str.toLowerCase())){
                     message.channel.send(`You are trying to evaluate something you are not authorized to.`);
                     return;
                 }
@@ -1552,7 +1551,12 @@ bot.on('message', message => {
                 if (!config[id].channels[message.channel.id].disabled_commands) config[id].channels[message.channel.id].disabled_commands = [];
                 if (!config[id].channels[message.channel.id].disabled_commands.contains(cmd)){
                     try{
-                        eval(config[id].commands[cmd]);
+                        str = config[id].commands[cmd];
+                        if (blacklist.contains(str.toLowerCase())){
+                            message.channel.send(`You are trying to evaluate something you are not authorized to.`);
+                            return;
+                        }
+                        eval(str);
                     }
                     catch (e){
                         botLog(`Failed to evaluate custom command \`${cmd}\`.\r\n${e.name}: ${e.message}`);
