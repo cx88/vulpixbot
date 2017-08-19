@@ -423,11 +423,13 @@ setInterval(saveConfig, 15000);
 setInterval(changeAvatar, 720000)
 
 bot.on('ready', () => {
+    if (!config) return;
     console.log('Online');
     bot.user.setGame("Type v-help or v-config!");
 });
 
 bot.on('guildCreate', guild =>{
+    if (!config) return;
     console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
     defaultChannel(guild).send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `Marin#7122` for questions and inquiries!');
     setDefaults(guild);
@@ -527,12 +529,14 @@ bot.on('guildDelete', guild => {
 });
 
 bot.on('guildUpdate', (oldguild, newguild) => {
+    if (!config) return;
     var id = newguild.id;
     config[id].servername = newguild.name;
     saveConfig();
 });
 
 bot.on('message', message => {
+    if (!config) return;
     if (!config[message.channel.guild.id]) setDefaults(message.channel.guild);
 	if (!message || !message.member) return;
     if (message.member.user.bot) return;
