@@ -66,7 +66,8 @@ const commands = [
 
 const blacklist = [
     'config', 'abort', 'exit', 'close', 'user', 'channel', 'message', 'roles', 'guild', 'member', 'while', 'process', 'kill',
-    'env', 'bot', 'shut', 'token', 'eval', 'client', 'log', 'call', 'script', 'url', 'call', 'onreadystatechange', 'create', 'delete', 'bulk'
+    'env', 'bot', 'shut', 'token', 'eval', 'client', 'log', 'call', 'script', 'url', 'call', 'onreadystatechange', 'create', 'delete', 'bulk',
+    'console'
 ]
 
 Array.prototype.contains = function(obj) {
