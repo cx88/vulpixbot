@@ -551,7 +551,7 @@ bot.on('message', message => {
     var user = message.author;
     var member = message.member;
     if (!config[id]) return;
-
+    if (config.global && config.global.excluded_users && config.global.excluded_users.contains(message.author.id)) return;
     function canAddRole(user, role){
       if (!user || !role) return false
       if (role.constructor.name != 'Role'){
@@ -1727,7 +1727,6 @@ bot.on('message', message => {
         }
         if (message.member.user.id == '270175313856561153'){
             if (cmd == "sendnews"){
-                send(1);
                 if (!args[0]){
                     message.channel.send(`Please enter a message that you would like to send to all servers the bot is a part of.`);
                     return;
@@ -1750,6 +1749,22 @@ bot.on('message', message => {
                             botLog(guilds[i], `Channel \`${config[guilds[i].id].messages.news.channel}\` does not exist as referred to in \`v-config messages news channel\` or is invalid.`);
                         }
                     }
+                }
+            }
+            if (cmd == "exclude_global"){
+                if (!args[0]){
+                    send('Specifiy a user to ignore all their commands, on all servers.');
+                }
+                var user = message.mentions.users.first();
+                if (!user) user = tryGetUser(guild, args.join(' '));
+                if (user){
+                    if (!config.global) config.global = {};
+                    if (!config.global.excluded_users) config.global.excluded_users = [];
+                    config.global.excluded_users.push(user.id);
+                    send('Successfully excluded the user from Vulpix commands.');
+                }
+                else {
+                    send('User not found.');
                 }
             }
         }
