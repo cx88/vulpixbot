@@ -268,8 +268,17 @@ function isDeveloper(member){
     return isBotAdmin(member) || hasRole(member, "Developers");
 }
 
+function defaultChannel(guild){
+    if (guild.defaultChannel.constructor.name == 'TextChannel'){
+        return guild.defaultChannel
+    }
+    else{
+        guild.channels.map(c => c)[0].name;
+    }
+}
+
 function setDefaults(guild){
-    var g = guild.id.toString(); // Default Config settings.
+    var g = guild.id; // Default Config settings.
     config[g] = {
         "prefix": "?",
         "servername": guild.name,
@@ -293,7 +302,7 @@ function setDefaults(guild){
                 "msg": "Welcome to the server, (user)!",
                 "status": "on",
                 "role": "Member",
-                "channel": guild.defaultChannel.name
+                "channel": defaultChannel(guild).name
             },
             "levelup": {
                 "msg": "Congrats, (@user)! You leveled up to level (level)!",
@@ -302,15 +311,15 @@ function setDefaults(guild){
             "goodbye": {
                 "msg": "(user) has just left the server. Rest in peace!",
                 "status": "on",
-                "channel": guild.defaultChannel.name
+                "channel": defaultChannel(guild).name
             },
             "news": {
                 "status": "on",
-                "channel": guild.defaultChannel.name
+                "channel": defaultChannel(guild).name
             }
         },
         "bot_log": {
-            "channel": guild.defaultChannel.name,
+            "channel": defaultChannel(guild).name,
             "status": "on"
         },
         "roles": {
@@ -419,9 +428,8 @@ bot.on('ready', () => {
 });
 
 bot.on('guildCreate', guild =>{
-    if (!config) return;
     console.log('Vulpix joined "' + guild.name + '" server with ID "' + guild.id.toString() + '" at date: ' + Date.now() + '.');
-    guild.defaultChannel.send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `Marin#7122` for questions and inquiries!');
+    defaultChannel(guild).send('Hello! I am Vulpix. I am here to help you out with utility commands, shortcuts, and more. Contact user `Marin#7122` for questions and inquiries!');
     setDefaults(guild);
 })
 
@@ -443,7 +451,7 @@ bot.on('guildMemberAdd', member =>{
             getChannel(member.guild, channel).send(msg);
         }
         else{
-            member.guild.defaultChannel.send(`Welcome to the server, ${member.user}!`);
+            defaultChannel(member.guild).send(`Welcome to the server, ${member.user}!`);
             botLog(member.guild, `Channel \`${channel}\` does not exist as referred to in \`v-config messages welcome channel\`.`);
         }
     }
@@ -491,7 +499,7 @@ bot.on('guildMemberRemove', member => {
             channel.send(msg);
         }
         else{
-            guild.defaultChannel.send(`${member.user.username} just left. Goodbye!`);
+            defaultChannel(guild).send(`${member.user.username} just left. Goodbye!`);
             botLog(guild, `Channel \`${config[id].messages.goodbye.channel}\` does not exist as referred to in \`v-config messages goodbye channel\`.`);
         }
     }
@@ -1326,7 +1334,7 @@ bot.on('message', message => {
         			inline: true
         		},{
         			name: `**Default Channel**`,
-        			value: `#${guild.defaultChannel.name}`,
+        			value: `#${defaultChannel(guild).name}`,
         			inline: true
         		},{
         			name: `**Emoji's**`,
@@ -1707,7 +1715,7 @@ bot.on('message', message => {
                 var guilds = bot.guilds.map(g => g);
                 for (i = 0; i < guilds.length; i++){
                     if (!config[guilds[i].id].messages.news){
-                        var name = guilds[i].defaultChannel ? guilds[i].defaultChannel.name : guilds[i].channels.map(c => c)[0].name;
+                        var name = defaultChannel(guild).name;
                         config[guilds[i].id].messages.news = {
                             "status": "on",
                             "channel": name
