@@ -210,7 +210,7 @@ function getUser(guild, _user){
 function tryGetChannel(guild, str){
     if (!str) return;
     var channel;
-    console.log(str);
+    console.log(str.constructor.name);
     while (str.contains('%20')){
     	str = str.replace('%20', ' ');
     }
