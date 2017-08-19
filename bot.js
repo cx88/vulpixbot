@@ -254,6 +254,10 @@ function tryGetUser(guild, str){
     	user = guild.members.get(str);
     	if (user) user = user.user;
     }
+    if (!user){
+        var tmp = str.split('<@')[1].split('>')[0];
+        user = guild.members.get(tmp).user;
+    }
     return user;
 }
 
