@@ -269,7 +269,7 @@ function isDeveloper(member){
 }
 
 function defaultChannel(guild){
-    if (guild.defaultChannel.constructor.name == 'TextChannel'){
+    if (guild.defaultChannel && guild.defaultChannel.constructor && guild.defaultChannel.constructor.name == 'TextChannel'){
         return guild.defaultChannel
     }
     else{
