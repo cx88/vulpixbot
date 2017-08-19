@@ -209,8 +209,8 @@ function getUser(guild, _user){
 
 function tryGetChannel(guild, str){
     if (!str) return;
+    if (str.constructor.name == 'TextChannel') return str;
     var channel;
-    console.log(str.constructor.name);
     while (str.contains('%20')){
     	str = str.replace('%20', ' ');
     }
@@ -265,9 +265,7 @@ function channelExists(guild, channel){
 function getChannel(guild, channel){
 	var chan = guild.channels.find(chnl => chnl.name == channel);
 	if (!chan) chan = guild.channels.find(chnl => chnl.name.toLowerCase() == channel.toLowerCase());
-	if (!chan){
-		chan = guild.channels.get(channel);
-	}
+	if (!chan){ chan = guild.channels.get(channel); }
     return chan;
 }
 
