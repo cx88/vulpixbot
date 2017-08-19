@@ -216,6 +216,11 @@ function tryGetChannel(guild, str){
     if (channelExists(guild, str)){
         channel = getChannel(guild, str);
     }
+    try{
+        var tmp = str.split('<#')[1].split('>')[0];
+        channel = guild.channels.get(tmp);
+    }
+    catch (e){}
     return channel;
 }
 
@@ -1579,7 +1584,7 @@ bot.on('message', message => {
             args.splice(0, 1);
             if (cmd == "say"){
                 if (args[0]){
-                    var channel = args[0];
+                    var channel = tryGetChannel(guild, args[0]);
                     args.splice(0, 1);
                     var msg = args.join(' ');
                     if (!send(msg, channel)){
@@ -1760,8 +1765,34 @@ bot.on('message', message => {
                 if (user){
                     if (!config.global) config.global = {};
                     if (!config.global.excluded_users) config.global.excluded_users = [];
+                    if (config.global.excluded_users.contains(user.id)){
+                        send('This user is already excluded from using commands globally!');
+                        return;
+                    }
                     config.global.excluded_users.push(user.id);
+                    saveConfig();
                     send('Successfully excluded the user from Vulpix commands.');
+                }
+                else {
+                    send('User not found.');
+                }
+            }
+            if (cmd == "include_global"){
+                if (!args[0]){
+                    send('Specifiy a user to un-ignore all their commands, on all servers.');
+                }
+                var user = message.mentions.users.first();
+                if (!user) user = tryGetUser(guild, args.join(' '));
+                if (user){
+                    if (!config.global) config.global = {};
+                    if (!config.global.excluded_users) config.global.excluded_users = [];
+                    if (!config.global.excluded_users.contains(user.id)){
+                        send('This user is not excluded!');
+                        return;
+                    }
+                    config.global.excluded_users.splice(config.global.excluded_users.indexOf(user.id),1);
+                    saveConfig();
+                    send('Successfully un-excluded the user from using Vulpix commands.');
                 }
                 else {
                     send('User not found.');
