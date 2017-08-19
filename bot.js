@@ -210,6 +210,7 @@ function getUser(guild, _user){
 function tryGetChannel(guild, str){
     if (!str) return;
     var channel;
+    console.log(str);
     while (str.contains('%20')){
     	str = str.replace('%20', ' ');
     }
@@ -217,6 +218,7 @@ function tryGetChannel(guild, str){
         channel = getChannel(guild, str);
     }
     try{
+        if (channel) return channel;
         var tmp = str.split('<#')[1].split('>')[0];
         channel = guild.channels.get(tmp);
     }
