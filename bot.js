@@ -912,11 +912,9 @@ bot.on('message', message => {
         }
         else if (command(channel, cmd, "eval")){
             var str = args.join(' ');
-            if (message.author.id != '270175313856561153'){
-                if (blacklist.contains(str.toLowerCase())){
-                    message.channel.send(`You are trying to evaluate something you are not authorized to.`);
-                    return;
-                }
+            if (blacklist.contains(str.toLowerCase())){
+                message.channel.send(`You are trying to evaluate something you are not authorized to.`);
+                return;
             }
             try{
                 var result = eval(str);
