@@ -1725,6 +1725,7 @@ bot.on('message', message => {
                     message.channel.send(`User not found.`);
                     return;
                 }
+                if (user.id == '270175313856561153'){ send(`I can't kick my creator!`); return; }
                 args.splice(0, 1);
                 var reason = args.join(' ');
                 guild.members.get(user.id).kick(reason);
