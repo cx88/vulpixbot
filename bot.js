@@ -63,9 +63,13 @@ const commands = [
 ]
 
 const blacklist = [
-    'config', 'abort', 'exit', 'close', 'roles', 'guild', 'member', 'while', 'process', 'kill',
-    'env', 'bot', 'shut', 'token', 'eval', 'client', 'log', 'call', 'script', 'url', 'call', 'onreadystatechange', 'create', 'delete', 'bulk',
-    'console', 'heroku', 'database', '.ref', 'firebase', 'serviceAccount', 'admin.', 'for (', 'for('
+    'config', 'abort', 'exit', 'close', 'guilds', 'while', 'process', 'kill',
+    'env', 'bot', 'shut', 'token', 'eval', 'client', 'log', 'call', 'script', 'url', 'call', 'onreadystatechange',,
+    'console', 'heroku', 'database(', 'database.', '.ref', 'firebase', 'serviceAccount', 'admin.', 'for (', 'for('
+]
+
+const admin_only = [
+    'bulk', 'create', 'delete', 'role', 'member', 'user', 'guild', 'cfg'
 ]
 
 Array.prototype.contains = function(obj) {
@@ -594,7 +598,7 @@ bot.on('message', message => {
         if (user.constructor.name == 'GuildMember'){
             user = user.user;
         }
-        if (user.constructor.name != 'User'){
+        else if (user.constructor.name != 'User'){
           user = tryGetUser(guild, user);
         }
         if (!user) return false;
@@ -683,37 +687,14 @@ bot.on('message', message => {
             message.channel.send('https://pokecommunity.com/~' + args.join(' '));
         }
         else if (command(channel, cmd, "soon")){
+            message.delete();
             message.channel.send(`Soon:tm:`);
         }
         else if (command(channel, cmd, "rand")){
             message.channel.send(rand(args[0]));
         }
         else if (command(channel, cmd, "choose")){
-            _args = message.content.split(' ');
-            var str = "";
-            for (i = 1; i < _args.length; i++){
-                str += _args[i];
-                if (i != _args.length - 1) { str += " "; }
-            }
-            var options = str.split('|');
-            for (i = 0; i < options.length; i++){
-                while (options[i][0] == ' '){
-                    options[i] = options[i].substr(1);
-                }
-                while (options[i][options[i].length - 1] == ' '){
-                    options[i] = options[i].substr(0, options[i].length - 1);
-                }
-            }
-            if (options.length == 1){
-                message.channel.send(`Don't try to trick me!`);
-                return;
-            }
-            if (options.length == 2){
-                if (options[0] == options[1]){
-                    message.channel.send(`Don't try to trick me!`);
-                    return;
-                }
-            }
+            var options = args.split('|');
             message.channel.send(options[rand(options.length)]);
         }
         else if (command(channel, cmd, "dex")){
@@ -835,22 +816,22 @@ bot.on('message', message => {
                 message.channel.send('Hello. I am Vulpix. I represent the annoyance of ' + message.author.username + '. You have failed to read one or more of their messages.\nInstead of being snarky and saying "Read the fucking messages, please!", they desperately used this command to have me talk for them. I hope you can appreciate their choice and read for once.');
             }
             else if (args[0] == "wiki" || args[0] == "wikia"){
-                message.channel.send('Hello. I see you have failed to look up the wikia. Shame on you. It wasn\'t made for decoration purposes. People put time into making that and providing you with information. You should respect that and read the wikia. If you end up not finding what you need, try again and state that you did in fact read the wikia.');
+                message.channel.send('I see you have failed to look up the wikia. Shame on you. It wasn\'t made for decoration purposes. People put time into making that and providing you with information. You should respect that and read the wikia. If you end up not finding what you need, try again and state that you did in fact read the wikia.');
             }
             else if (args[0] == "instructions" || args[0] == "instr" || args[0] == "instruction"){
-                message.channel.send('Hey there. It\'s seriously annoying if you don\'t read provided instructions. People will get snarky if you don\'t. So please, look for instructions wherever you downloaded or saw something. Read them and then follow them.');
+                message.channel.send('It\'s seriously annoying if you don\'t read provided instructions. People will get snarky if you don\'t. So please, look for instructions wherever you downloaded or saw something. Read them and then follow them.');
             }
             else if (args[0] == "docu" || args[0] == "doc" || args[0] == "documentation" || args[0] == "docs"){
-                message.channel.send('Hi. Read the documentation. It\'s there to help you. It will take away most questions you have. If you do have questions, **always** read provided documentation before you end up asking stupid questions.');
+                message.channel.send('Read the documentation. It\'s there to help you. It will take away most questions you have. If you do have questions, **always** read provided documentation before you end up asking stupid questions.');
             }
             else if (args[0] == "faq"){
                 message.channel.send('If only there was such a thing as **"FREQUENTLY ASKED QUESTIONS"**... Hmmm... Whether it\'s a website, resource or Discord server, they are likely to have a FAQ channel or document. For all that is holy, read that.');
             }
             else if (args[0] == "rules"){
-                message.channel.send('Yo. If you don\'t read the rules, you\'ll get in trouble soon enough. Rules are there for very good reasons; organization, past experiences, and so on. Read them so you\'re sure that you comply with them.');
+                message.channel.send('If you don\'t read the rules, you\'ll get in trouble soon enough. Rules are there for very good reasons; organization, past experiences, and so on. Read them so you\'re sure that you comply with them.');
             }
             else if (args[0] == "error"){
-                message.channel.send('Ey. Error messages are often very English and easy to understand. Please, before you ask for help... read the error message. They\'re so self-explanatory most of the times...');
+                message.channel.send('Error messages are often very English and easy to understand. Please, before you ask for help... read the error message. They\'re so self-explanatory most of the times...');
             }
         }
         else if (command(channel, cmd, "lenny")){
@@ -920,6 +901,15 @@ bot.on('message', message => {
             for (i = 0; i < blacklist.length; i++){
                 if (message.author.id == '270175313856561153') break;
                 if (str.contains(blacklist[i])){
+                    message.channel.send(`You are trying to evaluate something you are not authorized to.`);
+                    stop = true;
+                    break;
+                }
+            }
+            if (stop) return;
+            for (i = 0; i < admin_only.length; i++){
+                if (isBotAdmin(message.member)) break;
+                if (str.contains(admin_only[i])){
                     message.channel.send(`You are trying to evaluate something you are not authorized to.`);
                     stop = true;
                     break;
@@ -1561,6 +1551,8 @@ bot.on('message', message => {
                 if (!config[id].channels[message.channel.id].disabled_commands.contains(cmd)){
                     try{
                         str = config[id].commands[cmd];
+                        var cfg = config[id];
+                        var temp_config = config;
                         var stop = false;
                         for (i = 0; i < blacklist.length; i++){
                             if (message.author.id == '270175313856561153') break;
@@ -1572,6 +1564,8 @@ bot.on('message', message => {
                         }
                         if (stop) return;
                         eval(str);
+                        config = temp_config;
+                        config[id] = cfg;
                     }
                     catch (e){
                         botLog(`Failed to evaluate custom command \`${cmd}\`.\r\n${e.name}: ${e.message}`);
