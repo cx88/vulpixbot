@@ -917,7 +917,11 @@ bot.on('message', message => {
             }
             if (stop) return;
             try{
+                var cfg = config[id];
+                var temp_config = config;
                 var result = eval(str);
+                config = temp_config;
+                config[id] = cfg;
                 message.channel.send({embed:{
                     color: main_color,
                     description: `Please note that the output is automatically converted into a string.`,
