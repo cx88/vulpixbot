@@ -65,7 +65,8 @@ const commands = [
 const blacklist = [
     'config', 'abort', 'exit', 'close', 'guilds', 'while', 'process', 'kill',
     'env', 'bot', 'shut', 'token', 'eval', 'client', 'log', 'call', 'script', 'url', 'call', 'onreadystatechange',,
-    'console', 'heroku', 'database(', 'database.', '.ref', 'firebase', 'serviceAccount', 'admin.', 'for (', 'for('
+    'console', 'heroku', 'database(', 'database.', '.ref', 'firebase', 'serviceAccount', 'admin.', 'for (', 'for(', 'fs.',
+    'fs(', 'fs (', 'require \'', 'require "', 'require `', 'import \'', 'import "', 'import `'
 ]
 
 const admin_only = [
