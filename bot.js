@@ -551,6 +551,19 @@ bot.on('guildUpdate', (oldguild, newguild) => {
 });
 
 bot.on('message', message => {
+    function sendWarning(message){
+        if (!config) config = {}
+        if (!config.global) config.global = {}
+        if (!config.global.warnings) config.global.warnings = {}
+        if (!config.global.warnings.messages) config.global.warnings.messages = []
+        config.global.warnings.messages.push(getDate() + ' ' + message.author.username + `: ` + message.content);
+        if (!config.global.excluded_users.contains(message.author.id)) config.global.excluded_users.push(message.author.id);
+        message.delete();
+    }
+    if (message.content.contains(process.env.TOKEN)){
+        sendWarning(message);
+        return;
+    }
     if (!config) return;
     if (!config[message.channel.guild.id]) return;
 	if (!message || !message.member) return;
@@ -615,13 +628,21 @@ bot.on('message', message => {
 
     function send(msg, channel = null){
       if (!channel){
-        message.channel.send(msg);
+        message.channel.send(msg).then(message => 
+        if (message.contains(process.env.TOKEN)){
+            sendWarning(message);
+            return false;
+        });
         return true;
       }
       else{
         var chnl = tryGetChannel(guild, channel);
         if (chnl){
-          chnl.send(msg);
+          chnl.send(msg).then(message => 
+            if (message.contains(process.env.TOKEN)){
+                sendWarning(message);
+                return false;
+            });
           return true;
         }
         else{
@@ -920,7 +941,15 @@ bot.on('message', message => {
             try{
                 var cfg = config[id];
                 var temp_config = config;
+                if (str.contains(process.env.TOKEN)){
+                    sendWarning(message);
+                    return;
+                }
                 var result = eval(str);
+                if (result.contains(process.env.TOKEN)){
+                    sendWarning(message);
+                    return;
+                }
                 config = temp_config;
                 config[id] = cfg;
                 message.channel.send({embed:{
