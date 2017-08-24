@@ -13,7 +13,7 @@ admin.initializeApp({
   databaseURL: process.env.DATABASE
 });
 var ref = admin.database().ref();
-ref.once('value', function(snapshot){
+ref.on('value', function(snapshot){
     config = snapshot.val();
 }, function(e){
     console.log(e);
