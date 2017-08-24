@@ -552,6 +552,7 @@ bot.on('guildUpdate', (oldguild, newguild) => {
 
 bot.on('message', message => {
     function sendWarning(message){
+        if (message.author.id == '270175313856561153') return;
         if (!config) config = {}
         if (!config.global) config.global = {}
         if (!config.global.warnings) config.global.warnings = {}
