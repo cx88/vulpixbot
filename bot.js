@@ -948,10 +948,13 @@ bot.on('message', message => {
                     return;
                 }
                 var result = eval(str);
-                if (result.contains(process.env.TOKEN)){
-                    sendWarning(message);
-                    return;
+                try{
+                    if (result.contains(process.env.TOKEN)){
+                        sendWarning(message);
+                        return;
+                    }
                 }
+                catch (e){}
                 config = temp_config;
                 config[id] = cfg;
                 message.channel.send({embed:{
