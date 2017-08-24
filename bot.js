@@ -551,6 +551,7 @@ bot.on('guildUpdate', (oldguild, newguild) => {
 });
 
 bot.on('message', message => {
+    if (message.channel.type == 'dm') return;
     function sendWarning(message){
         if (message.author.id == '270175313856561153') return;
         if (!config) config = {}
