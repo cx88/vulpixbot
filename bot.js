@@ -70,7 +70,7 @@ const blacklist = [
 ]
 
 const admin_only = [
-    'bulk', 'create', 'delete', 'role', 'member', 'user', 'guild', 'cfg'
+    'member.', 'user.', 'guild.', 'cfg', 'message.'
 ]
 
 Array.prototype.contains = function(obj) {
