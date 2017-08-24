@@ -628,21 +628,23 @@ bot.on('message', message => {
 
     function send(msg, channel = null){
       if (!channel){
-        message.channel.send(msg).then(message => 
-        if (message.contains(process.env.TOKEN)){
-            sendWarning(message);
-            return false;
+        message.channel.send(msg).then(message => {
+            if (message.contains(process.env.TOKEN)){
+                sendWarning(message);
+                return false;
+            }
         });
         return true;
       }
       else{
         var chnl = tryGetChannel(guild, channel);
         if (chnl){
-          chnl.send(msg).then(message => 
+          chnl.send(msg).then(message => {
             if (message.contains(process.env.TOKEN)){
                 sendWarning(message);
                 return false;
-            });
+            }
+          });
           return true;
         }
         else{
